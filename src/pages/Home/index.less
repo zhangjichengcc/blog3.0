@@ -1,0 +1,135 @@
+// @import '~antd/lib/style/themes/default.less';
+@import '~antd/es/style/themes/default.less';
+// @import '~@/utils/utils.less';
+
+@keyframes tada{
+  0%{transform:scale(1);}
+  10%,20%{transform:scale(0.9) rotate(-3deg);}
+  30%,50%,70%,90%{transform:scale(1.2) rotate(3deg);}
+  40%,60%,80%{transform:scale(1.2) rotate(-3deg);}
+  100%{transform:scale(1) rotate(0);}
+ }
+
+.Home {
+  height: 200vh;
+  .banner {
+    width: 100%;
+    height: calc(100vh - @layout-header-height);
+    background-image: url(../../assets/image/banner.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    &:before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      display: block;
+      background-image: url(../../assets/image/grid.png);
+      background-attachment: fixed;
+    }
+    .banner_title {
+      position: absolute;
+      width: 45%;
+      min-width: 240px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      .avator {
+        margin: 0 auto;
+        width: 14vw;
+        height: 14vw;
+        max-width: 140px;
+        max-height: 140px;
+        min-width: 120px;
+        min-height: 120px;
+        border-radius: 50%;
+        border: #eee solid 5px;
+        margin-bottom: 20px;
+        background-image: url(../../assets/image/avator.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        cursor: pointer;
+        box-shadow: 0px 13px 25px 0px rgba(52,61,112,0.17);
+      }
+      .avator:hover {
+        animation: tada 1s .2s ease both;
+        // -moz-animation: tada 1s .2s ease both;
+      }
+      .content {
+        font-size: 16px;
+        text-align: center;
+        color: #eaeadf;
+        background: rgba(0,0,0,.5);
+        padding: 15px 30px;
+        border-radius: 10px;
+        white-space: nowrap;
+        >span {
+          display: block;
+          font-size: 18px;
+          color: #fff;
+          padding-bottom: 12px;
+        }
+        .btnContent {
+          .icon {
+            display: inline-block;
+            font-size: 28px;
+            margin-right: 26px;
+            cursor: pointer;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.wechatContent {
+  width: 140px;
+  height: 140px;
+  background-image: url(../../assets/image/my-wechat.jpg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: @screen-lg) {
+  .salesExtra {
+    display: none;
+  }
+
+  .rankingList {
+    li {
+      span:first-child {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .rankingTitle {
+    margin-top: 16px;
+  }
+
+  .salesCard .salesBar {
+    padding: 16px;
+  }
+}
+
+@media screen and (max-width: @screen-sm) {
+  .salesExtraWrap {
+    display: none;
+  }
+
+  .salesCard {
+    :global {
+      .ant-tabs-content {
+        padding-top: 30px;
+      }
+    }
+  }
+}
