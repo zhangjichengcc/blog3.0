@@ -1,9 +1,15 @@
+/* eslint-disable compat/compat */
 import { Button, message, notification } from 'antd';
 import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import defaultSettings from '../config/defaultSettings';
 
 const { pwa } = defaultSettings; // if pwa is true
+
+setTimeout(() => {
+  // eslint-disable-next-line no-undef
+  message.info(returnCitySN.cip + returnCitySN.cname);
+}, 4000);
 
 if (pwa) {
   // Notify user if offline now
@@ -29,7 +35,6 @@ if (pwa) {
 
       await new Promise((resolve, reject) => {
         const channel = new MessageChannel();
-
         channel.port1.onmessage = msgEvent => {
           if (msgEvent.data.error) {
             reject(msgEvent.data.error);
@@ -37,14 +42,15 @@ if (pwa) {
             resolve(msgEvent.data);
           }
         };
-
         worker.postMessage(
           {
             type: 'skip-waiting',
           },
           [channel.port2],
         );
-      }); // Refresh current page to use the updated HTML and other assets after SW has skiped waiting
+      });
+
+      // Refresh current page to use the updated HTML and other assets after SW has skiped waiting
 
       window.location.reload(true);
       return true;
@@ -77,7 +83,7 @@ if (pwa) {
     });
   });
 } else if ('serviceWorker' in navigator) {
-  // eslint-disable-next-line compat/compat
+  // eslint-disable-next-line eslint-comments/no-duplicate-disable
   navigator.serviceWorker.ready
     .then(registration => {
       registration.unregister();

@@ -3,8 +3,8 @@ import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import HeaderDropdown from '../HeaderDropdown';
 
 class AvatarDropdown extends React.Component {
   onMenuClick = event => {

@@ -1,0 +1,29 @@
+.advert {
+  // width: calc((100% - 800px) / 2 - 24px);
+  // min-width: 150px;
+  // max-width: 200px;
+  width: 180px;
+  height: 270px;
+  position: fixed;
+  // height: 40%;
+  z-index: 1;
+  top: 40%;
+  background-color: #fff;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: all ease 0.3s;
+  opacity: 0;
+  .btn {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 4px;
+    border: #eee solid 1px;
+    right: 0;
+    position: absolute;
+    cursor: pointer;
+  }
+  &.show {
+    opacity: 1;
+  }
+}

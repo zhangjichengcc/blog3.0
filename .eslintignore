@@ -1,3 +1,7 @@
 /lambda/
 /scripts
 /config
+/node_modules
+/dist
+/src/components
+/tests

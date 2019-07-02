@@ -9,8 +9,9 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
-import RightContent from '@/components/GlobalHeader/RightContent';
-import { isAntDesignPro } from '@/utils/utils';
+import styles from './BasicLayout.less';
+// import RightContent from '@/components/GlobalHeader/RightContent';
+// import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 
 /**
@@ -22,29 +23,35 @@ const menuDataRender = menuList =>
     return Authorized.check(item.authority, localItem, null);
   });
 
-const footerRender = (_, defaultDom) => {
-  if (!isAntDesignPro()) {
-    return defaultDom;
-  }
+const footerRender = () => {
+  // if (!isAntDesignPro()) {
+  //   return defaultDom;
+  // }
 
+  // return (
+  //   <>
+  //     {defaultDom}
+  //     <div
+  //       style={{
+  //         padding: '0px 24px 24px',
+  //         textAlign: 'center',
+  //       }}
+  //     >
+  //       <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+  //         <img
+  //           src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
+  //           width="82px"
+  //           alt="netlify logo"
+  //         />
+  //       </a>
+  //     </div>
+  //   </>
+  // );
   return (
-    <>
-      {defaultDom}
-      <div
-        style={{
-          padding: '0px 24px 24px',
-          textAlign: 'center',
-        }}
-      >
-        <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
-            width="82px"
-            alt="netlify logo"
-          />
-        </a>
-      </div>
-    </>
+    <div className={styles.footer}>
+      <span>Copyright &copy; 2019 Veigar</span>
+      <span>坑位招租 坑位招租 坑位招租 赞助提供</span>
+    </div>
   );
 };
 
@@ -95,13 +102,12 @@ const BasicLayout = props => {
       footerRender={footerRender}
       menuDataRender={menuDataRender}
       formatMessage={formatMessage}
-      rightContentRender={rightProps => <RightContent {...rightProps} />}
+      // 暂时移除右侧操作
+      // rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
       {...settings}
     >
-      <div style={{ margin: -24 }}>
-        {children}
-      </div>
+      <div style={{ margin: -24 }}>{children}</div>
     </ProLayout>
   );
 };

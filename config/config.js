@@ -3,6 +3,7 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
 import routers from './router.config.js';
+import proxy from './proxy.config.js';
 
 const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
@@ -123,6 +124,7 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
+  proxy,
   /*
   proxy: {
     '/server/api/': {

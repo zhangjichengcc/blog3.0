@@ -20,6 +20,6 @@ export default {
   fixedHeader: true, // sticky header
   autoHideHeader: true, // auto hide header
   fixSiderbar: false, // sticky siderbar
-  collapse: true,
+  collapse: false,
   title: 'Veigar',
 };
