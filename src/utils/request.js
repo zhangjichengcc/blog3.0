@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 /**
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import { extend } from 'umi-request';
+// import { extend } from 'umi-request';
+import { stringify } from 'qs';
 import { notification } from 'antd';
 
 const codeMessage = {
@@ -27,8 +29,7 @@ const codeMessage = {
  */
 
 const errorHandler = error => {
-  const { response } = error;
-
+  const { response, message } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
@@ -37,14 +38,75 @@ const errorHandler = error => {
       description: errorText,
     });
   }
+  const res = {
+    code: -1,
+    msg: message,
+  };
+  return res;
 };
-/**
- * 配置request请求时的默认参数
- */
 
-const request = extend({
-  errorHandler,
-  // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
-});
-export default request;
+// 检验状态码， 200 表示请求成功
+const checkStatus = response => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  }
+  const error = new Error(response.statusText);
+  error.status = response.status;
+  error.response = response;
+  throw error;
+};
+
+export default function request(option) {
+  let { url } = option;
+  // Authorization 需要改成登录后获取
+  const defaultOptions = {
+    credentials: 'include',
+    // headers: {
+    //   Authorization: getAuthorization() || '',
+    // },
+  };
+  const newOptions = {
+    ...defaultOptions,
+    ...option,
+  };
+
+  // 设置 Content-Type
+  if (!(newOptions.body instanceof FormData)) {
+    newOptions.headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
+      ...newOptions.headers,
+    };
+    newOptions.body = JSON.stringify(newOptions.body);
+  } else {
+    // newOptions.body is FormData
+    newOptions.headers = {
+      Accept: 'application/json',
+      ...newOptions.headers,
+    };
+  }
+
+  // 转换 params 的参数
+  if (newOptions.params) {
+    url = `${url}?${stringify(newOptions.params)}`;
+  }
+
+  return fetch(url, newOptions)
+    .then(checkStatus)
+    .then(response => response.json())
+    .then(response => {
+      const { code, msg } = response;
+      // code 为 0 并且 data 存在的时候才返回数据，其他的均抛出异常，该异常属于业务异常
+      if (code === 0) {
+        return response;
+      }
+
+      // 抛出错误并捕捉
+      const error = new Error(msg);
+      error.response = response;
+      error.code = -1;
+      error.name = 'serviceError';
+      throw error;
+    })
+    .catch(errorHandler);
+}

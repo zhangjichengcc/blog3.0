@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Popover, Alert, BackTop } from 'antd';
+import { Icon, Popover, Alert, BackTop, Button } from 'antd';
 import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
 import ArticalCard from '@/components/ArticalCard';
@@ -8,80 +8,20 @@ import weChatImg from '@/assets/image/my-wechat.jpg';
 import config from '@/config';
 import styles from './index.less';
 import Ellipsis from '@/components/Ellipsis';
-import { queryVisitorList } from '@/services/home';
+import { queryArticalList } from '@/services/home';
 
 // const { TagCloud } = Charts;
 
-const data = [
-  {
-    title:
-      'nodejs 开发实战前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    img: 'http://www.yx319.cn/wp-content/uploads/2019/03/timg-1024x768.jpeg',
-    message:
-      '前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    tag: '前端',
-    look: 109,
-    like: 60,
-    msgCount: 10,
-    createTime: '2019-01-01',
-  },
-  {
-    title: 'nodejs 开发实战',
-    // img: 'http://www.yx319.cn/wp-content/uploads/2019/03/timg-1024x768.jpeg',
-  },
-  {
-    title:
-      'nodejs 开发实战前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    img: 'http://www.yx319.cn/wp-content/uploads/2019/03/timg-1024x768.jpeg',
-    message:
-      '前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    tag: '前端',
-    look: 109,
-    like: 60,
-    msgCount: 10,
-    createTime: '2019-01-01',
-  },
-  {
-    title:
-      'nodejs 开发实战前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    img: 'http://www.yx319.cn/wp-content/uploads/2019/03/timg-1024x768.jpeg',
-    message:
-      '前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    tag: '前端',
-    look: 109,
-    like: 60,
-    msgCount: 10,
-    createTime: '2019-01-01',
-  },
-  {
-    title:
-      'nodejs 开发实战前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    img: 'http://www.yx319.cn/wp-content/uploads/2019/03/timg-1024x768.jpeg',
-    message:
-      '前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    tag: '前端',
-    look: 109,
-    like: 60,
-    msgCount: 10,
-    createTime: '2019-01-01',
-  },
-  {
-    title:
-      'nodejs 开发实战前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    img: 'http://www.yx319.cn/wp-content/uploads/2019/03/timg-1024x768.jpeg',
-    message:
-      '前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why前言 本文主要对ES6的Promise进行一些入门级的介绍。要想学习一个知识点，肯定是从三个方面出发，what、why',
-    tag: '前端',
-    look: 109,
-    like: 60,
-    msgCount: 10,
-    createTime: '2019-01-01',
-  },
-];
-
 class Home extends Component {
   state = {
-    // wechatContentVisible: false,
+    articalList: [],
+    pageParams: {
+      pageSize: 10,
+      pageNum: 1,
+      total: 0,
+    },
+    articalLoaded: false,
+    articalLoading: false,
   };
 
   componentDidMount() {
@@ -91,9 +31,7 @@ class Home extends Component {
   componentWillUnmount() {}
 
   initData = () => {
-    queryVisitorList().then(res => {
-      console.log(res);
-    });
+    this.fetchArtical();
   };
 
   openView = (type = '') => {
@@ -109,12 +47,52 @@ class Home extends Component {
     }
   };
 
-  cardClick = (item = {}) => {
-    console.log(item);
+  fetchArtical = () => {
+    const { pageParams, articalList = [], articalLoaded } = this.state;
+    if (articalLoaded) return;
+    const { pageNum, pageSize } = pageParams;
+    const pagems = {
+      pageNum,
+      pageSize,
+    };
+    this.setState({ articalLoading: true });
+    queryArticalList(pagems).then(res => {
+      const { code, data = {} } = res;
+      if (code === 0) {
+        const { list = [], total } = data;
+        const loaded = pageNum * pageSize >= total;
+        this.setState({
+          articalLoading: false,
+          articalLoaded: loaded,
+          articalList: [...articalList, ...list],
+          pageParams: {
+            ...pageParams,
+            total,
+          },
+        });
+      }
+    });
+  };
+
+  loadMore = () => {
+    const { pageParams = {} } = this.state;
+    const { pageNum, pageSize, total } = pageParams;
+    if (pageNum * pageSize >= total) return;
+    this.setState(
+      {
+        pageParams: {
+          ...pageParams,
+          pageNum: pageNum + 1,
+        },
+      },
+      () => {
+        this.fetchArtical();
+      },
+    );
   };
 
   render() {
-    // const { wechatContentVisible } = this.state;
+    const { articalList = [], articalLoading = false, articalLoaded = false } = this.state;
     const { topArtical } = config;
     const wechatContent = <img src={weChatImg} alt="微信二维码" className={styles.wechatContent} />;
     const mailContent = <span>{config.mail}</span>;
@@ -232,23 +210,32 @@ class Home extends Component {
             </span>
           </div>
           <div className={styles.artical_body} style={{ marginTop: 40 }}>
-            {data.map((item, idx) => {
+            {articalList.map((item, idx) => {
               const keys = `art_card_${idx}`;
               return (
                 <ArticalCard
                   key={keys}
                   title={item.title}
-                  img={item.img}
-                  look={item.look}
-                  like={item.like}
-                  tag={item.tag}
-                  msgCount={item.msgCount}
-                  message={item.message}
+                  img={item.banner}
+                  look={item.readCount}
+                  like={item.likeCount}
+                  // tag={item.tag}
+                  // msgCount={item.msgCount}
+                  message={item.introduction}
                   createTime={item.createTime}
                   onClick={this.cardClick}
                 />
               );
             })}
+          </div>
+          <div className={styles.loadBar}>
+            {articalLoaded ? (
+              <span>很高兴你会看到这里，不过真的没有了...</span>
+            ) : (
+              <Button onClick={this.loadMore} type="primary" loading={articalLoading}>
+                {articalLoading ? '数据加载中' : '加载更多'}
+              </Button>
+            )}
           </div>
         </div>
         <Advert img={advertImg1} />
