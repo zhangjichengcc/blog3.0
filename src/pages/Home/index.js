@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Popover, Alert, BackTop, Button } from 'antd';
+import router from 'umi/router';
 import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
 import ArticalCard from '@/components/ArticalCard';
@@ -90,6 +91,16 @@ class Home extends Component {
       },
     );
   };
+
+  cardClick = (item) => {
+    const { id } = item;
+    router.push({
+      pathname: '/artical',
+      query: {
+        id,
+      },
+    });
+  }
 
   render() {
     const { articalList = [], articalLoading = false, articalLoaded = false } = this.state;
@@ -215,6 +226,7 @@ class Home extends Component {
               return (
                 <ArticalCard
                   key={keys}
+                  id={item.id}
                   title={item.title}
                   img={item.banner}
                   look={item.readCount}

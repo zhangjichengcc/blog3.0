@@ -27,6 +27,18 @@ export default [
         component: './Home',
       },
       {
+        path: 'artical',
+        // name: 'artical',
+        icon: 'home',
+        component: './Artical',
+      },
+      {
+        path: 'editor',
+        name: 'editor',
+        icon: 'home',
+        component: './Editor',
+      },
+      {
         component: './404',
       },
     ],
