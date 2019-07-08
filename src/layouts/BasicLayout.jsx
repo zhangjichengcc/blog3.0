@@ -4,6 +4,7 @@
  * https://github.com/ant-design/ant-design-pro-layout
  */
 import ProLayout from '@ant-design/pro-layout';
+import { message } from 'antd';
 import React, { useState } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
@@ -54,6 +55,11 @@ const footerRender = () => {
     </div>
   );
 };
+
+setTimeout(() => {
+  // eslint-disable-next-line no-undef
+  message.info(returnCitySN.cip + returnCitySN.cname);
+}, 4000);
 
 const BasicLayout = props => {
   const { dispatch, children, settings } = props;
@@ -107,7 +113,7 @@ const BasicLayout = props => {
       {...props}
       {...settings}
     >
-      <div style={{ margin: -24 }}>{children}</div>
+      <div>{children}</div>
     </ProLayout>
   );
 };

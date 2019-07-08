@@ -29,6 +29,7 @@ class Home extends Component {
   render() {
     return (
       <div className={styles.Artical}>
+        {/* eslint-disable-next-line react/no-danger */}
         <div dangerouslySetInnerHTML={{ __html: output }} />
         {/* {output} */}
       </div>

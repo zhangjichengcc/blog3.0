@@ -65,10 +65,11 @@ const renderNum = num => {
 
 // 函数节流
 const throttle = (() => {
+  const content = this;
   let timer = false;
   return (fn, delay = 300) => {
     if (timer) return;
-    fn();
+    fn.call(content);
     timer = setTimeout(() => {
       clearTimeout(timer);
       timer = false;
@@ -84,7 +85,7 @@ const debounce = (() => {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      fn();
+      fn.apply(this);
     }, delay);
   };
 })();
@@ -159,6 +160,34 @@ const compress = img => {
   return ndata;
 };
 
+// 仿jq offset()
+const offset = (el) => {
+  const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+  const domRect = el.getBoundingClientRect();
+  const { top = 0, left = 0, height = 0 } = domRect;
+  return {
+    top,
+    left,
+    height,
+    topBottom: clientHeight - top, // dom头部距离client底部距离
+  }
+}
+
+// 判断设备pc || 移动
+
+const isPc = () => {    
+	const userAgentInfo = navigator.userAgent;    
+	const Agents = ["Android", "iPhone", "ymbianOS", "Windows Phone", "iPad", "iPod"];   
+	let flag = true;   
+	for (let v = 0; v < Agents.length; v += 1) {       
+		if (userAgentInfo.indexOf(Agents[v]) > 0) {            
+			flag = false;            
+			break;       
+		 }  
+	 }   
+	  return flag;
+}
+
 export {
   isAntDesignProOrDev,
   isAntDesignPro,
@@ -169,4 +198,6 @@ export {
   throttle,
   debounce,
   compress,
+  offset,
+  isPc,
 };

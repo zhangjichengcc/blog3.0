@@ -6,6 +6,7 @@
   .banner {
     width: 100%;
     height: calc(100vh - @layout-header-height);
+    position: relative;
     background-image: url(../../assets/image/banner.jpg);
     background-repeat: no-repeat;
     background-position: center;
@@ -202,6 +203,14 @@
 
 @media screen and (max-width: @screen-sm) {
   .Home {
+    .banner {
+      margin-top: -@mobile-header-height;
+      height: 72vw;
+      .banner_title {
+        padding-top: @mobile-header-height;
+        transform: translate(-50%, -50%) scale(.75);
+      }
+    }
     .home_body {
       padding: 0 12px;
       .top_artical_body {
@@ -219,6 +228,14 @@
               transform: translate(0);
             }
           }
+        }
+      }
+      .loadBar {
+        padding: 16px 0 20px;
+        text-align: center;
+        font-size: 12px;  
+        > span {
+          color: @font-color1;
         }
       }
     }

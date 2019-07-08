@@ -6,6 +6,8 @@ import { Icon } from 'antd';
 import moment from 'js-moment';
 import styles from './index.less';
 import Ellipsis from '@/components/Ellipsis';
+import classnames from 'classnames';
+import { offset } from '@/utils/utils';
 
 class InputForm extends Component {
   static defaultProps = {
@@ -25,10 +27,14 @@ class InputForm extends Component {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    global.offset = offset;
+    window.addEventListener('scroll', this.scrollFun);
+  }
 
-  // componentWillUnmount() {
-  // }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scrollFun);
+  }
 
   click = () => {
     const { onClick } = this.props;
@@ -37,12 +43,23 @@ class InputForm extends Component {
     }
   };
 
+  scrollFun = () => {
+    if (offset(this.el).topBottom > -20) {
+      this.setState({
+        loading: true,
+      }, () => {
+        window.removeEventListener('scroll', this.scrollFun);
+      });
+    }
+  };
+
   render() {
     const { title, img, look, like, tag, msgCount, message, createTime } = this.props;
+    const { loading } = this.state;
     return (
-      <div className={styles.artical_card}>
+      <div ref={e => this.el = e } className={classnames(styles.artical_card, loading ? styles.active : '')}>
         <div className={styles.artical_card_img} onClick={this.click}>
-          <span style={{ backgroundImage: `url(${img})` }} />
+          <span style={loading ? { backgroundImage: `url(${img})` } : {}} />
         </div>
         <div className={styles.artical_card_content}>
           <Ellipsis className={styles.artical_card_title} lines={2}>

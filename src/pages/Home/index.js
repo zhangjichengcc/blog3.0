@@ -10,6 +10,7 @@ import config from '@/config';
 import styles from './index.less';
 import Ellipsis from '@/components/Ellipsis';
 import { queryArticalList } from '@/services/home';
+import { isPc, offset } from '@/utils/utils';
 
 // const { TagCloud } = Charts;
 
@@ -26,6 +27,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    this.initPage();
     this.initData();
   }
 
@@ -34,6 +36,28 @@ class Home extends Component {
   initData = () => {
     this.fetchArtical();
   };
+
+  initPage = () => {
+    const isPC = isPc();
+    this.setState({
+      isPC,
+    }, () => {
+      if(!isPC) {
+        window.addEventListener('scroll', this.scrollFun);
+      }
+    })
+  }
+
+  scrollFun = () => {
+    const { articalLoaded, articalLoading } = this.state;
+    const dom = document.documentElement || document.body;
+    const { scrollHeight } = dom;
+    const { topBottom } = offset(dom);
+    if(articalLoading) return;
+    if(!articalLoaded && topBottom + 5 > scrollHeight) {
+      this.loadMore();
+    }
+  }
 
   openView = (type = '') => {
     switch (type) {
@@ -70,6 +94,10 @@ class Home extends Component {
             ...pageParams,
             total,
           },
+        }, () => {
+          // 手动滚动，触发scroll 图片懒加载
+          const beginPos = document.documentElement.scrollTop;
+          document.documentElement.scrollTo(0, `${beginPos - 0.1}`);
         });
       }
     });
@@ -103,7 +131,7 @@ class Home extends Component {
   }
 
   render() {
-    const { articalList = [], articalLoading = false, articalLoaded = false } = this.state;
+    const { articalList = [], articalLoading = false, articalLoaded = false, isPC = true, } = this.state;
     const { topArtical } = config;
     const wechatContent = <img src={weChatImg} alt="微信二维码" className={styles.wechatContent} />;
     const mailContent = <span>{config.mail}</span>;
@@ -240,15 +268,27 @@ class Home extends Component {
               );
             })}
           </div>
-          <div className={styles.loadBar}>
-            {articalLoaded ? (
-              <span>很高兴你会看到这里，不过真的没有了...</span>
+          {
+            isPC ? (
+              <div className={styles.loadBar}>
+                {articalLoaded ? (
+                  <span>很高兴你会看到这里，不过真的没有了...</span>
+                ) : (
+                  <Button onClick={this.loadMore} type="primary" loading={articalLoading}>
+                    {articalLoading ? '数据加载中' : '加载更多'}
+                  </Button>
+                )}
+              </div>
             ) : (
-              <Button onClick={this.loadMore} type="primary" loading={articalLoading}>
-                {articalLoading ? '数据加载中' : '加载更多'}
-              </Button>
-            )}
-          </div>
+              <div className={styles.loadBar}>
+                {articalLoaded ? (
+                  <span>很高兴你会看到这里，不过真的没有了...</span>
+                ) : (
+                  <span><Icon type="loading-3-quarters" style={{ marginRight: 5 }} spin />数据加载中...</span>
+                )}
+              </div>
+            )
+          }
         </div>
         <Advert img={advertImg1} />
         <BackTop />

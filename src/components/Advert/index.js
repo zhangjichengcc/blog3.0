@@ -75,6 +75,7 @@ class Advert extends Component {
     const { show, closed } = this.state;
     const { title, position, img } = this.props;
     const style = {
+      display: closed ? 'none' : 'block',
       backgroundImage: `url(${img})`,
       right: position === 'right' ? 0 : 'auto',
     };

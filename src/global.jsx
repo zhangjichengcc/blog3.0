@@ -6,11 +6,6 @@ import defaultSettings from '../config/defaultSettings';
 
 const { pwa } = defaultSettings; // if pwa is true
 
-setTimeout(() => {
-  // eslint-disable-next-line no-undef
-  message.info(returnCitySN.cip + returnCitySN.cname);
-}, 4000);
-
 if (pwa) {
   // Notify user if offline now
   window.addEventListener('sw.offline', () => {
