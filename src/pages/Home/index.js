@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Icon, Popover, Alert, BackTop, Button } from 'antd';
 import router from 'umi/router';
-import Advert from '@/components/Advert';
+// import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
 import ArticalCard from '@/components/ArticalCard';
-import advertImg1 from '@/assets/image/home/advert.jpg';
+// import advertImg1 from '@/assets/image/home/advert.jpg';
 import weChatImg from '@/assets/image/my-wechat.jpg';
 import config from '@/config';
 import styles from './index.less';
@@ -94,10 +94,6 @@ class Home extends Component {
             ...pageParams,
             total,
           },
-        }, () => {
-          // 手动滚动，触发scroll 图片懒加载
-          const beginPos = document.documentElement.scrollTop;
-          document.documentElement.scrollTo(0, `${beginPos - 0.1}`);
         });
       }
     });
@@ -128,6 +124,10 @@ class Home extends Component {
         id,
       },
     });
+  }
+
+  likeChoose = (like, count, item) => {
+    console.log(like, count, item);
   }
 
   render() {
@@ -216,7 +216,7 @@ class Home extends Component {
           />
           <div className={styles.title} style={{ marginTop: 50 }}>
             <span>
-              <Icon type="crown" className={styles.title_icon} />
+              <Icon type="global" className={styles.title_icon} />
               常用网站
             </span>
           </div>
@@ -244,7 +244,7 @@ class Home extends Component {
           </div>
           <div className={styles.title} style={{ marginTop: 50 }}>
             <span>
-              <Icon type="crown" className={styles.title_icon} />
+              <Icon type="book" className={styles.title_icon} />
               最新文章
             </span>
           </div>
@@ -259,11 +259,13 @@ class Home extends Component {
                   img={item.banner}
                   look={item.readCount}
                   like={item.likeCount}
+                  type={item.type}
                   // tag={item.tag}
-                  // msgCount={item.msgCount}
+                  msgCount={item.msgCount}
                   message={item.introduction}
                   createTime={item.createTime}
                   onClick={this.cardClick}
+                  onLike={this.likeChoose}
                 />
               );
             })}
@@ -282,7 +284,7 @@ class Home extends Component {
             ) : (
               <div className={styles.loadBar}>
                 {articalLoaded ? (
-                  <span>很高兴你会看到这里，不过真的没有了...</span>
+                  <span>很高兴你能够看到这里，不过真的没有了...</span>
                 ) : (
                   <span><Icon type="loading-3-quarters" style={{ marginRight: 5 }} spin />数据加载中...</span>
                 )}
@@ -290,7 +292,7 @@ class Home extends Component {
             )
           }
         </div>
-        <Advert img={advertImg1} />
+        {/* <Advert img={advertImg1} /> */}
         <BackTop />
       </div>
     );

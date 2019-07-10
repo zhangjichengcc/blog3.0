@@ -7,7 +7,7 @@ import styles from './index.less';
 
 
 // const { TagCloud } = Charts;
-const input = localStorage.getItem('aa');
+const input = localStorage.getItem('aa') || '';
 
 const output = marked(input);
 

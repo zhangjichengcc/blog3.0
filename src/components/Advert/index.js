@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 // import { Icon } from 'antd';
 // import moment from 'js-moment';
-import classnames from 'classnames';
+// import classnames from 'classnames';
 import { throttle } from '@/utils/utils';
 import styles from './index.less';
 
@@ -75,7 +75,7 @@ class Advert extends Component {
     const { show, closed } = this.state;
     const { title, position, img } = this.props;
     const style = {
-      display: closed ? 'none' : 'block',
+      display: !closed && show ? 'block' : 'none',
       backgroundImage: `url(${img})`,
       right: position === 'right' ? 0 : 'auto',
     };
@@ -84,7 +84,7 @@ class Advert extends Component {
       <div
         onClick={this.click}
         style={style}
-        className={classnames(styles.advert, !closed && show ? styles.show : '')}
+        className={styles.advert}
       >
         <span className={styles.btn} onClick={this.close}>
           关闭
