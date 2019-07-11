@@ -2,6 +2,18 @@
 @import '~@/utils.less';
 @import '~@/default.less';
 
+.aaa {
+  &>i {
+    font-weight: bold;
+    // font-style: italic;
+    font-size: 13px;
+    &:before {
+      content: 'Img';
+    }
+  }
+}
+
+
 .Home {
   .banner {
     width: 100%;
