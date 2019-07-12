@@ -27,6 +27,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
+    global.that = this;
     this.initPage();
     this.initData();
   }
@@ -82,7 +83,7 @@ class Home extends Component {
     };
     this.setState({ articalLoading: true });
     queryArticalList(pagems).then(res => {
-      const { code, data = {} } = res;
+      const { code, data = {}, msg } = res;
       if (code === 0) {
         const { list = [], total } = data;
         const loaded = pageNum * pageSize >= total;
@@ -95,6 +96,13 @@ class Home extends Component {
             total,
           },
         });
+      } else {
+        this.setState({
+          articalLoading: false,
+          articalLoaded: true,
+        }, () => {
+          console.warn(msg);
+        })
       }
     });
   };
@@ -189,7 +197,7 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        {/* <div className={}>
+        {/* <div className={styles.cloud}>
           <TagCloud
             width="20vw"
             height={200}
