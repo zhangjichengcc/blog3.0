@@ -33,7 +33,7 @@ export default [
         component: './Artical',
       },
       {
-        path: 'editor',
+        path: '/editor',
         name: 'editor',
         icon: 'home',
         component: './Editor',
