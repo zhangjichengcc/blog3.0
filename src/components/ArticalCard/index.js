@@ -8,6 +8,7 @@ import { Icon } from 'antd';
 import moment from 'js-moment';
 import styles from './index.less';
 import Ellipsis from '@/components/Ellipsis';
+import Img from '@/components/Img';
 import classnames from 'classnames';
 import { offset } from '@/utils/utils';
 
@@ -28,6 +29,7 @@ class InputForm extends Component {
     super(props);
     this.state = {
       likeCount: 0,
+      loading: false,
     };
   }
 
@@ -69,7 +71,7 @@ class InputForm extends Component {
   }
 
   scrollFun = () => {
-    if (offset(this.el).topBottom > -10) {
+    if (offset(this.el).topBottom > -30) {
       this.setState({
         loading: true,
       }, () => {
@@ -78,21 +80,21 @@ class InputForm extends Component {
     }
   };
 
-  loadedImg = () => {
-    this.setState({loaded: true});
-  }
 
   render() {
     const { title, img, look, like, tag, msgCount, message, type, createTime } = this.props;
-    const { loading, loaded = false, likeKey = false, likeCount } = this.state;
+    const { loading = false, likeKey = false, likeCount } = this.state;
     return (
       <div ref={e => this.el = e } className={classnames(styles.artical_card, loading ? styles.active : '')}>
         <div className={styles.artical_card_img} onClick={this.click}>
-          <span className={styles.artical_card_img_src}>
-            {/* 滚动到可视范围内，开始加载图片 */}
-            {/* 图片加载完毕，展示图片 */}
-            <img src={loading ? img : ''} onLoad={this.loadedImg} style={loaded ? {opacity: 1} : {opacity: 0}}/>
-          </span>
+          {/* 滚动到可视范围内，开始加载图片 */}
+          {/* 图片加载完毕，展示图片 */}
+          <Img
+            src={img}
+            alt="banner"
+            loading={loading}
+            style={{borderRadius: 10}}
+          />
         </div>
         <div className={styles.artical_card_content}>
           <Ellipsis className={styles.artical_card_title} lines={2}>
@@ -132,7 +134,7 @@ class InputForm extends Component {
             }
           </div>
           <span className={styles.artical_card_createTime}>
-            发布于{moment(createTime).format('YYYY年MM月DD日')}
+            发布于{moment(createTime.replace(/\-/g, '/')).format('YYYY年MM月DD日')}
           </span>
           <div className={styles.artical_card_message}>
             <Ellipsis lines={4}>{message}</Ellipsis>

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Icon, Button, Input, Row, Col, DatePicker, message, Switch, Spin, Tooltip } from 'antd';
 // import Charts from '@/components/Charts';
-// import marked from 'marked';
 import SimpleMDE from "react-simplemde-editor";
 import styles from './index.less';
 import "easymde/dist/easymde.min.css";
-import { uploadImg, uploadArtical } from '@/services/editor';
+import { uploadImg } from '@/services/image';
+import { uploadArtical } from '@/services/artical';
 // import Ellipsis from '@/components/Ellipsis';
 
 // const { RangePicker } = DatePicker;
@@ -122,7 +122,7 @@ class Home extends Component {
       title,
       createTime,
       publish,
-      mainConent: editorText,
+      mainContent: editorText,
       introduction,
       banner,
     }

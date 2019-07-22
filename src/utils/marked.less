@@ -1,0 +1,48 @@
+// marked 样式补充
+
+blockquote {
+  position: static;
+  font-family: Georgia, "Times New Roman", "Microsoft Yahei", serif;
+  font-size: 13px;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background: #f8f8f8;
+  border-left: 4px solid #eee;
+  &::before {
+    top: 20px;
+    left: 10px;
+    content: "\201D";
+    color: #e2e2e2;
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    position: static;
+  }
+}
+
+pre {
+  overflow: auto;
+  line-height: 1.4;
+  padding: 1.25rem 1.5rem;
+  margin: .85rem 0;
+  background-color: #282c34;
+  border-radius: 6px;
+  color: #BDBDBD;
+  font-size: 13px;
+  &::-webkit-scrollbar {
+    height: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #eee;
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #9e9e9e;
+    border-radius: 2px;
+  }
+}
+
+img {
+  width: 100%;
+}
+

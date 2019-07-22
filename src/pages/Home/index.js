@@ -9,7 +9,7 @@ import weChatImg from '@/assets/image/my-wechat.jpg';
 import config from '@/config';
 import styles from './index.less';
 import Ellipsis from '@/components/Ellipsis';
-import { queryArticalList } from '@/services/home';
+import { queryArticalList } from '@/services/artical';
 import { isPc, offset } from '@/utils/utils';
 
 // const { TagCloud } = Charts;

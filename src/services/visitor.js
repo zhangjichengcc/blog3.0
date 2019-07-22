@@ -9,12 +9,3 @@ export async function queryVisitorList() {
 export async function insertVisitor() {
   return request('/api/visitor/getVisitorList');
 }
-
-// 获取文章列表
-export async function queryArticalList(params = {}) {
-  return request({
-    url: '/api/artical/getArticalList',
-    method: 'get',
-    params,
-  });
-}

@@ -1,0 +1,32 @@
+.Img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #181e25;
+  // background-image: url(../../assets/image/img-loding.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: auto;
+  transition: all ease 0.3s;
+  overflow: hidden;
+  >img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all ease 0.3s;
+  }
+  >.errorArea {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    >span {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
