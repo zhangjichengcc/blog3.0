@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, message } from 'antd';
-import { SHA256 } from 'sha2';
+import SHA2 from 'sha2';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import router from 'umi/router';
 import classnames from 'classnames';
@@ -27,7 +27,7 @@ class Home extends Component {
   componentDidMount() {
     this.initData();
     global.that = this;
-    global.SHA256 = SHA256;
+    global.SHA2 = SHA2;
   }
 
   componentWillUnmount() {}
@@ -79,10 +79,24 @@ class Home extends Component {
 
   // 登陆触发
   login = () => {
+    // console.log(nyanbuffer.toString("hex"));
+    // "917af159e6a87a2b3d3cd16cd5f1a789b7ec900775add052167305d397e985f2"
+    // console.log(nyanbuffer.toString("base64"));
+    // "kXrxWeaoeis9PNFs1fGnibfskAd1rdBSFnMF05fphfI="
+    // console.log(Array.from(nyanbuffer));
+    // [145, 122, 241, 89, 230, 168, 122, 43, 61, 60, 209,
+    // 108, 213, 241, 167, 137, 183, 236, 144, 7, 117, 173,
+    // 208, 82, 22, 115, 5, 211, 151, 233, 133, 242]
+    // console.log(nyanbuffer.equals(nyanbuffer));
+    // true
+
+    const { SHA256 } = SHA2;
     const { username, password, redirect } = this.state;
+    debugger;
+    const sha2Pwd = SHA256(SHA256(password) + SHA256(username));
     const params = {
       username,
-      password: SHA256(password),
+      password: sha2Pwd,
     };
     const msgList = {
       username: '用户名不能为空！',
