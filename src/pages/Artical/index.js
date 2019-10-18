@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-// import { Icon, Popover, Alert, BackTop, Button } from 'antd';
+import { Spin, Anchor } from 'antd';
 // import Charts from '@/components/Charts';
 import marked from 'marked';
 import router from 'umi/router';
-import highlight  from 'highlight.js'
+import highlight from 'highlight.js';
+import moment from 'js-moment';
+import pinyin from 'pinyin';
 import styles from './index.less';
 import Img from '@/components/Img';
 import { getArtical } from '@/services/artical';
 import 'highlight.js/styles/atom-one-dark.css';
 // import Ellipsis from '@/components/Ellipsis';
 
-
 // const { TagCloud } = Charts;
+const { Link } = Anchor;
 
 marked.setOptions({
   renderer: new marked.Renderer(),
-  highlight: (code) => {
+  highlight: code => {
     return highlight.highlightAuto(code).value;
   },
   pedantic: false,
@@ -25,85 +27,186 @@ marked.setOptions({
   sanitize: false,
   smartLists: true,
   smartypants: false,
-  xhtml: false
-})
+  xhtml: false,
+});
 
 class Home extends Component {
   state = {
     id: undefined,
+    pageLoading: false,
   };
 
   componentDidMount() {
     this.initData();
     global.that = this;
+    global.pinyin = pinyin;
   }
 
   componentWillUnmount() {}
 
+  // 初始化页面数据
   initData = () => {
     const { location } = this.props;
     const { query } = location;
     const { id = undefined } = query;
-    if(!id) router.push('/');
-    this.setState({
-      id,
-    }, () => {
-      this.fetchArtical();
-    })
+    if (!id) router.push('/');
+    this.setState(
+      {
+        id,
+      },
+      () => {
+        this.fetchArtical();
+      },
+    );
   };
 
+  // 请求文章数据
   fetchArtical = () => {
     const { id } = this.state;
-    getArtical({id}).then(res => {
+    this.setState({ pageLoading: true });
+    getArtical({ id }).then(res => {
       const { code, data, message } = res;
-      if(code === 0) {
-        const { 
-          banner, 
-          // createTime, 
-          // introduction, 
-          // likeCount, 
-          // readCount, 
-          // title, 
-          // artical, 
-          mainContent } = data;
+      if (code === 0) {
+        const {
+          banner,
+          createTime,
+          // introduction,
+          likeCount,
+          readCount,
+          title,
+          // artical,
+          mainContent,
+        } = data;
         this.setState({
           banner,
-          // createTime,
+          pageLoading: false,
+          createTime,
           // introduction,
-          // likeCount,
-          // readCount,
-          // title,
+          likeCount,
+          readCount,
+          title,
           mainContent,
-        })
+        });
       } else {
+        this.setState({ pageLoading: false });
         console.error(message);
       }
-    })
-  }
+    });
+  };
+
+  // 生成文章导航
+  displayNav = () => {
+    const { mainContent = '' } = this.state;
+    const reg = new RegExp('#+\\s+.*', 'g');
+    const options = {
+      offsetTop: 80,
+      // targetOffset: -300,
+      // bounds: 100,
+    };
+    const navListSource = mainContent ? mainContent.match(reg) : [];
+    return (
+      <Anchor {...options}>
+        {navListSource.map((item = '', idx) => {
+          const keys = `key_${idx + 1}`;
+          const title = item.replace(/^#+\s/, '');
+          const anchor = this.displayHZ(title.replace(/\s/g, ''));
+          return <Link key={keys} href={`#${anchor}`} title={title} />;
+        })}
+      </Anchor>
+    );
+  };
+
+  // 将汉字转为拼音
+  displayHZ = (val = '') => {
+    if (!val) return '';
+    let str = '';
+    pinyin(val, { style: pinyin.STYLE_NORMAL }).forEach((v, idx) => {
+      str += idx === 0 ? v[0] : `-${v[0]}`;
+    });
+    return str;
+    // return val;
+  };
+
+  // 格式化marked文本，使其支持锚点
+  displayMarkdown = (text = '') => {
+    if (!text) return '';
+    const newText = text.replace(/#+\s+(.*)([\n|\r])/g, ($0, $1) => {
+      const anchor = this.displayHZ($1.replace(/\s/g, ''));
+      return `${$0}<p style="height: 0; margin: 0; overflow: hidden;"><a id="${anchor}" href="#${anchor}" name="${anchor}" class="anchor">#</a></p>`;
+    });
+    return newText;
+  };
 
   render() {
-    const { mainContent = '', banner } = this.state;
-    const markedHTML = marked(mainContent || '');
+    const {
+      pageLoading = false,
+      mainContent = '',
+      banner,
+      title,
+      createTime,
+      likeCount = 0,
+      readCount = 0,
+    } = this.state;
+
+    const markedHTML = marked(this.displayMarkdown(mainContent));
+    // const reg = new RegExp('#+\\s+.*', 'g')
+    // const markedHTML = marked('### aa adf<a href="aa adf" class="anchor">#</a> \n  aaaa');
+    // const navList = mainContent.match(reg);
+    // console.log(navList);
+    // a.replace(/(#+\s+)(.*)([\n|\r])/g, `$1$2<a href="$2" class="anchor">#</a>$3`)
     return (
-      <div className={styles.Artical}>
-        <div className={styles.leftContent}>
-          leftBar
-        </div>
-        <div className={styles.centerContent}>
-          <div className={styles.banner}>
-            <Img
-              src={banner}
-              alt="banner"
-              style={{position: 'absolute'}}
-              loading
-            />
+      <div>
+        {pageLoading ? (
+          <div className={styles.pageStyle}>
+            <Spin spinning />
           </div>
-          {/* eslint-disable-next-line react/no-danger */}
-          <div className={styles.articalBody} dangerouslySetInnerHTML={{ __html: markedHTML }} />
-        </div>
-        <div className={styles.rightContent}>
-          rightBar
-        </div>
+        ) : (
+          <div className={styles.Artical}>
+            <div className={styles.banner}>
+              <Img src={banner} alt="banner" style={{ position: 'absolute' }} loading />
+              <div className={styles.artTitle}>
+                <div>
+                  <span className={styles.title}>{title}</span>
+                  <div className={styles.infoBar}>
+                    <span>{moment(createTime).format('YYYY-MM-DD')}</span>
+                    <span className={styles.cercle} />
+                    <span>{likeCount || 0}人喜欢</span>
+                    <span className={styles.cercle} />
+                    <span>{readCount || 0}次阅读</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.leftContent}>
+              <div>
+                <p>asdfasfasdf</p>
+                <p>asdfasfasdf</p>
+                <p>asdfasfasdf</p>
+                <p>asdfasfasdf</p>
+                <p>asdfasfasdf</p>
+              </div>
+              {this.displayNav()}
+            </div>
+            <div className={styles.centerContent}>
+              {/* <div className={styles.banner}>
+                  <Img
+                    src={banner}
+                    alt="banner"
+                    style={{position: 'absolute'}}
+                    loading
+                  />
+                </div> */}
+              {/* <Card loading={1}> */}
+              {/* eslint-disable-next-line react/no-danger */}
+              <div
+                className={styles.articalBody}
+                dangerouslySetInnerHTML={{ __html: markedHTML }}
+              />
+              {/* </Card> */}
+            </div>
+            <div className={styles.rightContent}>rightBar</div>
+          </div>
+        )}
       </div>
     );
   }

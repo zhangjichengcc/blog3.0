@@ -4,14 +4,14 @@
  * https://github.com/ant-design/ant-design-pro-layout
  */
 import ProLayout from '@ant-design/pro-layout';
-import { message } from 'antd';
+// import { message } from 'antd';
 import React, { useState } from 'react';
 import Link from 'umi/link';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import styles from './BasicLayout.less';
-// import RightContent from '@/components/GlobalHeader/RightContent';
+import RightContent from '@/components/GlobalHeader/RightContent';
 // import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 
@@ -56,10 +56,11 @@ const footerRender = () => {
   );
 };
 
-setTimeout(() => {
-  // eslint-disable-next-line no-undef
-  message.info(returnCitySN.cip + returnCitySN.cname);
-}, 4000);
+// 获取访问IP及地点
+// setTimeout(() => {
+//   // eslint-disable-next-line no-undef
+//   message.info(returnCitySN.cip + returnCitySN.cname);
+// }, 4000);
 
 const BasicLayout = props => {
   const { dispatch, children, settings } = props;
@@ -109,7 +110,7 @@ const BasicLayout = props => {
       menuDataRender={menuDataRender}
       formatMessage={formatMessage}
       // 暂时移除右侧操作
-      // rightContentRender={rightProps => <RightContent {...rightProps} />}
+      rightContentRender={rightProps => <RightContent {...rightProps} />}
       {...props}
       {...settings}
     >

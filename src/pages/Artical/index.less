@@ -3,25 +3,28 @@
 @import '~@/default.less';
 @import '~@/utils/marked.less';
 
+@center-width: 54%;
+@side-width: 35%;
+
 .Artical {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 20px 20px 0;
+  // padding: 20px 20px 0;
   .leftContent {
-    width: 25%;
+    width: 23%;
     float: left;
-    
   }
   .centerContent {
-    width: 50%;
+    width: @center-width;
+    min-height: 100px;
     float: left;
-    margin: 10px;
-    box-shadow: 0 1px 18px 0 rgba(0,0,0,0.08);
+    margin: 0 10px;
+    box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     overflow: hidden;
   }
   .rightConent {
-    width: 25%;
+    width: 23%;
     float: right;
   }
   &::after {
@@ -33,12 +36,46 @@
   .banner {
     width: 100%;
     height: 0;
-    padding-bottom: 50%;
+    padding-bottom: 35%;
     position: relative;
+    .artTitle {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 20px 0;
+      > div {
+        margin: 0 auto;
+        padding: 0 10px;
+        width: @center-width;
+        color: #fff;
+        .title {
+          font-size: 24px;
+          font-weight: 500;
+          letter-spacing: 3px;
+        }
+        .infoBar {
+          padding-top: 6px;
+          .cercle {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 2px 5px;
+          }
+        }
+      }
+    }
   }
   .articalBody {
-    padding: 15px;
+    padding: 0 15px;
   }
+}
+
+.pageStyle {
+  padding-top: 10vh;
+  text-align: center;
 }
 
 @media screen and (max-width: @screen-lg) {
@@ -58,7 +95,7 @@
       width: 70%;
       float: left;
       margin: 10px;
-      box-shadow: 0 1px 18px 0 rgba(0,0,0,0.08);
+      box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
       border-radius: 8px;
       overflow: hidden;
     }

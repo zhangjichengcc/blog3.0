@@ -17,6 +17,7 @@
     "experimentalDecorators": true,
     "strict": true,
     "paths": {
+      "*": ["types/*"],
       "@/*": ["./src/*"]
     }
   },

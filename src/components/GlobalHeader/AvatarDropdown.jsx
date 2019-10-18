@@ -5,41 +5,53 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import styles from './index.less';
 import HeaderDropdown from '../HeaderDropdown';
+import imgVisitor from '@/assets/visitor.jpg';
 
 class AvatarDropdown extends React.Component {
   onMenuClick = event => {
     const { key } = event;
-
     if (key === 'logout') {
-      const { dispatch } = this.props;
+      const { location } = window;
+      const { pathname, search } = location;
+      router.push({
+        pathname: '/user/login',
+        query: {
+          redirect: pathname + search,
+        },
+      });
+      // const { dispatch } = this.props;
 
-      if (dispatch) {
-        dispatch({
-          type: 'login/logout',
-        });
-      }
+      // if (dispatch) {
+      //   dispatch({
+      //     type: 'login/logout',
+      //   });
+      // }
 
-      return;
+      // return;
     }
-
-    router.push(`/account/${key}`);
   };
 
   render() {
     const { currentUser = {}, menu } = this.props;
+    const {
+      name = '游客',
+      avatar = imgVisitor,
+      comment = '莫得感情的杀手',
+      authority = 'visitor',
+    } = currentUser;
 
     if (!menu) {
       return (
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{currentUser.name}</span>
+          <Avatar size="small" className={styles.avatar} src={avatar} alt="avatar" />
+          <span className={styles.name}>{name}</span>
         </span>
       );
     }
 
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        <Menu.Item key="center">
+        {/* <Menu.Item key="center">
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>
@@ -47,18 +59,18 @@ class AvatarDropdown extends React.Component {
           <Icon type="setting" />
           <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
         </Menu.Item>
-        <Menu.Divider />
+        <Menu.Divider /> */}
         <Menu.Item key="logout">
           <Icon type="logout" />
           <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.name ? (
+    return name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
-          <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{currentUser.name}</span>
+          <Avatar size="small" className={styles.avatar} src={avatar} alt="avatar" />
+          <span className={styles.name}>{name}</span>
         </span>
       </HeaderDropdown>
     ) : (

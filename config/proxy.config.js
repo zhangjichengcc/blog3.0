@@ -6,6 +6,7 @@ const proxyConfig = {
     router: {
       '/api/artical': 'http://127.0.0.1:5001',
       '/api/image': 'http://127.0.0.1:5002',
+      '/api/user': 'http://127.0.0.1:5003',
     },
   },
 };

@@ -8,18 +8,22 @@
 
 export default [
   {
+    path: '/user',
+    component: '../layouts/BlankLayout',
+    routes: [
+      {
+        name: 'login',
+        path: '/user/login',
+        component: './User/Login',
+      },
+    ],
+  },
+  {
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     authority: ['admin', 'user'],
     routes: [
-      // {
-      //   path: '/',
-      //   name: 'welcome',
-      //   icon: 'smile',
-      //   component: './Welcome',
-      // },
-      // { path: '/', redirect: '/home' },
       {
         path: '/',
         name: 'home',
@@ -39,6 +43,10 @@ export default [
         component: './Editor',
       },
       {
+        path: '/403',
+        component: './403',
+      },
+      {
         component: './404',
       },
     ],
@@ -46,4 +54,4 @@ export default [
   {
     component: './404',
   },
-]
+];

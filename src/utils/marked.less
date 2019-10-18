@@ -2,7 +2,7 @@
 
 blockquote {
   position: static;
-  font-family: Georgia, "Times New Roman", "Microsoft Yahei", serif;
+  font-family: Georgia, 'Times New Roman', 'Microsoft Yahei', serif;
   font-size: 13px;
   margin: 10px 0;
   padding: 10px 20px;
@@ -11,7 +11,7 @@ blockquote {
   &::before {
     top: 20px;
     left: 10px;
-    content: "\201D";
+    content: '\201D';
     color: #e2e2e2;
     font-size: 22px;
     font-weight: 900;
@@ -21,13 +21,14 @@ blockquote {
 }
 
 pre {
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   line-height: 1.4;
   padding: 1.25rem 1.5rem;
-  margin: .85rem 0;
+  margin: 0.85rem 0;
   background-color: #282c34;
   border-radius: 6px;
-  color: #BDBDBD;
+  color: #bdbdbd;
   font-size: 13px;
   &::-webkit-scrollbar {
     height: 3px;
@@ -45,4 +46,3 @@ pre {
 img {
   width: 100%;
 }
-

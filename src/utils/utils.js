@@ -161,7 +161,7 @@ const compress = img => {
 };
 
 // 仿jq offset()
-const offset = (el) => {
+const offset = el => {
   const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
   const domRect = el.getBoundingClientRect();
   const { top = 0, left = 0, height = 0 } = domRect;
@@ -170,23 +170,22 @@ const offset = (el) => {
     left,
     height,
     topBottom: clientHeight - top, // dom头部距离client底部距离
-  }
-}
+  };
+};
 
 // 判断设备pc || 移动
-
-const isPc = () => {    
-	const userAgentInfo = navigator.userAgent;    
-	const Agents = ["Android", "iPhone", "ymbianOS", "Windows Phone", "iPad", "iPod"];   
-	let flag = true;   
-	for (let v = 0; v < Agents.length; v += 1) {       
-		if (userAgentInfo.indexOf(Agents[v]) > 0) {            
-			flag = false;            
-			break;       
-		 }  
-	 }   
-	  return flag;
-}
+const isPc = () => {
+  const userAgentInfo = navigator.userAgent;
+  const Agents = ['Android', 'iPhone', 'ymbianOS', 'Windows Phone', 'iPad', 'iPod'];
+  let flag = true;
+  for (let v = 0; v < Agents.length; v += 1) {
+    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+      flag = false;
+      break;
+    }
+  }
+  return flag;
+};
 
 export {
   isAntDesignProOrDev,
