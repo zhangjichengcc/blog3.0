@@ -27,8 +27,50 @@
         margin: 0;
       }
     }
+    .ant-layout-header {
+      height: @layout-header-height-def;
+      background-color: @mobile-header-bgcolor;
+      line-height: @layout-header-height-def;
+      .ant-pro-top-nav-header-main {
+        height: @layout-header-height-def;
+      }
+      .ant-pro-top-nav-header-left {
+        height: @layout-header-height-def;
+        .ant-pro-top-nav-header-logo {
+          height: @layout-header-height-def;
+          line-height: @layout-header-height-def;
+        }
+      }
+      .ant-menu.ant-menu-horizontal {
+        height: @layout-header-height-def;
+        line-height: @layout-header-height-def;
+        background-color: transparent;
+      }
+      .ant-pro-global-header {
+        height: @layout-header-height-def;
+        background-color: @mobile-header-bgcolor;
+        font-size: 0;
+        .ant-pro-global-header-logo {
+          height: @layout-header-height-def;
+          line-height: calc(@layout-header-height-def - 5px);
+        }
+        .ant-pro-global-header-trigger {
+          color: #fff;
+          height: @layout-header-height-def;
+          line-height: @layout-header-height-def;
+          padding: calc((@layout-header-height-def - 24px) / 2) 24px;
+          &:hover {
+            background-color: @mobile-header-bgcolor;
+          }
+        }
+      }
+    }
+    .ant-pro-basicLayout-content {
+      padding-top: 0;
+    }
     // 移动端
-    &.screen-xs {
+    // &.screen-xs {
+    @media only screen and (max-width: @screen-xs) {
       .ant-layout-header {
         height: @mobile-header-height;
         background-color: @mobile-header-bgcolor;

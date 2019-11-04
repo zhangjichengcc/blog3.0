@@ -1,13 +1,12 @@
 @import '~antd/es/style/themes/default.less';
-
-@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+@import '../../default.less';
 
 .logo {
   display: inline-block;
-  height: @layout-header-height;
+  height: @layout-header-height-def;
   padding: 0 0 0 24px;
   font-size: 20px;
-  line-height: @layout-header-height;
+  line-height: @layout-header-height-def;
   vertical-align: top;
   cursor: pointer;
   img {
@@ -26,7 +25,7 @@
 }
 
 .trigger {
-  height: @layout-header-height;
+  height: @layout-header-height-def;
   padding: ~'calc((@{layout-header-height} - 20px) / 2)' 24px;
   font-size: 20px;
   cursor: pointer;
@@ -48,7 +47,8 @@
     transition: all 0.3s;
     > i {
       color: @text-color;
-      vertical-align: middle;
+      vertical-align: baseline;
+      font-size: 16px;
     }
     &:hover {
       background: @pro-header-hover-bg;
@@ -65,7 +65,7 @@
   }
   .account {
     .avatar {
-      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
+      margin: ~'calc((@{layout-header-height-def} - 24px) / 2)' 0;
       margin-right: 8px;
       color: @primary-color;
       vertical-align: top;
@@ -75,7 +75,7 @@
 }
 
 .dark {
-  height: @layout-header-height;
+  height: @layout-header-height-def;
   .action {
     color: rgba(255, 255, 255, 0.85);
     > i {
@@ -111,10 +111,40 @@
     top: 0;
     right: 12px;
     background: #fff;
+    color: #999;
     .account {
       .avatar {
         margin-right: 0;
       }
     }
+  }
+}
+
+@media only screen and (max-width: @screen-xs) {
+  .logo {
+    height: @mobile-header-height;
+    line-height: @mobile-header-height;
+  }
+  .trigger {
+    height: @mobile-header-height;
+    padding: ~'calc((@{mobile-header-height} - 20px) / 2)' 24px;
+  }
+
+  .right {
+    background: transparent;
+    .action {
+      > i {
+        line-height: @mobile-header-height;
+      }
+    }
+    .account {
+      .avatar {
+        margin: ~'calc((@{mobile-header-height} - 24px) / 2)' 0;
+      }
+    }
+  }
+
+  .dark {
+    height: @mobile-header-height;
   }
 }

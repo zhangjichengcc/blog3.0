@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Popover, Alert, BackTop, Button } from 'antd';
 import router from 'umi/router';
+import moment from 'js-moment';
 // import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
 import ArticalCard from '@/components/ArticalCard';
@@ -28,6 +29,7 @@ class Home extends Component {
 
   componentDidMount() {
     global.that = this;
+    global.moment = moment;
     this.initPage();
     this.initData();
   }
@@ -40,25 +42,28 @@ class Home extends Component {
 
   initPage = () => {
     const isPC = isPc();
-    this.setState({
-      isPC,
-    }, () => {
-      if(!isPC) {
-        window.addEventListener('scroll', this.scrollFun);
-      }
-    })
-  }
+    this.setState(
+      {
+        isPC,
+      },
+      () => {
+        if (!isPC) {
+          window.addEventListener('scroll', this.scrollFun);
+        }
+      },
+    );
+  };
 
   scrollFun = () => {
     const { articalLoaded, articalLoading } = this.state;
     const dom = document.documentElement || document.body;
     const { scrollHeight } = dom;
     const { topBottom } = offset(dom);
-    if(articalLoading) return;
-    if(!articalLoaded && topBottom + 5 > scrollHeight) {
+    if (articalLoading) return;
+    if (!articalLoaded && topBottom + 5 > scrollHeight) {
       this.loadMore();
     }
-  }
+  };
 
   openView = (type = '') => {
     switch (type) {
@@ -97,12 +102,15 @@ class Home extends Component {
           },
         });
       } else {
-        this.setState({
-          articalLoading: false,
-          articalLoaded: true,
-        }, () => {
-          console.warn(msg);
-        })
+        this.setState(
+          {
+            articalLoading: false,
+            articalLoaded: true,
+          },
+          () => {
+            console.warn(msg);
+          },
+        );
       }
     });
   };
@@ -124,7 +132,7 @@ class Home extends Component {
     );
   };
 
-  cardClick = (item) => {
+  cardClick = item => {
     const { id } = item;
     router.push({
       pathname: '/artical',
@@ -132,14 +140,19 @@ class Home extends Component {
         id,
       },
     });
-  }
+  };
 
   likeChoose = (like, count, item) => {
     console.log(like, count, item);
-  }
+  };
 
   render() {
-    const { articalList = [], articalLoading = false, articalLoaded = false, isPC = true, } = this.state;
+    const {
+      articalList = [],
+      articalLoading = false,
+      articalLoaded = false,
+      isPC = true,
+    } = this.state;
     const { topArtical } = config;
     const wechatContent = <img src={weChatImg} alt="微信二维码" className={styles.wechatContent} />;
     const mailContent = <span>{config.mail}</span>;
@@ -278,27 +291,28 @@ class Home extends Component {
               );
             })}
           </div>
-          {
-            isPC ? (
-              <div className={styles.loadBar}>
-                {articalLoaded ? (
-                  <span>很高兴你会看到这里，不过真的没有了...</span>
-                ) : (
-                  <Button onClick={this.loadMore} type="primary" loading={articalLoading}>
-                    {articalLoading ? '数据加载中' : '加载更多'}
-                  </Button>
-                )}
-              </div>
-            ) : (
-              <div className={styles.loadBar}>
-                {articalLoaded ? (
-                  <span>很高兴你能够看到这里，不过真的没有了...</span>
-                ) : (
-                  <span><Icon type="loading-3-quarters" style={{ marginRight: 5 }} spin />数据加载中...</span>
-                )}
-              </div>
-            )
-          }
+          {isPC ? (
+            <div className={styles.loadBar}>
+              {articalLoaded ? (
+                <span>很高兴你会看到这里，不过真的没有了...</span>
+              ) : (
+                <Button onClick={this.loadMore} type="primary" loading={articalLoading}>
+                  {articalLoading ? '数据加载中' : '加载更多'}
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className={styles.loadBar}>
+              {articalLoaded ? (
+                <span>很高兴你能够看到这里，不过真的没有了...</span>
+              ) : (
+                <span>
+                  <Icon type="loading-3-quarters" style={{ marginRight: 5 }} spin />
+                  数据加载中...
+                </span>
+              )}
+            </div>
+          )}
         </div>
         {/* <Advert img={advertImg1} /> */}
         <BackTop />

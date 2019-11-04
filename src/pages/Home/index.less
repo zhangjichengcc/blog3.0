@@ -5,7 +5,8 @@
 .Home {
   .banner {
     width: 100%;
-    height: calc(100vh - @layout-header-height);
+    // height: calc(100vh - @layout-header-height);
+    height: 100vh;
     position: relative;
     background-image: url(../../assets/image/banner.jpg);
     background-repeat: no-repeat;
@@ -204,11 +205,11 @@
 @media screen and (max-width: @screen-sm) {
   .Home {
     .banner {
-      margin-top: -@mobile-header-height;
+      // margin-top: -@mobile-header-height;
       height: 72vw;
       .banner_title {
         padding-top: @mobile-header-height;
-        transform: translate(-50%, -50%) scale(.75);
+        transform: translate(-50%, -50%) scale(0.75);
       }
     }
     .home_body {
@@ -226,7 +227,7 @@
               transform: translate(0);
               font-size: 13px;
               margin-top: 5.5vw;
-              background-color: rgba(0,0,0,.7);
+              background-color: rgba(0, 0, 0, 0.7);
               padding: 7px 0;
             }
             > .top_artical_card_message {
@@ -239,7 +240,7 @@
       .loadBar {
         padding: 16px 0 20px;
         text-align: center;
-        font-size: 12px;  
+        font-size: 12px;
         > span {
           color: @font-color1;
         }

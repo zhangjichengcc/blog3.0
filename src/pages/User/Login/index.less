@@ -1,4 +1,5 @@
 @import '../../../utils/animate.less';
+
 .loginPage {
   width: 100%;
   height: 100vh;
@@ -61,16 +62,28 @@
         background: linear-gradient(230deg, rgba(53, 57, 74, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
         .userIcon {
           display: block;
-          transition: all ease 0.3s;
           width: 90px;
           height: 90px;
           margin: 0 auto;
-          background-color: #eee;
-          background-image: url(../../../assets/visitor.jpg);
-          background-size: cover;
-          background-position: center;
           border-radius: 50%;
+          overflow: hidden;
           box-shadow: -5px 6px 15px rgba(6, 17, 47, 0.7);
+          &:before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            transition: all ease 0.3s;
+            background-color: #eee;
+            background-image: url(../../../assets/visitor.jpg);
+            background-size: cover;
+            background-position: center;
+          }
+          &.active::before {
+            animation: shake 1s ease-in-out;
+            animation-fill-mode: both;
+            animation-direction: reverse;
+          }
         }
         .inputItem {
           display: block;
@@ -113,6 +126,9 @@
             color: #ddd;
             cursor: pointer;
             vertical-align: middle;
+            &:hover {
+              color: #4fa1d9;
+            }
           }
           .btnLine {
             display: inline-block;
@@ -121,6 +137,40 @@
             height: 12px;
             background-color: #fff;
             vertical-align: middle;
+          }
+        }
+        .signinWith {
+          padding: 12px 34px 0;
+          position: relative;
+          > i {
+            display: none;
+            width: 20%;
+            color: #eee;
+            font-size: 24px;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: all ease 0.3s;
+            @keyframes iconAnimate {
+              0% {
+                opacity: 0;
+                transform: translateY(50px);
+              }
+              50% {
+                opacity: 1;
+                transform: translateY(-15px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            &:hover {
+              opacity: 1;
+            }
+            &.active {
+              display: inline-block;
+              animation: iconAnimate 0.5s ease;
+            }
           }
         }
         .loginInfo {
@@ -191,7 +241,7 @@
               left: 10px;
               width: 15px;
               height: 15px;
-              animation-duration: 0.5s;
+              // animation-duration: 0.5s;
               border-color: #fff transparent #fff transparent;
               animation-direction: reverse;
             }

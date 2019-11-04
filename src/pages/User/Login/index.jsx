@@ -22,6 +22,13 @@ const timeout = ms => {
 class Home extends Component {
   state = {
     redirect: '',
+    signIconAction: {
+      signIconAction1: false,
+      signIconAction2: false,
+      signIconAction3: false,
+      signIconAction4: false,
+      signIconAction5: false,
+    },
   };
 
   componentDidMount() {
@@ -77,23 +84,44 @@ class Home extends Component {
     );
   };
 
+  // 展示第三方登陆方式
+  showSignWay = () => {
+    const { signIconAction: defSignAction, signWayVisiable = false } = this.state;
+    const keys = Object.keys(defSignAction);
+    this.setState({
+      signWayVisiable: !signWayVisiable,
+    });
+    if (signWayVisiable) {
+      this.setState({
+        signIconAction: (() => {
+          const res = {};
+          keys.forEach(item => {
+            res[item] = false;
+          });
+          return res;
+        })(),
+      });
+    } else {
+      keys.forEach((item, idx) => {
+        setTimeout(() => {
+          const { signIconAction } = this.state;
+          this.setState({
+            signIconAction: {
+              ...signIconAction,
+              [item]: true,
+            },
+          });
+        }, idx * 120);
+      });
+    }
+  };
+
   // 登陆触发
   login = () => {
-    // console.log(nyanbuffer.toString("hex"));
-    // "917af159e6a87a2b3d3cd16cd5f1a789b7ec900775add052167305d397e985f2"
-    // console.log(nyanbuffer.toString("base64"));
-    // "kXrxWeaoeis9PNFs1fGnibfskAd1rdBSFnMF05fphfI="
-    // console.log(Array.from(nyanbuffer));
-    // [145, 122, 241, 89, 230, 168, 122, 43, 61, 60, 209,
-    // 108, 213, 241, 167, 137, 183, 236, 144, 7, 117, 173,
-    // 208, 82, 22, 115, 5, 211, 151, 233, 133, 242]
-    // console.log(nyanbuffer.equals(nyanbuffer));
-    // true
-
+    // https://www.npmjs.com/package/sha2
     const { SHA256 } = SHA2;
     const { username, password, redirect } = this.state;
-    debugger;
-    const sha2Pwd = SHA256(SHA256(password) + SHA256(username));
+    const sha2Pwd = SHA256(SHA256(password)).toString('hex') + SHA256(username).toString('hex');
     const params = {
       username,
       password: sha2Pwd,
@@ -139,9 +167,19 @@ class Home extends Component {
       showPwd = false,
       animateStep1 = false,
       animateStep2 = false,
+      iconAnimate = false,
       username = '',
       password = '',
+      signIconAction = {},
     } = this.state;
+
+    const {
+      signIconAction1 = false,
+      signIconAction2 = false,
+      signIconAction3 = false,
+      signIconAction4 = false,
+      signIconAction5 = false,
+    } = signIconAction;
 
     return (
       <div className={styles.loginPage}>
@@ -156,7 +194,15 @@ class Home extends Component {
                 animateStep2 && styles.moveLeft,
               )}
             >
-              <span className={styles.userIcon} />
+              <span
+                className={classnames(styles.userIcon, iconAnimate && styles.active)}
+                onMouseEnter={() => {
+                  this.setState({ iconAnimate: true });
+                }}
+                onMouseLeave={() => {
+                  this.setState({ iconAnimate: false });
+                }}
+              />
               <div className={styles.inputItem}>
                 <Icon type="user" className={styles.itemIcon} style={{ left: 8 }} />
                 <input
@@ -198,6 +244,10 @@ class Home extends Component {
                   <FormattedMessage id="user.login.signin" defaultMessage="sign in" />
                 </span>
                 <div className={styles.otherBtn}>
+                  <span className={styles.registerBtn} onClick={this.showSignWay}>
+                    <FormattedMessage id="user.login.SignInWith" defaultMessage="Sign in with" />
+                  </span>
+                  <i className={styles.btnLine} />
                   <span className={styles.registerBtn}>
                     <FormattedMessage id="user.login.register" defaultMessage="register" />
                   </span>
@@ -209,6 +259,13 @@ class Home extends Component {
                     />
                   </span>
                 </div>
+              </div>
+              <div className={classnames(styles.signinWith)}>
+                <Icon type="github" className={signIconAction1 && styles.active} />
+                <Icon type="weibo" className={signIconAction2 && styles.active} />
+                <Icon type="wechat" className={signIconAction3 && styles.active} />
+                <Icon type="qq" className={signIconAction4 && styles.active} />
+                <Icon type="facebook" className={signIconAction5 && styles.active} />
               </div>
               <span className={styles.loginInfo}>
                 <FormattedMessage
