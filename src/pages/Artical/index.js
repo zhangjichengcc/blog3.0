@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Anchor } from 'antd';
+import { Spin, Anchor, Affix, Button } from 'antd';
 // import Charts from '@/components/Charts';
 import marked from 'marked';
 import router from 'umi/router';
@@ -94,17 +94,25 @@ class Home extends Component {
     });
   };
 
+  // 点击锚点
+  handleClick = (e, link) => {
+    e.preventDefault();
+    console.log(link);
+  };
+
   // 生成文章导航
   displayNav = () => {
     const { mainContent = '' } = this.state;
     const reg = new RegExp('#+\\s+.*', 'g');
     const options = {
       offsetTop: 80,
+      onClick: this.handleClick,
       // targetOffset: -300,
       // bounds: 100,
     };
-    const navListSource = mainContent ? mainContent.match(reg) : [];
-    return (
+    const navListSource = (mainContent && mainContent.match(reg)) || [];
+    debugger;
+    return navListSource.length ? (
       <Anchor {...options}>
         {navListSource.map((item = '', idx) => {
           const keys = `key_${idx + 1}`;
@@ -113,6 +121,8 @@ class Home extends Component {
           return <Link key={keys} href={`#${anchor}`} title={title} />;
         })}
       </Anchor>
+    ) : (
+      ''
     );
   };
 
@@ -179,11 +189,10 @@ class Home extends Component {
             </div>
             <div className={styles.leftContent}>
               <div>
-                <p>asdfasfasdf</p>
-                <p>asdfasfasdf</p>
-                <p>asdfasfasdf</p>
-                <p>asdfasfasdf</p>
-                <p>asdfasfasdf</p>
+                <p>这是广告</p>
+                <p>是广告这</p>
+                <p>广告这是</p>
+                <p>告这是广</p>
               </div>
               {this.displayNav()}
             </div>
@@ -200,6 +209,7 @@ class Home extends Component {
               {/* eslint-disable-next-line react/no-danger */}
               <div
                 className={styles.articalBody}
+                // eslint-disable-next-line react/no-danger
                 dangerouslySetInnerHTML={{ __html: markedHTML }}
               />
               {/* </Card> */}

@@ -97,10 +97,9 @@ export default function request(option) {
     .then(response => {
       const { code, message } = response;
       // code 为 0 并且 data 存在的时候才返回数据，其他的均抛出异常，该异常属于业务异常
-      if (code === 0) {
+      if (newOptions.responseType === 'progress' || code === 0) {
         return response;
       }
-
       // 抛出错误并捕捉
       const error = new Error(message);
       error.response = response;

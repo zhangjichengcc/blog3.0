@@ -7,10 +7,10 @@
   margin: 40px auto;
   background-color: #fff;
   padding: 34px;
-  box-shadow: 0 4px 10px 0 rgba(202,202,202,0.5);
+  box-shadow: 0 4px 10px 0 rgba(202, 202, 202, 0.5);
   border-radius: 8px;
   position: relative;
-  >.spin {
+  > .spin {
     position: absolute;
     z-index: 1;
     width: 100%;
@@ -18,9 +18,9 @@
     left: 0;
     top: 0;
     padding-top: 60%;
-    background-color: rgba(255,255,255, .6);
+    background-color: rgba(255, 255, 255, 0.6);
   }
-  >.btnGroup {
+  > .btnGroup {
     text-align: center;
   }
   .bannerArea {
@@ -39,13 +39,13 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0);
-      transition: all ease .3s;
-      >.btnGroup {
+      transition: all ease 0.3s;
+      > .btnGroup {
         display: none;
       }
       &:hover {
-        background-color: rgba(0, 0, 0, .5);
-        >.btnGroup {
+        background-color: rgba(0, 0, 0, 0.5);
+        > .btnGroup {
           display: block;
         }
       }
@@ -63,6 +63,22 @@
         color: #fff;
       }
     }
+  }
+  .progressBox {
+    width: 70%;
+    position: absolute;
+    left: 50%;
+    bottom: 20%;
+    transform: translateX(-50%);
+  }
+  .progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    transition: all ease 3s;
   }
 }
 

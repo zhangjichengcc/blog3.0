@@ -1,16 +1,38 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { Icon, Button, Input, Row, Col, DatePicker, message, Switch, Spin, Tooltip } from 'antd';
+import {
+  Icon,
+  Button,
+  Input,
+  Row,
+  Col,
+  DatePicker,
+  message,
+  Switch,
+  Spin,
+  Tooltip,
+  Progress,
+} from 'antd';
 // import Charts from '@/components/Charts';
-import SimpleMDE from "react-simplemde-editor";
+import SimpleMDE from 'react-simplemde-editor';
 import styles from './index.less';
-import "easymde/dist/easymde.min.css";
+import 'easymde/dist/easymde.min.css';
 import { uploadImg } from '@/services/image';
 import { uploadArtical } from '@/services/artical';
 // import Ellipsis from '@/components/Ellipsis';
 
 // const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+
+const getBase64 = file => {
+  // eslint-disable-next-line compat/compat
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+};
 
 const formItemLayout = {
   labelCol: {
@@ -39,9 +61,7 @@ class Home extends Component {
 
   componentWillUnmount() {}
 
-  createEditor = () => {
-
-  }
+  createEditor = () => {};
 
   initData = () => {
     // this.fetchArtical();
@@ -50,66 +70,129 @@ class Home extends Component {
   uploadeArtImg = () => {
     const { uploadImgBtn } = this;
     uploadImgBtn.click();
-  }
+  };
 
   uploadeBanImg = () => {
     const { uploadBanBtn } = this;
     uploadBanBtn.click();
-  }
+  };
 
-
-
-  handleChange = (value) => {
+  handleChange = value => {
     this.setState({
       editorText: `${value}`,
-    })
-  }
+    });
+  };
 
-  uploadImg = (tar, type) => {
-    const file = tar.target.files[0];
-    const formData = new FormData();
-    const { editorText } = this.state;
-    // message.loading('图片上传中...', 0);
-    formData.append('upload', file);
+  bannerUploaded = () => {
+    setTimeout(() => {
+      this.setState({
+        showPercent: false,
+      });
+    }, 1000);
+  };
+
+  // XHR 请求方式，获取进度
+  uploadXHR = formData => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/image/uploadImage');
+    xhr.upload.onprogress = event => {
+      if (event.lengthComputable) {
+        const percent = Math.round((event.loaded / event.total) * 100);
+        this.setState({ percent });
+      }
+    };
+    xhr.onload = res => {
+      const {
+        target: { response = {} },
+      } = res;
+      const { code, data } = JSON.parse(response);
+      if (code === -1) {
+        message.error('图片上传失败！');
+        this.setState(
+          {
+            progressStatus: 'error',
+            banner: null,
+          },
+          () => {
+            this.bannerUploaded();
+          },
+        );
+      } else {
+        message.success('图片上传成功');
+        this.setState(
+          {
+            relBanner: data,
+            percent: 100,
+            progressStatus: 'success',
+          },
+          () => {
+            this.bannerUploaded();
+          },
+        );
+      }
+    };
+    xhr.send(formData);
+  };
+
+  // fetch 请求方式，项目通用方式
+  uploadFetch = (formData, editorText) => {
     uploadImg(formData).then(res => {
       const { code, data } = res;
       if (code === -1) {
         message.error('图片上传失败！');
       } else {
         message.success('图片上传成功');
-        if (type === 'banner') {
-          this.setState({
-            banner: data,
-          })
-        } else {
-          this.setState({
-            editorText: `${editorText} ![](${data})`,
-          })
-        }
+        this.setState({
+          editorText: `${editorText} ![](${data})`,
+        });
       }
-    })
+    });
   };
 
-  titleChange = (obj) => {
+  // 上传文件
+  uploadImg = (tar, type) => {
+    const file = tar.target.files[0];
+    const formData = new FormData();
+    const { editorText } = this.state;
+    formData.append('upload', file);
+    if (type === 'banner') {
+      getBase64(file).then(res => {
+        this.setState(
+          {
+            banner: res,
+            progressStatus: 'active',
+            showPercent: true,
+          },
+          () => {
+            this.uploadXHR(formData);
+          },
+        );
+      });
+    } else {
+      this.uploadFetch(formData, editorText);
+    }
+  };
+
+  titleChange = obj => {
     const { value } = obj.target;
     this.setState({
       title: value,
     });
   };
 
-  timeChange = (momentObj) => {
-    if(!momentObj) return;
+  timeChange = momentObj => {
+    if (!momentObj) return;
     const time = momentObj.format('YYYY-MM-DD HH:MM');
     this.setState({
       createTime: time,
     });
   };
 
-  isPublish = (value) => {
+  isPublish = value => {
     this.setState({ publish: value });
   };
 
-  introduceChange = (obj) => {
+  introduceChange = obj => {
     const { value } = obj.target;
     this.setState({
       introduction: value,
@@ -117,16 +200,16 @@ class Home extends Component {
   };
 
   submit = () => {
-    const { title, createTime, publish, editorText, introduction, banner = null } = this.state;
+    const { title, createTime, publish, editorText, introduction, relBanner = null } = this.state;
     const params = {
       title,
       createTime,
       publish,
       mainContent: editorText,
       introduction,
-      banner,
-    }
-    this.setState({loading: true});
+      banner: relBanner,
+    };
+    this.setState({ loading: true });
     uploadArtical(params).then(res => {
       const { code } = res;
       if (code === -1) {
@@ -134,19 +217,22 @@ class Home extends Component {
       } else {
         message.success('文章提交成功');
       }
-      this.setState({
-        loading: false,
-        editorText: '',
-        title: '',
-        introduction: '',
-      }, () => {
-        localStorage.removeItem('smde_editorCatchValues');
-      })
-    })
-  }
+      this.setState(
+        {
+          loading: false,
+          editorText: '',
+          title: '',
+          introduction: '',
+        },
+        () => {
+          localStorage.removeItem('smde_editorCatchValues');
+        },
+      );
+    });
+  };
 
   render() {
-    const { 
+    const {
       title = '',
       editorText = '',
       createTime,
@@ -154,6 +240,9 @@ class Home extends Component {
       banner = null,
       publish,
       loading = false,
+      showPercent = false,
+      percent = 0,
+      progressStatus = 'active',
     } = this.state;
 
     const options = {
@@ -163,22 +252,57 @@ class Home extends Component {
         delay: 1000,
       },
       toolbar: [
-        'bold', 'italic', 'strikethrough', 'code', '|', 'quote', 'unordered-list', 'ordered-list', 'clean-block', 'table', '|', 'link', 'image',
+        'bold',
+        'italic',
+        'strikethrough',
+        'code',
+        '|',
+        'quote',
+        'unordered-list',
+        'ordered-list',
+        'clean-block',
+        'table',
+        '|',
+        'link',
+        'image',
         {
-          name: "uploadImg",
+          name: 'uploadImg',
           action: this.uploadeArtImg,
           className: `fa ${styles.aaa}`,
-          title: "upload image",
+          title: 'upload image',
         },
-        '|', 'preview', 'side-by-side', 'fullscreen',
+        '|',
+        'preview',
+        'side-by-side',
+        'fullscreen',
       ],
-      placeholder: "请使用 markdown 语法编辑文章",
-    }
+      placeholder: '请使用 markdown 语法编辑文章',
+    };
 
     return (
       <div className={styles.Editor}>
-        <input style={{ display: 'none' }} onChange={e => { this.uploadImg(e, 'artical'); }} ref={(c) => {this.uploadImgBtn = c}} type="file" accept="image/*" />
-        <input style={{ display: 'none' }} onChange={e => { this.uploadImg(e, 'banner'); }} ref={(c) => {this.uploadBanBtn = c}} type="file" accept="image/*" />
+        <input
+          style={{ display: 'none' }}
+          onChange={e => {
+            this.uploadImg(e, 'artical');
+          }}
+          ref={c => {
+            this.uploadImgBtn = c;
+          }}
+          type="file"
+          accept="image/*"
+        />
+        <input
+          style={{ display: 'none' }}
+          onChange={e => {
+            this.uploadImg(e, 'banner');
+          }}
+          ref={c => {
+            this.uploadBanBtn = c;
+          }}
+          type="file"
+          accept="image/*"
+        />
         <Row type="flex" justify="space-around" style={{ paddingBottom: 40 }} align="middle">
           <Col {...formItemLayout.labelCol}>
             <span className={styles.label}>发布时间：</span>
@@ -188,7 +312,7 @@ class Home extends Component {
               format="YYYY-MM-DD HH:MM"
               onChange={this.timeChange}
               value={moment(createTime)}
-              showTime='0000-00-00: 00:00'
+              showTime="0000-00-00: 00:00"
             />
           </Col>
         </Row>
@@ -218,27 +342,40 @@ class Home extends Component {
             <span className={styles.label}>文章banner：</span>
           </Col>
           <Col {...formItemLayout.wrapperCol}>
-            <div className={styles.bannerArea} style={banner ? {backgroundImage: `url(${banner})`} : {}}>
-              {
-                banner ? (
-                  <div className={styles.bannerImgEdit}>
-                    <div className={styles.btnGroup}>
-                      <Tooltip placement="top" title="预览">
-                        <span><Icon type="eye" /></span>
-                      </Tooltip>
-                      <Tooltip placement="top" title="删除">
-                        <span><Icon type="delete" /></span>
-                      </Tooltip>
-                    </div>
-                  </div>
-                ) : (
+            <div
+              className={styles.bannerArea}
+              style={banner ? { backgroundImage: `url(${banner})` } : {}}
+            >
+              {banner ? (
+                <div className={styles.bannerImgEdit}>
                   <div className={styles.btnGroup}>
-                    <Tooltip placement="top" title="上传图片">
-                      <span onClick={this.uploadeBanImg} style={{fontSize: 50}}><Icon type="plus" /></span>
+                    <Tooltip placement="top" title="预览">
+                      <span>
+                        <Icon type="eye" />
+                      </span>
+                    </Tooltip>
+                    <Tooltip placement="top" title="删除">
+                      <span>
+                        <Icon type="delete" />
+                      </span>
                     </Tooltip>
                   </div>
-                )
-              }
+                </div>
+              ) : (
+                <div className={styles.btnGroup}>
+                  <Tooltip placement="top" title="上传图片">
+                    <span onClick={this.uploadeBanImg} style={{ fontSize: 50 }}>
+                      <Icon type="plus" />
+                    </span>
+                  </Tooltip>
+                </div>
+              )}
+              {showPercent && (
+                <div className={styles.progressBox}>
+                  <Progress percent={percent} status={progressStatus} />
+                </div>
+              )}
+              {/* {showPercent && <div style={{width: `${100 - percent}%`}} className={styles.progress}>{percent}</div>} */}
             </div>
           </Col>
         </Row>
@@ -260,15 +397,18 @@ class Home extends Component {
             <span className={styles.label}>文章正文：</span>
           </Col>
           <Col {...formItemLayout.wrapperCol}>
-            <SimpleMDE
-              onChange={this.handleChange}
-              value={editorText}
-              options={options}
-            />
+            <SimpleMDE onChange={this.handleChange} value={editorText} options={options} />
           </Col>
         </Row>
         <div className={styles.btnGroup}>
-          <Button type="primary" style={{ padding: '0 50px' }} onClick={this.submit} loading={loading}>提交</Button>
+          <Button
+            type="primary"
+            style={{ padding: '0 50px' }}
+            onClick={this.submit}
+            loading={loading}
+          >
+            提交
+          </Button>
         </div>
         <Spin spinning={loading} tip="Loading..." className={styles.spin} />
       </div>

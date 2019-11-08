@@ -64,6 +64,7 @@
     }
   }
   .account {
+    vertical-align: top !important;
     .avatar {
       margin: ~'calc((@{layout-header-height-def} - 24px) / 2)' 0;
       margin-right: 8px;
@@ -77,6 +78,7 @@
 .dark {
   height: @layout-header-height-def;
   .action {
+    vertical-align: top !important;
     color: rgba(255, 255, 255, 0.85);
     > i {
       color: rgba(255, 255, 255, 0.85);
@@ -110,8 +112,12 @@
     position: absolute;
     top: 0;
     right: 12px;
-    background: #fff;
     color: #999;
+    .action {
+      > i {
+        line-height: 56px;
+      }
+    }
     .account {
       .avatar {
         margin-right: 0;
