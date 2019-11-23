@@ -41,12 +41,14 @@ class Img extends Component {
     });
   };
 
+  // 图片加载完成调用
   loadedImg = () => {
     this.setState({
       loaded: true,
     });
   };
 
+  // 图片加载失败调用
   loadError = e => {
     const { imgSrc } = this.state;
     if (!imgSrc) return;

@@ -19,18 +19,10 @@
 }
 
 :global {
-  .ant-drawer-wrapper-body {
-    background-color: #001529;
-  }
-}
-
-.ProLayout {
-  :global {
-    // .basicLayout,
-    // .ant-design-pro {
+  .basicLayout,
+  .ant-design-pro {
     .ant-layout {
       background-color: #fff;
-      transition: all ease 0.3s;
       .ant-pro-basicLayout-content {
         margin: 0;
       }
@@ -39,7 +31,6 @@
       height: @layout-header-height-def;
       background-color: @mobile-header-bgcolor;
       line-height: @layout-header-height-def;
-      position: fixed !important;
       .ant-pro-top-nav-header {
         height: @layout-header-height-def;
       }
@@ -109,16 +100,6 @@
       }
       .ant-pro-basicLayout-content {
         padding-top: @mobile-header-height;
-      }
-    }
-  }
-  &.dark {
-    :global {
-      .ant-layout {
-        background-color: #0a0e18;
-        .ant-layout-header {
-          background-color: #001529;
-        }
       }
     }
   }

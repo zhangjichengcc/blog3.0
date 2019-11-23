@@ -7,36 +7,13 @@
 @side-width: 35%;
 
 .Artical {
-  max-width: 1320px;
+  // max-width: 1320px;
+  max-width: 100%;
   margin: 0 auto;
-  // padding: 20px 20px 0;
-  .leftContent {
-    width: 23%;
-    float: left;
-  }
-  .centerContent {
-    width: @center-width;
-    min-height: 100px;
-    float: left;
-    margin: 0 10px;
-    box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .rightConent {
-    width: 23%;
-    float: right;
-  }
-  &::after {
-    display: block;
-    content: '';
-    clear: both;
-  }
-
   .banner {
     width: 100%;
     height: 0;
-    padding-bottom: 45%;
+    padding-bottom: 40%;
     position: relative;
     .artTitle {
       position: absolute;
@@ -68,8 +45,67 @@
       }
     }
   }
-  .articalBody {
-    padding: 0 15px;
+  .mainBody {
+    position: relative;
+    padding-top: 42px;
+    .leftContent {
+      width: 23%;
+      float: left;
+      padding-left: 15px;
+    }
+    .centerContent {
+      width: @center-width;
+      min-height: 100px;
+      float: left;
+      margin: 0 10px;
+      box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      .articalBody {
+        padding: 0 15px;
+      }
+    }
+    .rightConent {
+      width: 23%;
+      float: right;
+      padding-right: 15px;
+    }
+    // 清除浮动
+    &::after {
+      display: block;
+      content: '';
+      clear: both;
+    }
+  }
+
+  .anchor {
+    font-weight: 500;
+    &.h1 {
+      font-size: 17px;
+      font-weight: bold;
+      padding-left: calc(0 * @anchor-indentation);
+    }
+    &.h2 {
+      font-size: 16px;
+      font-weight: bold;
+      padding-left: calc(1 * @anchor-indentation);
+    }
+    &.h3 {
+      font-size: 15px;
+      padding-left: calc(2 * @anchor-indentation);
+    }
+    &.h4 {
+      font-size: 14px;
+      padding-left: calc(3 * @anchor-indentation);
+    }
+    &.h5 {
+      font-size: 13px;
+      padding-left: calc(4 * @anchor-indentation);
+    }
+    &.h6 {
+      font-size: 12px;
+      padding-left: calc(5 * @anchor-indentation);
+    }
   }
 }
 
@@ -79,47 +115,69 @@
 }
 
 @media screen and (max-width: @screen-lg) {
-  // .home_body {
-  //   padding: 0 12px;
-  // }
+  .Artical {
+    .banner {
+      padding-bottom: 45%;
+    }
+  }
 }
 
 @media screen and (max-width: @screen-md) {
   .Artical {
-    .leftContent {
-      width: 25%;
-      float: left;
-      display: none;
-    }
-    .centerContent {
-      width: 70%;
-      float: left;
-      margin: 10px;
-      box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .rightContent {
-      width: 30%;
-      float: right;
+    .mainBody {
+      .leftContent {
+        width: 25%;
+        float: left;
+        display: none;
+      }
+      .centerContent {
+        width: 70%;
+        float: left;
+        margin: 10px;
+        box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .rightContent {
+        width: 30%;
+        float: right;
+      }
     }
   }
 }
 
 @media screen and (max-width: @screen-sm) {
   .Artical {
-    padding: 12px 12px 0;
-    .leftContent {
-      display: none;
+    .banner {
+      padding-bottom: 64%;
+      .artTitle {
+        > div {
+          margin: 0 15px;
+          width: 100%;
+          .title {
+            font-size: 20px;
+          }
+          .infoBar {
+            font-size: 14px;
+          }
+        }
+      }
     }
-    .centerContent {
-      float: initial;
-      width: auto;
-      margin: 0;
-      overflow: hidden;
-    }
-    .rightContent {
-      display: none;
+    .mainBody {
+      padding-top: 15px;
+      .leftContent {
+        display: none;
+      }
+      .centerContent {
+        padding-top: 15px;
+        width: auto;
+        float: initial;
+        margin: 0 15px;
+        overflow: hidden;
+      }
+      .rightContent {
+        display: none;
+      }
     }
   }
 }

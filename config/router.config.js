@@ -20,34 +20,51 @@ export default [
   },
   {
     path: '/',
-    component: '../layouts/BasicLayout',
+    component: '../layouts/BlankLayout',
     Routes: ['src/pages/Authorized'],
     authority: ['admin', 'user'],
     routes: [
       {
         path: '/',
-        name: 'home',
-        icon: 'home',
-        component: './Home',
-      },
-      {
-        path: 'artical',
-        // name: 'artical',
-        icon: 'home',
-        component: './Artical',
-      },
-      {
-        path: '/editor',
-        name: 'editor',
-        icon: 'home',
-        component: './Editor',
-      },
-      {
-        path: '/403',
-        component: './403',
-      },
-      {
-        component: './404',
+        component: '../layouts/BasicLayout',
+        routes: [
+          {
+            path: '/',
+            name: 'home',
+            icon: 'home',
+            component: './Home',
+          },
+          {
+            path: '/artical',
+            component: './Artical',
+          },
+          {
+            path: '/editor',
+            name: 'editor',
+            icon: 'home',
+            component: './Editor',
+          },
+          {
+            path: '/demo',
+            name: 'demo',
+            style: 'dark',
+            icon: 'appstore',
+            component: './Demo',
+          },
+          // {
+          //   path: '/demo/plates',
+          //   name: 'plates',
+          //   hideInMenu: true,
+          //   component: './Demo/Plates',
+          // },
+          {
+            path: '/403',
+            component: './403',
+          },
+          {
+            component: './404',
+          },
+        ],
       },
     ],
   },

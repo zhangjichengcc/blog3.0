@@ -34,8 +34,6 @@ class Home extends Component {
     this.initData();
   }
 
-  componentWillUnmount() {}
-
   initData = () => {
     this.fetchArtical();
   };

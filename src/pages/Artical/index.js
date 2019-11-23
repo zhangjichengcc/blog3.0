@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Spin, Anchor, Affix, Button } from 'antd';
+import { Spin, Anchor } from 'antd';
 // import Charts from '@/components/Charts';
 import marked from 'marked';
 import router from 'umi/router';
 import highlight from 'highlight.js';
 import moment from 'js-moment';
 import pinyin from 'pinyin';
+import classnames from 'classnames';
 import styles from './index.less';
 import Img from '@/components/Img';
 import { getArtical } from '@/services/artical';
@@ -100,25 +101,38 @@ class Home extends Component {
     console.log(link);
   };
 
-  // 生成文章导航
+  // 生成文章导航-pc
   displayNav = () => {
     const { mainContent = '' } = this.state;
     const reg = new RegExp('#+\\s+.*', 'g');
     const options = {
-      offsetTop: 80,
+      offsetTop: 86,
       onClick: this.handleClick,
+      showInkInFixed: true,
       // targetOffset: -300,
-      // bounds: 100,
+      // bounds: 1000,
     };
     const navListSource = (mainContent && mainContent.match(reg)) || [];
-    debugger;
-    return navListSource.length ? (
+    const titleObj = navListSource.map(v => ({
+      level: v.replace(/(^#+).*/, '$1').match(/#/g).length,
+      title: v.replace(/^#+\s?/, ''),
+      text: v,
+    }));
+    return titleObj.length ? (
       <Anchor {...options}>
-        {navListSource.map((item = '', idx) => {
+        {titleObj.map((item = {}, idx) => {
+          const { title, level } = item;
           const keys = `key_${idx + 1}`;
-          const title = item.replace(/^#+\s/, '');
           const anchor = this.displayHZ(title.replace(/\s/g, ''));
-          return <Link key={keys} href={`#${anchor}`} title={title} />;
+          return (
+            <Link
+              key={keys}
+              href={`#${anchor}`}
+              title={
+                <span className={classnames(styles.anchor, styles[`h${level}`])}>{title}</span>
+              }
+            />
+          );
         })}
       </Anchor>
     ) : (
@@ -156,14 +170,10 @@ class Home extends Component {
       createTime,
       likeCount = 0,
       readCount = 0,
+      // drawerVisiable = false, // 移动端 导航抽屉
     } = this.state;
 
     const markedHTML = marked(this.displayMarkdown(mainContent));
-    // const reg = new RegExp('#+\\s+.*', 'g')
-    // const markedHTML = marked('### aa adf<a href="aa adf" class="anchor">#</a> \n  aaaa');
-    // const navList = mainContent.match(reg);
-    // console.log(navList);
-    // a.replace(/(#+\s+)(.*)([\n|\r])/g, `$1$2<a href="$2" class="anchor">#</a>$3`)
     return (
       <div>
         {pageLoading ? (
@@ -187,34 +197,32 @@ class Home extends Component {
                 </div>
               </div>
             </div>
-            <div className={styles.leftContent}>
-              <div>
-                <p>这是广告</p>
-                <p>是广告这</p>
-                <p>广告这是</p>
-                <p>告这是广</p>
+            <div className={styles.mainBody}>
+              <div className={styles.leftContent}>
+                <div>
+                  <p>这是广告</p>
+                  <p>是广告这</p>
+                  <p>广告这是</p>
+                  <p>告这是广</p>
+                </div>
+                {this.displayNav()}
               </div>
-              {this.displayNav()}
+              <div className={styles.centerContent}>
+                {/* eslint-disable-next-line react/no-danger */}
+                <div
+                  className={styles.articalBody}
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={{ __html: markedHTML }}
+                />
+                {/* </Card> */}
+              </div>
+              <div className={styles.rightContent}>
+                {/* <Button onClick={() => {this.setState({drawerVisiable: true})}}>导航</Button> */}
+              </div>
             </div>
-            <div className={styles.centerContent}>
-              {/* <div className={styles.banner}>
-                  <Img
-                    src={banner}
-                    alt="banner"
-                    style={{position: 'absolute'}}
-                    loading
-                  />
-                </div> */}
-              {/* <Card loading={1}> */}
-              {/* eslint-disable-next-line react/no-danger */}
-              <div
-                className={styles.articalBody}
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: markedHTML }}
-              />
-              {/* </Card> */}
-            </div>
-            <div className={styles.rightContent}>rightBar</div>
+            {/* 移动端展示导航抽屉 */}
+            {/* 移动端抽屉按钮 */}
+            {/* <Button type="primary" shape="circle" icon="search" onClick={() => {this.setState({drawerVisiable: true})}} /> */}
           </div>
         )}
       </div>

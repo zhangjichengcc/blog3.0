@@ -45,6 +45,8 @@ const AuthComponent = ({
   );
 };
 
+window.process = process;
+
 export default connect(({ user }) => ({
   user,
 }))(AuthComponent);

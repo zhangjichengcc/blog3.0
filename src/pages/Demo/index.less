@@ -1,0 +1,77 @@
+@import '~antd/es/style/themes/default.less';
+@import '~@/utils.less';
+@import '~@/default.less';
+
+@btn-width: 20px;
+
+.pageView {
+  padding-top: @layout-header-height-def;
+  min-height: 100%;
+  // 清除浮动
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+  .menuBox {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    padding-top: @layout-header-height-def;
+    width: 200px;
+    height: 100%;
+    background-color: #001529;
+    transition: all ease 0.3s;
+    &.inlineCollapsed {
+      width: 80px;
+    }
+    .collapsed {
+      width: @btn-width;
+      height: calc(@btn-width * 2);
+      line-height: calc(@btn-width * 2);
+      position: absolute;
+      background-color: #001529;
+      border-radius: 0 calc(@btn-width * 2) calc(@btn-width * 2) 0;
+      top: 50%;
+      margin-top: -calc(@btn-width / 2);
+      right: -@btn-width;
+      z-index: 1;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.65);
+    }
+  }
+  .pageMain {
+    position: relative;
+    padding-left: 200px;
+    transition: all ease 0.3s;
+    min-height: calc(100vh - 56px);
+    background-image: linear-gradient(50deg, #201617, #0a0e18);
+    &.inlineCollapsed {
+      padding-left: 80px;
+    }
+    .mainTitle {
+      position: relative;
+      color: #0fcdce;
+      font-weight: 500;
+      font-size: 17px;
+      display: inline-block;
+      padding: 8px 15px;
+    }
+    .mainContent {
+      margin: 0 15px 15px;
+      padding: 15px;
+      border-radius: 6px;
+      background-color: #2d2d2f;
+      background-image: radial-gradient(#4c4c4e, #343436, #1e1e20);
+      height: calc(100vh - @layout-header-height-def - 70px);
+      :global {
+        .ant-tabs-bar.ant-tabs-top-bar {
+          display: none;
+        }
+        .ant-tabs {
+          color: #ddd;
+        }
+      }
+    }
+  }
+}
