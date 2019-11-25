@@ -18,7 +18,8 @@ import SimpleMDE from 'react-simplemde-editor';
 import styles from './index.less';
 import 'easymde/dist/easymde.min.css';
 import { uploadImg } from '@/services/image';
-import { uploadArtical } from '@/services/artical';
+import { uploadArtical, getArtical } from '@/services/artical';
+import { pageLoading } from '@/utils/utils';
 // import Ellipsis from '@/components/Ellipsis';
 
 // const { RangePicker } = DatePicker;
@@ -55,16 +56,40 @@ class Home extends Component {
 
   componentDidMount() {
     global.Editor = this;
-    this.createEditor();
-    this.initData();
+    this.initPage();
   }
 
   componentWillUnmount() {}
 
-  createEditor = () => {};
+  // createEditor = () => {};
 
-  initData = () => {
-    // this.fetchArtical();
+  initEditerData = id => {
+    getArtical({ id }).then(res => {
+      const { code, data = {} } = res;
+      if (code === 0) {
+        const { banner, createTime, introduction, mainContent, title } = data;
+        this.setState({
+          banner,
+          createTime,
+          introduction,
+          editorText: mainContent,
+          title,
+        });
+      } else {
+        message.warn('获取文章信息失败！');
+      }
+    });
+  };
+
+  initPage = () => {
+    const {
+      location: { query },
+    } = this.props;
+    const { id } = query;
+    if (id) {
+      pageLoading(1);
+      this.initEditerData(id);
+    }
   };
 
   uploadeArtImg = () => {
@@ -264,12 +289,11 @@ class Home extends Component {
         'table',
         '|',
         'link',
-        'image',
         {
-          name: 'uploadImg',
+          name: 'image',
           action: this.uploadeArtImg,
-          className: `fa ${styles.aaa}`,
-          title: 'upload image',
+          className: 'fa fa-image',
+          title: 'image',
         },
         '|',
         'preview',

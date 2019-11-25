@@ -10,7 +10,6 @@ export default {
   menu: {
     locale: true,
   },
-  // title: 'Ant Design Pro',
   pwa: false,
   // iconfontUrl: '',
   navTheme: 'dark', // theme for nav menu

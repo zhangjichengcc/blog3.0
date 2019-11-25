@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Spin, Anchor } from 'antd';
+import { Spin, Anchor, Affix, Button } from 'antd';
 // import Charts from '@/components/Charts';
 import marked from 'marked';
 import router from 'umi/router';
@@ -148,7 +148,6 @@ class Home extends Component {
       str += idx === 0 ? v[0] : `-${v[0]}`;
     });
     return str;
-    // return val;
   };
 
   // 格式化marked文本，使其支持锚点
@@ -159,6 +158,20 @@ class Home extends Component {
       return `${$0}<p style="height: 0; margin: 0; overflow: hidden;"><a id="${anchor}" href="#${anchor}" name="${anchor}" class="anchor">#</a></p>`;
     });
     return newText;
+  };
+
+  // 编辑文章
+  editArt = () => {
+    const { location } = this.props;
+    const { query } = location;
+    const { id = undefined } = query;
+    if (id)
+      router.push({
+        pathname: '/editor',
+        query: {
+          id,
+        },
+      });
   };
 
   render() {
@@ -199,12 +212,12 @@ class Home extends Component {
             </div>
             <div className={styles.mainBody}>
               <div className={styles.leftContent}>
-                <div>
+                {/* <div>
                   <p>这是广告</p>
                   <p>是广告这</p>
                   <p>广告这是</p>
                   <p>告这是广</p>
-                </div>
+                </div> */}
                 {this.displayNav()}
               </div>
               <div className={styles.centerContent}>
@@ -223,6 +236,9 @@ class Home extends Component {
             {/* 移动端展示导航抽屉 */}
             {/* 移动端抽屉按钮 */}
             {/* <Button type="primary" shape="circle" icon="search" onClick={() => {this.setState({drawerVisiable: true})}} /> */}
+            <Affix offsetBottom={20} style={{ position: 'absolute', bottom: 20, right: 20 }}>
+              <Button type="primary" shape="round" icon="edit" onClick={this.editArt} />
+            </Affix>
           </div>
         )}
       </div>
