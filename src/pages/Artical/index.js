@@ -96,9 +96,9 @@ class Home extends Component {
   };
 
   // 点击锚点
-  handleClick = (e, link) => {
+  handleClick = e => {
+    // params (@e, @link)
     e.preventDefault();
-    console.log(link);
   };
 
   // 生成文章导航-pc

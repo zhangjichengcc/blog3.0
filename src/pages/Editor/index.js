@@ -12,18 +12,21 @@ import {
   Spin,
   Tooltip,
   Progress,
+  Modal,
 } from 'antd';
 // import Charts from '@/components/Charts';
 import SimpleMDE from 'react-simplemde-editor';
+import router from 'umi/router';
 import styles from './index.less';
 import 'easymde/dist/easymde.min.css';
 import { uploadImg } from '@/services/image';
-import { uploadArtical, getArtical } from '@/services/artical';
-import { pageLoading } from '@/utils/utils';
+import { uploadArtical, getArtical, deleteArtical } from '@/services/artical';
+import { pageLoading, timeout } from '@/utils/utils';
 // import Ellipsis from '@/components/Ellipsis';
 
 // const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+const { confirm } = Modal;
 
 const getBase64 = file => {
   // eslint-disable-next-line compat/compat
@@ -63,20 +66,27 @@ class Home extends Component {
 
   // createEditor = () => {};
 
+  // 载入文章信息
   initEditerData = id => {
     getArtical({ id }).then(res => {
       const { code, data = {} } = res;
       if (code === 0) {
         const { banner, createTime, introduction, mainContent, title } = data;
-        this.setState({
-          banner,
-          createTime,
-          introduction,
-          editorText: mainContent,
-          title,
-        });
+        this.setState(
+          {
+            banner,
+            createTime,
+            introduction,
+            editorText: mainContent,
+            title,
+          },
+          () => {
+            timeout(pageLoading, [0], 1000);
+          },
+        );
       } else {
         message.warn('获取文章信息失败！');
+        pageLoading(0);
       }
     });
   };
@@ -87,27 +97,32 @@ class Home extends Component {
     } = this.props;
     const { id } = query;
     if (id) {
+      // 当前为编辑文章
       pageLoading(1);
       this.initEditerData(id);
     }
   };
 
+  // 点击上传文章内图片
   uploadeArtImg = () => {
     const { uploadImgBtn } = this;
     uploadImgBtn.click();
   };
 
+  // 点击上传banner按钮
   uploadeBanImg = () => {
     const { uploadBanBtn } = this;
     uploadBanBtn.click();
   };
 
+  // 输入文本内容
   handleChange = value => {
     this.setState({
       editorText: `${value}`,
     });
   };
 
+  // banner 上传完成调用，延迟隐藏进度条
   bannerUploaded = () => {
     setTimeout(() => {
       this.setState({
@@ -198,6 +213,7 @@ class Home extends Component {
     }
   };
 
+  // 输入标题
   titleChange = obj => {
     const { value } = obj.target;
     this.setState({
@@ -205,6 +221,7 @@ class Home extends Component {
     });
   };
 
+  // 修改日期
   timeChange = momentObj => {
     if (!momentObj) return;
     const time = momentObj.format('YYYY-MM-DD HH:MM');
@@ -224,6 +241,7 @@ class Home extends Component {
     });
   };
 
+  // 提交文章
   submit = () => {
     const { title, createTime, publish, editorText, introduction, relBanner = null } = this.state;
     const params = {
@@ -236,11 +254,13 @@ class Home extends Component {
     };
     this.setState({ loading: true });
     uploadArtical(params).then(res => {
-      const { code } = res;
+      const { code, data } = res;
       if (code === -1) {
         message.error('文章提交失败！');
       } else {
         message.success('文章提交成功');
+        const { id } = data;
+        router.push(`/artical?id=${id}`);
       }
       this.setState(
         {
@@ -253,6 +273,29 @@ class Home extends Component {
           localStorage.removeItem('smde_editorCatchValues');
         },
       );
+    });
+  };
+
+  // 删除文章
+  beforeDelete = () => {
+    confirm({
+      title: '确认删除该文章？',
+      content: '删除操作不可逆，请谨慎操作！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        const {
+          location: { query },
+        } = this.props;
+        const { id } = query;
+        deleteArtical({ id }).then(res => {
+          const { code } = res;
+          if (code === 0) {
+            message.success('操作完成！');
+            router.replace('/');
+          }
+        });
+      },
     });
   };
 
@@ -269,6 +312,10 @@ class Home extends Component {
       percent = 0,
       progressStatus = 'active',
     } = this.state;
+    const {
+      location: { query },
+    } = this.props;
+    const { id } = query;
 
     const options = {
       autosave: {
@@ -427,12 +474,21 @@ class Home extends Component {
         <div className={styles.btnGroup}>
           <Button
             type="primary"
-            style={{ padding: '0 50px' }}
+            style={{ padding: '0 50px', margin: '0 20px' }}
             onClick={this.submit}
             loading={loading}
           >
             提交
           </Button>
+          {id && (
+            <Button
+              type="danger"
+              style={{ padding: '0 50px', margin: '0 20px' }}
+              onClick={this.beforeDelete}
+            >
+              删除
+            </Button>
+          )}
         </div>
         <Spin spinning={loading} tip="Loading..." className={styles.spin} />
       </div>

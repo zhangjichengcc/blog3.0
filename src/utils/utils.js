@@ -202,6 +202,17 @@ const pageLoading = (key = false, text) => {
   }
 };
 
+// 模拟延迟
+// eslint-disable-next-line compat/compat
+const timeout = (fn, params, ms = 300) =>
+  // eslint-disable-next-line compat/compat
+  new Promise(resolve => {
+    setTimeout(() => {
+      const res = fn(...params);
+      resolve(res);
+    }, ms);
+  });
+
 export {
   isAntDesignProOrDev,
   isAntDesignPro,
@@ -215,4 +226,5 @@ export {
   offset,
   isPc,
   pageLoading,
+  timeout,
 };

@@ -27,3 +27,11 @@ export async function getArtical(params = {}) {
   });
 }
 
+// 删除文章
+export async function deleteArtical(params = {}) {
+  return request({
+    url: '/api/artical/deleteArtical',
+    method: 'get',
+    params,
+  });
+}
