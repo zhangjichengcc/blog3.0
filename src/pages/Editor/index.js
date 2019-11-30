@@ -20,7 +20,7 @@ import router from 'umi/router';
 import styles from './index.less';
 import 'easymde/dist/easymde.min.css';
 import { uploadImg } from '@/services/image';
-import { uploadArtical, getArtical, deleteArtical } from '@/services/artical';
+import { insertArtical, updateArtical, getArtical, deleteArtical } from '@/services/artical';
 import { pageLoading, timeout } from '@/utils/utils';
 // import Ellipsis from '@/components/Ellipsis';
 
@@ -54,11 +54,12 @@ class Home extends Component {
     editorText: '',
     banner: null,
     publish: true,
-    createTime: moment(new Date()).format('YYYY-MM-DD HH:MM'),
+    createTime: null,
   };
 
   componentDidMount() {
     global.Editor = this;
+    global.moment = moment;
     this.initPage();
   }
 
@@ -222,11 +223,10 @@ class Home extends Component {
   };
 
   // 修改日期
-  timeChange = momentObj => {
+  timeChange = (momentObj, str) => {
     if (!momentObj) return;
-    const time = momentObj.format('YYYY-MM-DD HH:MM');
     this.setState({
-      createTime: time,
+      createTime: str,
     });
   };
 
@@ -244,6 +244,9 @@ class Home extends Component {
   // 提交文章
   submit = () => {
     const { title, createTime, publish, editorText, introduction, relBanner = null } = this.state;
+    const {
+      location: { query = {} },
+    } = this.props;
     const params = {
       title,
       createTime,
@@ -253,27 +256,42 @@ class Home extends Component {
       banner: relBanner,
     };
     this.setState({ loading: true });
-    uploadArtical(params).then(res => {
-      const { code, data } = res;
-      if (code === -1) {
-        message.error('文章提交失败！');
-      } else {
-        message.success('文章提交成功');
+    // 有id则为更新，否则为新建
+    if (query.id) {
+      updateArtical({ ...params, id: query.id }).then(res => {
+        const { code, data } = res;
         const { id } = data;
-        router.push(`/artical?id=${id}`);
-      }
-      this.setState(
-        {
-          loading: false,
-          editorText: '',
-          title: '',
-          introduction: '',
-        },
-        () => {
-          localStorage.removeItem('smde_editorCatchValues');
-        },
-      );
-    });
+        if (code === -1) {
+          message.error('文章提交失败！');
+        } else {
+          message.success('文章提交成功');
+          router.push(`/artical?id=${id}`);
+          this.setState({
+            loading: false,
+            editorText: '',
+            title: '',
+            introduction: '',
+          });
+        }
+      });
+    } else {
+      insertArtical(params).then(res => {
+        const { code, data } = res;
+        const { id } = data;
+        if (code === -1) {
+          message.error('文章提交失败！');
+        } else {
+          message.success('文章提交成功');
+          router.push(`/artical?id=${id}`);
+          this.setState({
+            loading: false,
+            editorText: '',
+            title: '',
+            introduction: '',
+          });
+        }
+      });
+    }
   };
 
   // 删除文章
@@ -318,11 +336,11 @@ class Home extends Component {
     const { id } = query;
 
     const options = {
-      autosave: {
-        enabled: true,
-        uniqueId: 'editorCatchValues',
-        delay: 1000,
-      },
+      // autosave: {
+      //   enabled: true,
+      //   uniqueId: 'editorCatchValues',
+      //   delay: 1000,
+      // },
       toolbar: [
         'bold',
         'italic',
@@ -380,10 +398,10 @@ class Home extends Component {
           </Col>
           <Col {...formItemLayout.wrapperCol}>
             <DatePicker
-              format="YYYY-MM-DD HH:MM"
+              // format="YYYY-MM-DD hh:mm"
               onChange={this.timeChange}
-              value={moment(createTime)}
-              showTime="0000-00-00: 00:00"
+              value={createTime && moment(createTime)}
+              showTime
             />
           </Col>
         </Row>

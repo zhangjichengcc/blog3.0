@@ -10,9 +10,18 @@ export async function queryArticalList(params = {}) {
 }
 
 // 文章提交
-export async function uploadArtical(params = {}) {
+export async function insertArtical(params = {}) {
   return request({
     url: '/api/artical/insertArtical',
+    method: 'post',
+    body: params,
+  });
+}
+
+// 文章提交
+export async function updateArtical(params = {}) {
+  return request({
+    url: '/api/artical/updateArtical',
     method: 'post',
     body: params,
   });
