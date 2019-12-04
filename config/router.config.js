@@ -29,34 +29,38 @@ export default [
         component: '../layouts/BasicLayout',
         routes: [
           {
+            // 首页
             path: '/',
             name: 'home',
             icon: 'home',
             component: './Home',
           },
           {
+            // 文章详情
             path: '/artical',
             component: './Artical',
           },
           {
+            // 文章编辑
             path: '/editor',
             name: 'editor',
             icon: 'home',
             component: './Editor',
           },
           {
+            // 实例
             path: '/demo',
             name: 'demo',
             style: 'dark',
             icon: 'appstore',
             component: './Demo',
           },
-          // {
-          //   path: '/demo/plates',
-          //   name: 'plates',
-          //   hideInMenu: true,
-          //   component: './Demo/Plates',
-          // },
+          {
+            // 文章管理
+            path: '/articalManage',
+            name: 'plates',
+            component: './articalManage',
+          },
           {
             path: '/403',
             component: './403',
