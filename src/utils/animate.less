@@ -51,3 +51,45 @@
     transform: scale(1) rotate(0deg);
   }
 }
+
+@keyframes pageBannerAnimate {
+  0% {
+    transform: scale(1.1) translateY(40px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pageNavAnimateLeft {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pageNavAnimateRight {
+  0% {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pageAnimateOpacity {
+  0% {
+    transform: scale(1.01);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

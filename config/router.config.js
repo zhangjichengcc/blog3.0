@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-11-28 18:50:31
+ * @LastEditTime: 2019-12-05 10:06:06
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog3.0\config\router.config.js
+ */
 /**
  * 路由配置
  *
@@ -58,7 +66,7 @@ export default [
           {
             // 文章管理
             path: '/articalManage',
-            name: 'plates',
+            name: 'articalManage',
             component: './articalManage',
           },
           {

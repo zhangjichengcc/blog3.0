@@ -1,8 +1,17 @@
+/*
+ * @Author: your name
+ * @Date: 2019-11-28 18:50:31
+ * @LastEditTime: 2019-12-05 10:05:30
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \blog3.0\src\locales\zh-CN\menu.js
+ */
 export default {
   'menu.home': '首页',
   'menu.login': '登录',
   'menu.editor': '文章编辑',
   'menu.demo': '组件实例',
+  'menu.articalManage': '文章管理',
   'menu.welcome': '欢迎',
   'menu.more-blocks': '更多区块',
   'menu.register': '注册',

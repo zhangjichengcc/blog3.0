@@ -1,6 +1,18 @@
+/*
+ * @Author: zhangjicheng
+ * @Date: 2019-11-28 18:50:31
+ * @LastEditTime: 2019-12-05 19:46:18
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog3.0\src\services\artical.js
+ */
 import request from '@/utils/request';
 
-// 获取文章列表
+/**
+ * @description: 获取文章列表
+ * @param {object} {pageSize, pageNum}
+ * @return:
+ */
 export async function queryArticalList(params = {}) {
   return request({
     url: '/api/artical/getArticalList',

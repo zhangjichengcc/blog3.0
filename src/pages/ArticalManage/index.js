@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-12-04 10:59:22
- * @LastEditTime: 2019-12-04 19:31:58
+ * @LastEditTime: 2019-12-05 21:06:10
  * @LastEditors: Please set LastEditors
  * @Description: 文章管理页面
  * @FilePath: \blog3.0\src\pages\ArticalManage\index.js
@@ -10,10 +10,10 @@
 import React, { Component } from 'react';
 // import moment from 'moment';
 import { Table, Form, Input, Divider, Icon, Modal, message } from 'antd';
-// import router from 'umi/router';
+import router from 'umi/router';
 import styles from './index.less';
 import 'easymde/dist/easymde.min.css';
-import { deleteArtical } from '@/services/artical';
+import { queryArticalList, deleteArtical } from '@/services/artical';
 // import { uploadImg } from '@/services/image';
 // import { insertArtical, updateArtical, getArtical, deleteArtical } from '@/services/artical';
 // import { pageLoading, timeout } from '@/utils/utils';
@@ -21,21 +21,16 @@ import { deleteArtical } from '@/services/artical';
 const { Item } = Form;
 const { confirm } = Modal;
 
-const data = [];
-for (let i = 0; i < 100; i += 1) {
-  data.push({
-    id: i.toString(),
-    title: `Edrward ${i}`,
-    readCount: 32,
-    likeCount: 32,
-  });
-}
-
 class Home extends Component {
   state = {
     dataList: [], // 当前页数据
     editLine: {}, // 编辑行数据
     loading: false, // 加载状态
+    searchParams: {
+      pageSize: 10,
+      pageNum: 1,
+    },
+    total: 0,
   };
 
   componentDidMount() {
@@ -44,14 +39,24 @@ class Home extends Component {
 
   componentWillUnmount() {}
 
+  // 请求表格数据
   fetchData = () => {
+    const { searchParams } = this.state;
+    const { pageNum, pageSize } = searchParams;
     this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({
-        dataList: data,
-        loading: false,
-      });
-    }, 1000);
+    queryArticalList(searchParams).then(res => {
+      const { data, code } = res;
+      const { list = [], total = 0 } = data;
+      if (code === 0) {
+        this.setState({
+          dataList: list.map((item, idx) => ({ ...item, no: idx + 1 + (pageNum - 1) * pageSize })),
+          loading: false,
+          total,
+        });
+      } else {
+        this.setState({ loading: false });
+      }
+    });
   };
 
   // 编辑行方法
@@ -131,6 +136,21 @@ class Home extends Component {
     });
   };
 
+  // 表格切换
+  onTableChange = (page, pageSize) => {
+    const { searchParams } = this.state;
+    this.setState(
+      {
+        searchParams: {
+          ...searchParams,
+          pageSize,
+          pageNum: page,
+        },
+      },
+      this.fetchData,
+    );
+  };
+
   /**
    * @description: 生成列表项
    * @param {object} record 当前行所有值
@@ -139,11 +159,11 @@ class Home extends Component {
    * @param {string} type 校验类型（可选）
    * @return: {reactDom}
    */
-
   createTableItem = (record, key, toast, type) => {
     const { editId, editLine } = this.state;
     const value = editLine[key];
     const unTest = !value;
+    // eslint-disable-next-line no-nested-ternary
     return editId === record.id ? (
       <Item hasFeedback validateStatus={unTest ? 'error' : 'success'} help={unTest ? toast : ''}>
         <Input
@@ -155,15 +175,24 @@ class Home extends Component {
           }}
         />
       </Item>
+    ) : key === 'title' ? (
+      <a onClick={() => router.push(`/artical?id=${record.id}`)}>{record[key]}</a>
     ) : (
       <span>{record[key]}</span>
     );
   };
 
   render() {
-    const { dataList = [], loading = false } = this.state;
+    const { dataList = [], loading = false, searchParams = {}, total = 10 } = this.state;
+    const { pageSize = 10, pageNum = 1 } = searchParams;
 
     const columns = [
+      {
+        title: 'NO',
+        dataIndex: 'no',
+        width: 60,
+        align: 'center',
+      },
       {
         title: 'id',
         dataIndex: 'id',
@@ -239,7 +268,12 @@ class Home extends Component {
           columns={columns}
           rowClassName="editable-row"
           pagination={{
-            onChange: this.cancel,
+            onChange: this.onTableChange,
+            size: 'small',
+            total,
+            current: pageNum,
+            showTotal: () => `共${total}条`,
+            pageSize,
           }}
         />
       </div>

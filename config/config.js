@@ -91,6 +91,16 @@ export default {
       ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
   },
   ignoreMomentLocale: true,
+  alias: {
+    '@': path.resolve(__dirname, '../src'),
+    pages: path.resolve(__dirname, '../src/pages'),
+    components: path.resolve(__dirname, '../src/components'),
+    utils: path.resolve(__dirname, '../src/utils'),
+    services: path.resolve(__dirname, '../src/services'),
+    // models: path.resolve(__dirname, '../src/models'),
+    // themes: path.resolve(__dirname, '../src/themes'),
+    // assets: path.resolve(__dirname, '../src/assets'),
+  },
   lessLoaderOptions: {
     javascriptEnabled: true,
   },

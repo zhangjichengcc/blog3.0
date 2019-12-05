@@ -1,4 +1,5 @@
 @import '~antd/es/style/themes/default.less';
+@import './utils/animate.less';
 
 @active-color: #1890ff;
 @font-color1: #888;
@@ -14,3 +15,19 @@
 // 移动端样式
 @mobile-header-height: 50px;
 @mobile-header-bgcolor: rgba(0, 0, 0, 0.7);
+
+.page-banner-animate() {
+  animation: pageBannerAnimate 1s;
+}
+
+.page-nav-animate-left() {
+  animation: pageNavAnimateLeft 1.5s;
+}
+
+.page-nav-animate-right() {
+  animation: pageNavAnimateRight 1.5s;
+}
+
+.page-animate-opacity() {
+  animation: pageAnimateOpacity 1.5s;
+}
