@@ -213,6 +213,17 @@ const timeout = (fn, params, ms = 300) =>
     }, ms);
   });
 
+// 转换base64编码图片
+const getBase64 = file => {
+  // eslint-disable-next-line compat/compat
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+};
+
 export {
   isAntDesignProOrDev,
   isAntDesignPro,
@@ -227,4 +238,5 @@ export {
   isPc,
   pageLoading,
   timeout,
+  getBase64,
 };

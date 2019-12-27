@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-12-04 10:59:22
- * @LastEditTime: 2019-12-05 21:06:10
+ * @LastEditTime: 2019-12-06 15:03:55
  * @LastEditors: Please set LastEditors
  * @Description: 文章管理页面
  * @FilePath: \blog3.0\src\pages\ArticalManage\index.js
@@ -45,7 +45,7 @@ class Home extends Component {
     const { pageNum, pageSize } = searchParams;
     this.setState({ loading: true });
     queryArticalList(searchParams).then(res => {
-      const { data, code } = res;
+      const { data = {}, code } = res;
       const { list = [], total = 0 } = data;
       if (code === 0) {
         this.setState({
@@ -267,6 +267,7 @@ class Home extends Component {
           dataSource={dataList}
           columns={columns}
           rowClassName="editable-row"
+          key="id"
           pagination={{
             onChange: this.onTableChange,
             size: 'small',

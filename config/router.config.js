@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2019-12-05 10:06:06
+ * @LastEditTime: 2019-12-06 14:48:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \blog3.0\config\router.config.js
