@@ -4,6 +4,7 @@ import router from 'umi/router';
 import moment from 'js-moment';
 // import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
+import classnames from 'classnames';
 import ArticalCard from '@/components/ArticalCard';
 // import advertImg1 from '@/assets/image/home/advert.jpg';
 import weChatImg from '@/assets/image/my-wechat.jpg';
@@ -150,6 +151,7 @@ class Home extends Component {
       articalLoading = false,
       articalLoaded = false,
       isPC = true,
+      showContent = false,
     } = this.state;
     const { topArtical } = config;
     const wechatContent = <img src={weChatImg} alt="微信二维码" className={styles.wechatContent} />;
@@ -159,7 +161,20 @@ class Home extends Component {
       <div className={styles.Home}>
         <div className={styles.banner}>
           <div className={styles.banner_title}>
-            <p className={styles.avator} />
+            <span>负重攀越</span>
+            <span>只为一个全新的高度</span>
+            <span>Just for a new height</span>
+          </div>
+          <Icon
+            className={classnames(styles.banner_openKey, showContent ? styles.active : '')}
+            type={showContent ? 'minus-circle' : 'plus-circle'}
+            theme="filled"
+            onClick={() => {
+              this.setState({ showContent: !showContent });
+            }}
+          />
+          <div className={classnames(styles.banner_content, showContent ? styles.active : '')}>
+            {/* <p className={styles.avator} /> */}
             <div className={styles.content}>
               <span>{config.info}</span>
               <div className={styles.btnContent}>
@@ -168,14 +183,16 @@ class Home extends Component {
                   onClick={() => {
                     this.openView('book');
                   }}
-                  style={{ fontSize: 26 }}
+                  style={{ fontSize: 22, transform: 'translateY(-2px)' }}
                   type="book"
+                  theme="filled"
                 />
                 <Popover content={wechatContent} trigger="hover">
                   <Icon
                     className={styles.icon}
-                    style={{ color: '#79cd18', fontSize: 28 }}
+                    style={{ fontSize: 28 }}
                     type="wechat"
+                    theme="filled"
                   />
                 </Popover>
                 <Icon
@@ -185,23 +202,25 @@ class Home extends Component {
                   }}
                   style={{ color: '#fff', fontSize: 26 }}
                   type="github"
+                  theme="filled"
                 />
                 <Icon
                   className={styles.icon}
                   onClick={() => {
                     this.openView('weibo');
                   }}
-                  style={{ color: '#ef5350' }}
+                  style={{ color: '#fff' }}
                   type="weibo"
                 />
-                <Popover content={mailContent} trigger="hover">
+                <Popover content={mailContent} trigger="hover" placement="topRight">
                   <Icon
                     className={styles.icon}
                     onClick={() => {
                       this.openView('mail');
                     }}
-                    style={{ color: '#fff' }}
+                    style={{ color: '#fff', fontSize: 25 }}
                     type="mail"
+                    theme="filled"
                   />
                 </Popover>
               </div>

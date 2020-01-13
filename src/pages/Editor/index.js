@@ -57,14 +57,20 @@ class Editor extends Component {
     getArtical({ id }).then(res => {
       const { code, data = {} } = res;
       if (code === 0) {
-        const { banner, createTime, introduction, mainContent, title } = data;
+        const { banner, createTime, introduction, mainContent, title, publish } = data;
         this.setState(
           {
             banner,
             base64Banner: banner,
           },
           () => {
-            setFieldsValue({ createTime: moment(createTime), introduction, mainContent, title });
+            setFieldsValue({
+              createTime: moment(createTime),
+              introduction,
+              mainContent,
+              title,
+              publish,
+            });
             timeout(pageLoading, [0], 1000);
           },
         );
@@ -214,18 +220,19 @@ class Editor extends Component {
       form,
     } = this.props;
     const { getFieldsValue } = form;
-    const { title, createTime, publish, mainContent, introduction } = getFieldsValue;
+    const { title, createTime, publish, mainContent, introduction } = getFieldsValue();
     const params = {
       title,
-      createTime,
+      createTime: moment(createTime).format('YYYY-MM-DD hh:mm:ss'),
       publish,
       mainContent,
       introduction,
       banner,
     };
     const next = res => {
-      const { code, data } = res;
+      const { code, data = {} } = res;
       const { id } = data;
+      this.setState({ loading: false });
       if (code === -1) {
         message.error('文章提交失败！');
       } else {

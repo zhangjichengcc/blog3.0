@@ -7,7 +7,8 @@
     .page-banner-animate;
     width: 100%;
     // height: calc(100vh - @layout-header-height);
-    height: 100vh;
+    // height: 100vh;
+    height: 70vh;
     position: relative;
     background-image: url(../../assets/image/banner.jpg);
     background-repeat: no-repeat;
@@ -24,52 +25,109 @@
     }
     .banner_title {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 45%;
-      min-width: 320px;
+      top: 44%;
+      left: 40%;
       transform: translate(-50%, -50%);
-      .avator {
-        margin: 0 auto;
-        width: 14vw;
-        height: 14vw;
-        max-width: 140px;
-        max-height: 140px;
-        min-width: 120px;
-        min-height: 120px;
-        border-radius: 50%;
-        border: #eee solid 5px;
-        margin-bottom: 20px;
-        background-image: url(../../assets/image/avator.png);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
-        cursor: pointer;
-        box-shadow: 0 13px 25px 0 rgba(52, 61, 112, 0.17);
+      // color: #1565C0;
+      color: #fff;
+      > span {
+        display: block;
+        &:nth-child(1) {
+          font-weight: bold;
+          font-size: 32px;
+          transform: translate(-74px);
+        }
+        &:nth-child(2) {
+          font-size: 32px;
+        }
+        &:nth-child(3) {
+          font-size: 18px;
+        }
       }
-      .avator:hover {
-        animation: tada 1s 0.2s ease both;
-        // -moz-animation: tada 1s .2s ease both;
+    }
+    .banner_openKey {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      font-size: 28px;
+      color: rgba(32, 32, 32, 0.5);
+      cursor: pointer;
+      transform: rotate(0deg);
+      transition: all ease 0.3s;
+      &:hover {
+        color: #2295ff;
       }
+      &.active {
+        transform: rotate(180deg);
+        color: #e23246;
+      }
+    }
+    .banner_content {
+      position: absolute;
+      right: 13px;
+      bottom: 60px;
+      transform: scale(0.3) translate(268px, 175px);
+      opacity: 0;
+      transition: all ease 0.3s;
+      &.active {
+        transform: translate(0) scale(1);
+        opacity: 1;
+      }
+      // .avator {
+      //   margin: 0 auto;
+      //   width: 14vw;
+      //   height: 14vw;
+      //   max-width: 140px;
+      //   max-height: 140px;
+      //   min-width: 120px;
+      //   min-height: 120px;
+      //   border-radius: 50%;
+      //   border: #eee solid 5px;
+      //   margin-bottom: 20px;
+      //   background-image: url(../../assets/image/avator.png);
+      //   background-repeat: no-repeat;
+      //   background-size: cover;
+      //   background-position: center center;
+      //   cursor: pointer;
+      //   box-shadow: 0 13px 25px 0 rgba(52, 61, 112, 0.17);
+      // }
+      // .avator:hover {
+      //   animation: tada 1s 0.2s ease both;
+      //   // -moz-animation: tada 1s .2s ease both;
+      // }
       .content {
         font-size: 16px;
         text-align: center;
         color: #eaeadf;
         background: rgba(0, 0, 0, 0.5);
-        padding: 15px 30px;
-        border-radius: 10px;
+        padding: 15px;
+        border-radius: 3px;
         white-space: nowrap;
+        &::after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          border-top: rgba(0, 0, 0, 0.5) solid 6px;
+          border-left: rgba(0, 0, 0, 0) solid 6px;
+          border-right: rgba(0, 0, 0, 0) solid 6px;
+          bottom: -12px;
+          right: 13px;
+        }
         > span {
           display: block;
-          font-size: 18px;
+          font-size: 12px;
           color: #fff;
+          font-family: cursive; // 楷体
+          text-align: left;
           padding-bottom: 12px;
         }
         .btnContent {
           .icon {
             display: inline-block;
             font-size: 28px;
-            margin-right: 26px;
+            margin-right: 16px;
             cursor: pointer;
             &:last-child {
               margin-right: 0;
@@ -209,8 +267,20 @@
       // margin-top: -@mobile-header-height;
       height: 72vw;
       .banner_title {
-        padding-top: @mobile-header-height;
-        transform: translate(-50%, -50%) scale(0.75);
+        > span {
+          display: block;
+          &:nth-child(1) {
+            font-weight: bold;
+            font-size: 18px;
+            transform: translate(-30px);
+          }
+          &:nth-child(2) {
+            font-size: 18px;
+          }
+          &:nth-child(3) {
+            font-size: 14px;
+          }
+        }
       }
     }
     .home_body {

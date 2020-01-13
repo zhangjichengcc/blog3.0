@@ -1,8 +1,8 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-12-04 10:59:22
- * @LastEditTime: 2019-12-06 15:03:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime : 2020-01-04 15:05:48
+ * @LastEditors  : Please set LastEditors
  * @Description: 文章管理页面
  * @FilePath: \blog3.0\src\pages\ArticalManage\index.js
  */
@@ -208,10 +208,18 @@ class Home extends Component {
         },
       },
       {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        width: 170,
+        render: (_text, record) => {
+          return this.createTableItem(record, 'createTime', '文章创建时间不能为空！');
+        },
+      },
+      {
         title: '阅读数',
         dataIndex: 'readCount',
         ellipsis: true,
-        width: 100,
+        width: 80,
         align: 'center',
         render: (_text, record) => {
           return this.createTableItem(record, 'readCount', '阅读数量不能为空！', '+num');
@@ -221,7 +229,7 @@ class Home extends Component {
         title: '点赞数',
         dataIndex: 'likeCount',
         ellipsis: true,
-        width: 100,
+        width: 80,
         align: 'center',
         render: (_text, record) => {
           return this.createTableItem(record, 'likeCount', '点赞数不能为空！', '+num');

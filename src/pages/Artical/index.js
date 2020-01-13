@@ -71,7 +71,7 @@ class Home extends Component {
         const {
           banner,
           createTime,
-          // introduction,
+          introduction,
           likeCount,
           readCount,
           title,
@@ -82,7 +82,7 @@ class Home extends Component {
           banner,
           pageLoading: false,
           createTime,
-          // introduction,
+          introduction,
           likeCount,
           readCount,
           title,
@@ -155,7 +155,7 @@ class Home extends Component {
     if (!text) return '';
     const newText = text.replace(/#+\s+(.*)([\n|\r])/g, ($0, $1) => {
       const anchor = this.displayHZ($1.replace(/\s/g, ''));
-      return `${$0}<p style="height: 0; margin: 0; overflow: hidden;"><a id="${anchor}" href="#${anchor}" name="${anchor}" class="anchor">#</a></p>`;
+      return `${$0}<p style="height: 0; margin: 0; overflow: hidden;"><a id="${anchor}" href="#${anchor}" name="${anchor}" class="anchor">#</a></p> \r`;
     });
     return newText;
   };
@@ -183,6 +183,7 @@ class Home extends Component {
       createTime,
       likeCount = 0,
       readCount = 0,
+      introduction = '',
       // drawerVisiable = false, // 移动端 导航抽屉
     } = this.state;
 
@@ -221,7 +222,12 @@ class Home extends Component {
                 {this.displayNav()}
               </div>
               <div className={styles.centerContent}>
-                {/* eslint-disable-next-line react/no-danger */}
+                <div className={styles.articalHead}>
+                  <span className={styles.title}>前言</span>
+                  <div className={styles.content}>
+                    <span>{introduction}</span>
+                  </div>
+                </div>
                 <div
                   className={styles.articalBody}
                   // eslint-disable-next-line react/no-danger
