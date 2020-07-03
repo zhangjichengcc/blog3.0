@@ -1,3 +1,12 @@
+/*
+ * @Author: your name
+ * @Date: 2019-11-28 18:50:31
+ * @LastEditTime: 2020-05-28 17:37:55
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \blog3.0\config\proxy.config.js
+ */
+
 const proxyConfig = {
   '/api': {
     target: 'http://127.0.0.1:5000', // 本地
