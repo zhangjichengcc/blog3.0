@@ -1,7 +1,19 @@
+/*
+ * @Author: zhangjicheng
+ * @Date: 2019-11-28 18:50:31
+ * @LastEditTime: 2020-10-02 15:54:12
+ * @LastEditors: zhangjicheng
+ * @Description:
+ * @FilePath: \blog3.0\src\utils\utils.ts
+ * @可以输入预定的版权声明、个性签名、空行等
+ */
+
+import { delay } from 'lodash';
+
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
 
-const isUrl = path => reg.test(path);
+const isUrl = (path: string) => reg.test(path);
 
 const isAntDesignPro = () => {
   // eslint-disable-next-line no-undef
@@ -9,6 +21,7 @@ const isAntDesignPro = () => {
     return true;
   }
 
+  // eslint-disable-next-line compat/compat
   return window.location.hostname === 'preview.pro.ant.design';
 }; // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 
@@ -23,31 +36,52 @@ const isAntDesignProOrDev = () => {
   return isAntDesignPro();
 };
 
-// 格式化千分制数字
-const formatPrice = (price, dec = 2) => {
-  if (!price) return '0';
-  const numP = parseFloat(price);
-  const strP = numP.toFixed(dec);
-  const int = strP.replace(/^(-?[0-9]*)\..*/, '$1');
-  const float = strP.replace(/^(-?[0-9]*\.)/, '');
-  return `${int.replace(/\B(?=(?:\d{3})+$)/g, ',')}.${float}`;
+/**
+ * @description: 格式化千分制数字
+ * @param {string | number}
+ * @return {number}
+ */
+export const thousandNum = (
+  num: string | number, // 目标字段
+  dec?: number, // 小数位
+): string => {
+  if (!num) return '0';
+  const _num = typeof num === 'number' ? num.toFixed(dec || 2) : parseFloat(num).toFixed(dec || 2);
+  return _num.replace(/^(\d+)(\.?)(\d*)$/, (_$0, $1, $2, $3) => {
+    return `${$1.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}${$2}${$3}`;
+  });
 };
 
-// 格式化文件大小
-const renderSize = filesize => {
-  if (!filesize) return '0Bytes';
-  const unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  let index = 0;
-  const srcsize = parseFloat(filesize);
-  index = Math.floor(Math.log(srcsize) / Math.log(1024));
-  // eslint-disable-next-line no-mixed-operators
-  let size = srcsize / 1024 ** index;
-  size = size.toFixed(2); // 保留的小数位数
-  return `${size}${unitArr[index]}`;
+//
+/**
+ * @description: 返回 min-max 随机数
+ * @param {number}
+ * @return {number}
+ */
+export const random = (max: number, min?: number): number => {
+  return Math.floor(Math.random() * (max - (min || 0) + 1) + max);
 };
+
+/**
+ * @description: 格式化文件大小
+ * @param {size: number} 文件大小，bytes为单位，number类型
+ * @return {size: string }
+ */
+export function fileSizeFormat(size: number | string): string {
+  // 获取以 x 为底 y 的对数
+  function getBaseLog(x: number, y: number): number {
+    return Math.log(y) / Math.log(x);
+  }
+  if (!size) return '0Bytes';
+  const unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const num = typeof size === 'number' ? size : parseFloat(size);
+  const index = Math.floor(getBaseLog(1024, num));
+  const res = num / 1024 ** index;
+  return `${res.toFixed(2)}${unitArr[index]}`;
+}
 
 // 数字格式化
-const renderNum = num => {
+export const numberFormat = (num: number): string => {
   const unitArr = ['', '万', '亿', '万亿'];
   let index = 0;
   let res = '';
@@ -55,7 +89,7 @@ const renderNum = num => {
   (function travel(count) {
     if (count > 10000) {
       index += 1;
-      travel(count / 10000);
+      travel(num / 10000);
     } else {
       res = index ? count.toFixed(2) + unitArr[index] : count.toString();
     }
@@ -63,32 +97,58 @@ const renderNum = num => {
   return res;
 };
 
-// 函数节流
-const throttle = (() => {
-  const content = this;
-  let timer = false;
-  return (fn, delay = 300) => {
-    if (timer) return;
-    fn.call(content);
-    timer = setTimeout(() => {
-      clearTimeout(timer);
-      timer = false;
-    }, delay);
-  };
-})();
+/**
+ * @description: 节流防抖类
+ * @param {function} 需要节流或防抖的方法
+ * @return {void}
+ */
+// class Methods {
+//   sourceFun: () => void;
+//   delay: number;
+//   constructor(fn: () => void, delay: number = 300) {
+//     this.sourceFun = fn;
+//     this.delay = delay;
+//   }
+//   throttle(...arg: any) {
+//     this.sourceFun.call(this, arg);
+//   }
+// }
 
-// 函数防抖
-const debounce = (() => {
-  let timer = null;
-  return (fn, delay = 300) => {
-    if (timer) {
-      clearTimeout(timer);
+/**
+ * @description: 函数节流
+ * @param {function, number, boolean} 执行的方法；延迟时间ms；是否首次执行
+ * @return {void}
+ */
+export function throttle(fn: { (): void; call?: any }, delay: number = 300, first: boolean = true) {
+  let timer: any = null;
+  let isFirst = first;
+  return (...args: any) => {
+    if (isFirst) {
+      fn.call(this, args);
+      isFirst = false;
     }
+    if (timer) return;
     timer = setTimeout(() => {
-      fn.apply(this);
+      clearTimeout(timer);
+      fn.call(this, args);
     }, delay);
   };
-})();
+}
+
+/**
+ * @description: 函数防抖
+ * @param {function, number} 执行的方法；延迟时间ms
+ * @return {type}
+ */
+export function debounce(fn: { (): void; call?: any }, delay: number = 300) {
+  let timer: any = null;
+  return (...args: any) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.call(this, args);
+    }, delay);
+  };
+}
 
 // 压缩图片
 const compress = img => {
@@ -228,11 +288,6 @@ export {
   isAntDesignProOrDev,
   isAntDesignPro,
   isUrl,
-  formatPrice,
-  renderSize,
-  renderNum,
-  throttle,
-  debounce,
   compress,
   offset,
   isPc,

@@ -53,6 +53,8 @@
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
+    "echarts": "^4.9.0",
+    "echarts-gl": "^1.1.1",
     "highlight.js": "^9.15.10",
     "js-moment": "^2.1.5",
     "lodash": "^4.17.11",
@@ -85,6 +87,7 @@
   "devDependencies": {
     "@ant-design/colors": "^3.1.0",
     "@types/classnames": "^2.2.7",
+    "@types/echarts": "^4.6.5",
     "@types/history": "^4.7.2",
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.133",

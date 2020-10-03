@@ -28,7 +28,7 @@ const codeMessage = {
  * 异常处理程序
  */
 
-const errorHandler = error => {
+const errorHandler = (error: { response: any; message: any }) => {
   const { response, message } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
@@ -46,7 +46,7 @@ const errorHandler = error => {
 };
 
 // 检验状态码， 200 表示请求成功
-const checkStatus = response => {
+const checkStatus = (response: any) => {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -56,7 +56,7 @@ const checkStatus = response => {
   throw error;
 };
 
-export default function request(option) {
+export default function request(option: any) {
   let { url } = option;
   // Authorization 需要改成登录后获取
   const defaultOptions = {

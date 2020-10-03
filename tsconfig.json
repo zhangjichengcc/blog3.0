@@ -9,6 +9,7 @@
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "rootDirs": ["/src", "/test", "/mock", "./typings"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -18,9 +19,12 @@
     "strict": true,
     "paths": {
       "*": ["types/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "echarts": ["node_modules/echarts/dist/echarts.min.js"],
+      "echarts-gl": ["node_modules/echarts-gl/dist/echarts-gl.min.js"]
     }
   },
+  "include": ["src/**/*", "typings.d.ts"],
   "exclude": [
     "node_modules",
     "build",

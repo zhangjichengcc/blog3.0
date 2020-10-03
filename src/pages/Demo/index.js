@@ -3,6 +3,7 @@ import { Menu, Icon, Tabs } from 'antd';
 import classnames from 'classnames';
 import styles from './index.less';
 import Plates from './Plates';
+import Bar3d from './Bar3d';
 
 const { SubMenu, Item: MenuItem } = Menu;
 const { TabPane } = Tabs;
@@ -14,6 +15,13 @@ const routes = [
     key: 'plates',
     icon: 'apartment',
     components: <Plates />,
+  },
+  {
+    pathname: '/demo/bar3d',
+    name: '3d柱状图',
+    key: 'bar3d',
+    icon: 'apartment',
+    components: <Bar3d />,
   },
   {
     name: '算法集合',

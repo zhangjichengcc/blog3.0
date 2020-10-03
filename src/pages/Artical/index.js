@@ -104,7 +104,7 @@ class Home extends Component {
   // 生成文章导航-pc
   displayNav = () => {
     const { mainContent = '' } = this.state;
-    const reg = new RegExp('#+\\s+.*', 'g');
+    const reg = new RegExp(/#+\s+.*(?=[\n|\f|\r]?)/g);
     const options = {
       offsetTop: 86,
       onClick: this.handleClick,
@@ -112,13 +112,13 @@ class Home extends Component {
       // targetOffset: -300,
       // bounds: 1000,
     };
-    const navListSource = (mainContent && mainContent.match(reg)) || [];
+    const navListSource = (mainContent && mainContent?.match(reg)) || [];
     const titleObj = navListSource.map(v => ({
-      level: v.replace(/(^#+).*/, '$1').match(/#/g).length,
-      title: v.replace(/^#+\s?/, ''),
+      level: v?.match(/^#+/g)[0]?.length,
+      title: v?.replace(/^#+\s+/, ''),
       text: v,
     }));
-    return titleObj.length ? (
+    return (
       <Anchor {...options}>
         {titleObj.map((item = {}, idx) => {
           const { title, level } = item;
@@ -135,8 +135,6 @@ class Home extends Component {
           );
         })}
       </Anchor>
-    ) : (
-      ''
     );
   };
 
@@ -153,11 +151,10 @@ class Home extends Component {
   // 格式化marked文本，使其支持锚点
   displayMarkdown = (text = '') => {
     if (!text) return '';
-    const newText = text.replace(/#+\s+(.*)([\n|\r])/g, ($0, $1) => {
+    return text.replace(/#+\s+(.*)(?=[\n|\f|\r]?)/g, ($0, $1) => {
       const anchor = this.displayHZ($1.replace(/\s/g, ''));
       return `${$0}<p style="height: 0; margin: 0; overflow: hidden;"><a id="${anchor}" href="#${anchor}" name="${anchor}" class="anchor">#</a></p> \r`;
     });
-    return newText;
   };
 
   // 编辑文章

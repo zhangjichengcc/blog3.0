@@ -1,32 +1,35 @@
-@import '~antd/es/style/themes/default.less';
+@searchbarWidth: 250px;
 
 .headerSearch {
-  :global(.anticon-search) {
-    font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  overflow: hidden;
+  > .searchText {
+    display: flex;
+    align-items: center;
+    opacity: 1;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.85);
+    transition: all ease 0.3s;
+    &:hover {
+      color: rgba(255, 255, 255, 1);
+    }
   }
-  .input {
-    width: 0;
-    background: transparent;
-    border-radius: 0;
-    transition: width 0.3s, margin-left 0.3s;
-    :global(.ant-select-selection) {
-      background: transparent;
+  > .searchBar {
+    width: @searchbarWidth;
+    margin-right: calc(-@searchbarWidth - 15px);
+    margin-left: 15px;
+    opacity: 0;
+    transition: all ease 0.5s;
+  }
+  &.active {
+    .searchText {
+      opacity: 0;
     }
-    input {
-      padding-right: 0;
-      padding-left: 0;
-      border: 0;
-      box-shadow: none !important;
-    }
-    &,
-    &:hover,
-    &:focus {
-      border-bottom: 1px solid @border-color-base;
-    }
-    &.show {
-      width: 210px;
-      margin-left: 8px;
+    .searchBar {
+      margin-right: 0;
+      opacity: 1;
     }
   }
 }

@@ -7,7 +7,8 @@ import classnames from 'classnames';
 import Authorized from '@/utils/Authorized';
 import styles from './BasicLayout.less';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import logo from '../assets/logo.svg';
+// import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 
 /**
  * use Authorized check all menu item
