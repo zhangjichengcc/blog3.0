@@ -1,24 +1,11 @@
 /*
  * @Author: your name
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2019-12-05 16:19:32
- * @LastEditors: your name
+ * @LastEditTime: 2020-10-04 14:58:02
+ * @LastEditors: zhangjicheng
  * @Description: In User Settings Edit
  * @FilePath: \blog3.0\.eslintrc.js
  */
-// const fabric = require('@umijs/fabric');
-
-// module.exports = {
-//   ...fabric.default,
-//   rules: {
-//     ...fabric.default.rules,
-//     stylelint: false,
-//   },
-//   globals: {
-//     ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: true,
-//     page: true,
-//   },
-// };
 
 module.exports = {
   parser: 'babel-eslint',

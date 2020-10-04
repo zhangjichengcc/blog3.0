@@ -1,14 +1,14 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2020-10-02 15:54:12
+ * @LastEditTime: 2020-10-04 15:49:10
  * @LastEditors: zhangjicheng
  * @Description:
  * @FilePath: \blog3.0\src\utils\utils.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
-import { delay } from 'lodash';
+import React from 'react';
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -96,23 +96,6 @@ export const numberFormat = (num: number): string => {
   })(num);
   return res;
 };
-
-/**
- * @description: 节流防抖类
- * @param {function} 需要节流或防抖的方法
- * @return {void}
- */
-// class Methods {
-//   sourceFun: () => void;
-//   delay: number;
-//   constructor(fn: () => void, delay: number = 300) {
-//     this.sourceFun = fn;
-//     this.delay = delay;
-//   }
-//   throttle(...arg: any) {
-//     this.sourceFun.call(this, arg);
-//   }
-// }
 
 /**
  * @description: 函数节流
@@ -248,7 +231,7 @@ const isPc = () => {
 };
 
 // 全局loading
-const pageLoading = (key = false, text) => {
+const pageLoading = (key = false, text: any) => {
   if (key) {
     const child = document.createElement('dev');
     child.setAttribute('id', 'pageLoading_page');
