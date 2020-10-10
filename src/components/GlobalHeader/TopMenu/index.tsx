@@ -1,24 +1,23 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-04 16:55:51
+ * @LastEditTime: 2020-10-10 22:09:53
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
- * @FilePath: \blog3.0\src\components\GlobalHeader\RightTools\index.tsx
+ * @FilePath: \blog3.0\src\components\GlobalHeader\TopMenu\index.tsx
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
 import React, { FC, useState } from 'react';
-import HeaderSearch from '@/components/HeaderSearch';
-import AvatarDropdown from '../AvatarDropdown';
 import styles from './index.less';
 
 
-interface headerSearchProps {
-  onSearch: (value: string, callBack: () => void) => void;
+interface topMenuProps {
+  routes: Array<T>;
 }
 
-const GlobalHeader: FC<headerSearchProps> = () => {
+const TopMenu: FC<topMenuProps> = (props) => {
+  window.TopMenuProps = props;
   // const [searchVisiable, setSearchVisiable] = useState<boolean>(false);
   // const [loading, setLoading] = useState<boolean>(false);
 
@@ -27,16 +26,15 @@ const GlobalHeader: FC<headerSearchProps> = () => {
   //   setSearchVisiable(false);
   // };
 
-  const onSearch = (value: string, callBack) => {
+  // const onSearch = (value: string, callBack) => {
     
-  };
+  // };
 
   return (
-    <div className={styles.right_tools}>
-      <HeaderSearch onSearch={onSearch} />
-      <AvatarDropdown />
+    <div className={styles.base_menu}>
+      
     </div>
   );
 };
 
-export default GlobalHeader;
+export default TopMenu;

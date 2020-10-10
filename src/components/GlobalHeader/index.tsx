@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-04 18:05:07
+ * @LastEditTime: 2020-10-10 22:13:45
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\index.tsx
@@ -34,28 +34,22 @@ const Logo: FC<logoProps> = ({
 }
 
 
-interface headerSearchProps {
+interface globalHeaderProps {
   onSearch: (value: string, callBack: () => void) => void;
+  routes: Array<T>;
 }
 
-const GlobalHeader: FC<headerSearchProps> = ({ onSearch }) => {
-  // const [searchVisiable, setSearchVisiable] = useState<boolean>(false);
-  // const [loading, setLoading] = useState<boolean>(false);
-
-  // const callBack = () => {
-  //   setLoading(false);
-  //   setSearchVisiable(false);
-  // };
-
-  // const search = (value: string) => {
-  //   setLoading(true);
-  //   onSearch(value, callBack);
-  // };
-
+const GlobalHeader: FC<globalHeaderProps> = (props) => {
+  const {
+    routes,
+  } = props;
+  window.GlobalHeaderProps = props;
   return (
     <div className={styles.global_header}>
       <Logo src={logo} style={{height: '80%'}} />
-      <TopMenu />
+      <TopMenu
+        routes={routes}
+      />
       <RightTools />
     </div>
   );
