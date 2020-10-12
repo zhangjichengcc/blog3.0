@@ -1,8 +1,8 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2019-12-06 14:48:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-10-12 15:23:11
+ * @LastEditors: zhangjicheng
  * @Description: In User Settings Edit
  * @FilePath: \blog3.0\config\router.config.js
  */
@@ -68,6 +68,22 @@ export default [
             path: '/articalManage',
             name: 'articalManage',
             component: './articalManage',
+          },
+          {
+            // 测试
+            path: '/test',
+            name: '测试',
+            routes: [
+              {
+                name: '403',
+                path: '/403',
+                component: './403',
+              },
+              {
+                name: '404',
+                component: './404',
+              },
+            ]
           },
           {
             path: '/403',

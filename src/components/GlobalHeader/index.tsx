@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-10 22:13:45
+ * @LastEditTime: 2020-10-12 14:40:15
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\index.tsx
@@ -36,19 +36,21 @@ const Logo: FC<logoProps> = ({
 
 interface globalHeaderProps {
   onSearch: (value: string, callBack: () => void) => void;
-  routes: Array<T>;
+  route: Object;
+  thatRoute: Object;
 }
 
 const GlobalHeader: FC<globalHeaderProps> = (props) => {
   const {
-    routes,
+    route,
+    thatRoute,
   } = props;
-  window.GlobalHeaderProps = props;
   return (
     <div className={styles.global_header}>
       <Logo src={logo} style={{height: '80%'}} />
       <TopMenu
-        routes={routes}
+        route={route}
+        thatRoute={thatRoute}
       />
       <RightTools />
     </div>
