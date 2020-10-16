@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-12 19:08:26
+ * @LastEditTime: 2020-10-13 10:08:38
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\TopMenu\index.tsx
@@ -70,8 +70,32 @@ const MenuItem: FC<menuItemProps> = ({
       <MenuLink to={url}>
         {prefixDom}
         <span>{title}</span>
-        {children}
       </MenuLink>
+      {children}
+    </div>
+  )
+}
+
+// 导航item direction
+const MenuColItem: FC<menuItemProps> = ({
+  title,
+  prefix = '',
+  url = '',
+  children = '',
+}): React.ReactElement => {
+  const prefixDom = (() => {
+    if (prefix) {
+      return <span className={styles.menu_item_prefix}>{typeof prefix === 'string' ? <Icon type={prefix} /> : prefix}</span>
+    }
+    return '';
+  })();
+  return (
+    <div className={styles.menu_item}>
+      <MenuLink to={url}>
+        {prefixDom}
+        <span>{title}</span>
+      </MenuLink>
+      {children}
     </div>
   )
 }
