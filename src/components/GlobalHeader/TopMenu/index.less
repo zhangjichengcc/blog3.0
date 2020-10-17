@@ -1,0 +1,24 @@
+.base_menu {
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  color: #fff;
+  height: 100%;
+  .menu_item {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 10px;
+    height: 100%;
+    padding: 0 10px;
+    a {
+      color: #fff;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+    .menu_item_prefix {
+      margin-right: 5px;
+    }
+  }
+}

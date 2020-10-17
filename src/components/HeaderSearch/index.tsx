@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-03 18:07:53
+ * @LastEditTime: 2020-10-04 16:49:32
  * @LastEditors: zhangjicheng
  * @Description: 头部搜索框
  * @FilePath: \blog3.0\src\components\HeaderSearch\index.tsx
@@ -18,9 +18,13 @@ const { Search } = Input;
 
 interface headerSearchProps {
   onSearch: (value: string, callBack: () => void) => void;
+  style?: object;
 }
 
-const HeaderSearch: FC<headerSearchProps> = ({ onSearch }) => {
+const HeaderSearch: FC<headerSearchProps> = ({ 
+  onSearch,
+  style = {}
+}) => {
   const [searchVisiable, setSearchVisiable] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -35,7 +39,7 @@ const HeaderSearch: FC<headerSearchProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className={classnames(styles.headerSearch, searchVisiable ? styles.active : '')}>
+    <div className={classnames(styles.headerSearch, searchVisiable ? styles.active : '')} style={style}>
       <span className={styles.searchText} onClick={() => setSearchVisiable(true)}>
         <SearchOutlined style={{ paddingRight: 6, fontSize: 20 }} />
         <span>搜索</span>
