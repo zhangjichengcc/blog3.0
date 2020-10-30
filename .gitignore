@@ -9,6 +9,7 @@ _roadhog-api-doc
 
 # production
 /dist
+/dist.zip
 /.vscode
 
 # misc
@@ -39,3 +40,4 @@ screenshot
 .eslintcache
 
 build
+
