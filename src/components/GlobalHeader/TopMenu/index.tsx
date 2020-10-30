@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-13 10:08:38
+ * @LastEditTime: 2020-10-31 05:13:55
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\TopMenu\index.tsx
@@ -9,6 +9,7 @@
  */
 
 import React, { FC, useState } from 'react';
+import classname from 'classnames';
 import styles from './index.less';
 import { Icon } from 'antd';
 import { Link } from 'umi';
@@ -52,12 +53,14 @@ interface menuItemProps {
   prefix?: string | React.ReactNode;
   url?: string;
   children?: string | React.ReactNode;
+  active?: boolean;
 }
 const MenuItem: FC<menuItemProps> = ({
   title,
   prefix = '',
   url = '',
   children = '',
+  active,
 }): React.ReactElement => {
   const prefixDom = (() => {
     if (prefix) {
@@ -66,7 +69,7 @@ const MenuItem: FC<menuItemProps> = ({
     return '';
   })();
   return (
-    <div className={styles.menu_item}>
+    <div className={classname(styles.menu_item, active ? styles.active : '')}>
       <MenuLink to={url}>
         {prefixDom}
         <span>{title}</span>
@@ -127,17 +130,25 @@ interface routeMenuProps {
 const RouteMenu: FC<routeMenuProps> = ({
   routes = [],
 }): React.ReactElement => {
+  const { pathname } = globalThis.location;
   const router = filterRoutes(routes);
   return (
     <>{
-      router.map((item, idx) => (
-        <MenuItem
-          title={item.name}
-          prefix={item.icon}
-          url={item.path}
-          // children={<ChildrenMenu routes={item.routes} />}
-        />
-      ))
+      router.map((item: any) => {
+        const { name, icon, path } = item;
+        const pathReg = new RegExp(`^${path.replace(/\//g, '\\/')}\\/?`);
+        const active = path === '/' ? path === pathname : pathReg.test(pathname);
+        console.log(active)
+        return (
+          <MenuItem
+            active={active}
+            title={name}
+            prefix={icon}
+            url={path}
+            // children={<ChildrenMenu routes={item.routes} />}
+          />
+        )
+      })
     }</>
   )
 }
