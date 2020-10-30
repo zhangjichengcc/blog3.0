@@ -15,24 +15,18 @@ import TopMenu from './TopMenu';
 import logo from '@/assets/logo.png';
 import styles from './index.less';
 
-
 type logoProps = {
   src: string;
   pathname?: string;
   style?: object;
-}
-const Logo: FC<logoProps> = ({
-  src,
-  pathname = '/',
-  style = {},
-}) => {
+};
+const Logo: FC<logoProps> = ({ src, pathname = '/', style = {} }) => {
   return (
     <Link to={pathname} className={styles.logo} key="logo">
       <img className={styles.logo_img} src={src} alt="logo" style={style} />
     </Link>
-  )
-}
-
+  );
+};
 
 interface globalHeaderProps {
   onSearch: (value: string, callBack: () => void) => void;
@@ -40,18 +34,12 @@ interface globalHeaderProps {
   thatRoute: Object;
 }
 
-const GlobalHeader: FC<globalHeaderProps> = (props) => {
-  const {
-    route,
-    thatRoute,
-  } = props;
+const GlobalHeader: FC<globalHeaderProps> = props => {
+  const { route, thatRoute } = props;
   return (
     <div className={styles.global_header}>
-      <Logo src={logo} style={{height: '80%'}} />
-      <TopMenu
-        route={route}
-        thatRoute={thatRoute}
-      />
+      <Logo src={logo} style={{ height: '80%' }} />
+      <TopMenu route={route} thatRoute={thatRoute} />
       <RightTools />
     </div>
   );

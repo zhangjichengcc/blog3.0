@@ -21,31 +21,24 @@ const filterRoutes = (arr: Array<any>) => {
     const item = arr[i];
     if (!item.path || !item.name || item.hideMenu) continue;
     if (item.routes && item.routes.length) {
-      _arr.push({...item, routes: filterRoutes(item.routes)});
+      _arr.push({ ...item, routes: filterRoutes(item.routes) });
     } else {
-      _arr.push(item)
+      _arr.push(item);
     }
   }
   return _arr;
-}
+};
 
 // 生成Link
 type menuLinkProps = {
-  to?: string,
-  children: string | React.ReactNode,
-}
-const MenuLink: FC<menuLinkProps> = ({
-  to = '',
-  children = '',
-}): React.ReactElement => {
+  to?: string;
+  children: string | React.ReactNode;
+};
+const MenuLink: FC<menuLinkProps> = ({ to = '', children = '' }): React.ReactElement => {
   const httpReg = new RegExp(/^https?:\/\//);
-  if (!to) return <span>{children}</span>
-  return httpReg.test(to) ? (
-    <a href={to}>{children}</a>
-  ) : (
-    <Link to={to}>{children}</Link>
-  )
-}
+  if (!to) return <span>{children}</span>;
+  return httpReg.test(to) ? <a href={to}>{children}</a> : <Link to={to}>{children}</Link>;
+};
 
 // 导航item
 interface menuItemProps {
@@ -64,7 +57,11 @@ const MenuItem: FC<menuItemProps> = ({
 }): React.ReactElement => {
   const prefixDom = (() => {
     if (prefix) {
-      return <span className={styles.menu_item_prefix}>{typeof prefix === 'string' ? <Icon type={prefix} /> : prefix}</span>
+      return (
+        <span className={styles.menu_item_prefix}>
+          {typeof prefix === 'string' ? <Icon type={prefix} /> : prefix}
+        </span>
+      );
     }
     return '';
   })();
@@ -76,8 +73,8 @@ const MenuItem: FC<menuItemProps> = ({
       </MenuLink>
       {children}
     </div>
-  )
-}
+  );
+};
 
 // 导航item direction
 const MenuColItem: FC<menuItemProps> = ({
@@ -88,7 +85,11 @@ const MenuColItem: FC<menuItemProps> = ({
 }): React.ReactElement => {
   const prefixDom = (() => {
     if (prefix) {
-      return <span className={styles.menu_item_prefix}>{typeof prefix === 'string' ? <Icon type={prefix} /> : prefix}</span>
+      return (
+        <span className={styles.menu_item_prefix}>
+          {typeof prefix === 'string' ? <Icon type={prefix} /> : prefix}
+        </span>
+      );
     }
     return '';
   })();
@@ -100,45 +101,37 @@ const MenuColItem: FC<menuItemProps> = ({
       </MenuLink>
       {children}
     </div>
-  )
-}
+  );
+};
 
 // 二级导航
 interface childrenMenuProps {
   routes: Array<any>;
 }
-const ChildrenMenu: FC<childrenMenuProps> = ({
-  routes = [],
-}): React.ReactElement => {
-  return <div>
-    {
-      routes.map((item, idx) => (
-        <MenuItem
-          title={item.name}
-          prefix={item.icon}
-          url={item.path}
-        />
-      ))
-    }
-  </div>
-}
+const ChildrenMenu: FC<childrenMenuProps> = ({ routes = [] }): React.ReactElement => {
+  return (
+    <div>
+      {routes.map((item, idx) => (
+        <MenuItem title={item.name} prefix={item.icon} url={item.path} />
+      ))}
+    </div>
+  );
+};
 
 // 路由导航
 interface routeMenuProps {
   routes: Array<any>;
 }
-const RouteMenu: FC<routeMenuProps> = ({
-  routes = [],
-}): React.ReactElement => {
+const RouteMenu: FC<routeMenuProps> = ({ routes = [] }): React.ReactElement => {
   const { pathname } = globalThis.location;
   const router = filterRoutes(routes);
   return (
-    <>{
-      router.map((item: any) => {
+    <>
+      {router.map((item: any) => {
         const { name, icon, path } = item;
         const pathReg = new RegExp(`^${path.replace(/\//g, '\\/')}\\/?`);
         const active = path === '/' ? path === pathname : pathReg.test(pathname);
-        console.log(active)
+        console.log(active);
         return (
           <MenuItem
             active={active}
@@ -147,20 +140,17 @@ const RouteMenu: FC<routeMenuProps> = ({
             url={path}
             // children={<ChildrenMenu routes={item.routes} />}
           />
-        )
-      })
-    }</>
-  )
-}
-
+        );
+      })}
+    </>
+  );
+};
 
 interface topMenuProps {
   route: any;
   thatRoute: Object;
 }
-const TopMenu: FC<topMenuProps> = ({
-  route,
-}) => {
+const TopMenu: FC<topMenuProps> = ({ route }) => {
   const { routes = [] } = route;
   return (
     <div className={styles.base_menu}>

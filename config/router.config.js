@@ -89,7 +89,7 @@ export default [
                 name: '404',
                 component: './404',
               },
-            ]
+            ],
           },
           {
             path: '/403',
