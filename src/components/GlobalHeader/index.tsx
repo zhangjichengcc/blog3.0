@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-12 14:40:15
+ * @LastEditTime: 2020-10-31 02:53:01
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\index.tsx
@@ -23,7 +23,7 @@ type logoProps = {
 const Logo: FC<logoProps> = ({ src, pathname = '/', style = {} }): React.ReactElement => {
   return (
     <Link to={pathname} className={styles.logo} key="logo">
-      <img src={src} alt="logo" style={style} />
+      <img className={styles.logo_img} src={src} alt="logo" style={style} />
     </Link>
   );
 };

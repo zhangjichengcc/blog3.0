@@ -55,10 +55,16 @@
       width: 23%;
       float: left;
       padding-left: 15px;
+      :global {
+        .ant-anchor-wrapper {
+          background-color: transparent;
+        }
+      }
     }
     .centerContent {
       .page-animate-opacity;
       width: @center-width;
+      background-color: #fff;
       min-height: 100px;
       float: left;
       margin: 0 10px;

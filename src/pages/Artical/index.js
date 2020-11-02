@@ -210,13 +210,12 @@ class Home extends Component {
             </div>
             <div className={styles.mainBody}>
               <div className={styles.leftContent}>
-                {/* <div>
+                <div>
                   <p>这是广告</p>
                   <p>是广告这</p>
                   <p>广告这是</p>
                   <p>告这是广</p>
-                </div> */}
-                {this.displayNav()}
+                </div>
               </div>
               <div className={styles.centerContent}>
                 <div className={styles.articalHead}>
@@ -233,7 +232,7 @@ class Home extends Component {
                 {/* </Card> */}
               </div>
               <div className={styles.rightContent}>
-                {/* <Button onClick={() => {this.setState({drawerVisiable: true})}}>导航</Button> */}
+                {this.displayNav()}
               </div>
             </div>
             {/* 移动端展示导航抽屉 */}

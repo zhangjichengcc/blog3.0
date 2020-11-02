@@ -10,6 +10,7 @@
 
 import React, { FC, useState } from 'react';
 import HeaderSearch from '@/components/HeaderSearch';
+import SelectLang from '@/components/SelectLang';
 import AvatarDropdown from '../AvatarDropdown';
 import styles from './index.less';
 
@@ -35,6 +36,7 @@ const GlobalHeader: FC<headerSearchProps> = () => {
     <div className={styles.right_tools}>
       <HeaderSearch onSearch={onSearch} />
       <AvatarDropdown />
+      <SelectLang />
     </div>
   );
 };
