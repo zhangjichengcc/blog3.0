@@ -1,4 +1,4 @@
-@import '~antd/es/style/themes/default.less';
+@import "~antd/es/style/themes/default.less";
 
 .menu {
   :global(.anticon) {
@@ -10,15 +10,19 @@
 }
 
 .dropDown {
-  line-height: @layout-header-height;
-  vertical-align: top;
+  display: flex;
+  margin-left: 15px;
   cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all ease 0.3s;
+  &:hover {
+    color: #fff;
+  }
   > i {
     font-size: 16px !important;
     transform: none !important;
     svg {
       position: relative;
-      top: -1px;
     }
   }
 }

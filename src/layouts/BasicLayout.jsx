@@ -1,13 +1,13 @@
 // import ProLayout from '@ant-design/pro-layout';
-import { Layout } from 'antd';
-import React, { useState } from 'react';
-import Link from 'umi/link';
-import { connect } from 'dva';
-import GlobalHeader from '@/components/GlobalHeader';
+import { Layout } from "antd";
+import React, { useState } from "react";
+import Link from "umi/link";
+import { connect } from "dva";
+import GlobalHeader from "@/components/GlobalHeader";
 // import { formatMessage } from 'umi-plugin-react/locale';
-import classnames from 'classnames';
-import Authorized from '@/utils/Authorized';
-import styles from './BasicLayout.less';
+import classnames from "classnames";
+import Authorized from "@/utils/Authorized";
+import styles from "./BasicLayout.less";
 // import RightContent from '@/components/GlobalHeader/RightContent';
 
 /**
@@ -18,7 +18,10 @@ const { Content } = Layout;
 
 const menuDataRender = menuList =>
   menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
+    const localItem = {
+      ...item,
+      children: item.children ? menuDataRender(item.children) : []
+    };
     return Authorized.check(item.authority, localItem, null);
   });
 
@@ -93,17 +96,14 @@ const BasicLayout = props => {
     //   <div>{children}</div>
     // </ProLayout>
     <Layout>
-      <GlobalHeader
-        {...props}
-        thatRoute={thatRoute}
-      />
+      <GlobalHeader {...props} thatRoute={thatRoute} />
       <Content>{children}</Content>
-      <footerRender />
+      {footerRender()}
     </Layout>
   );
 };
 
 export default connect(({ global, settings }) => ({
   collapsed: global.collapsed,
-  settings,
+  settings
 }))(BasicLayout);

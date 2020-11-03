@@ -1,0 +1,35 @@
+/*
+ * @Author: zhangjicheng
+ * @Date: 2020-11-03 20:41:24
+ * @LastEditTime: 2020-11-03 20:46:24
+ * @LastEditors: zhangjicheng
+ * @Description: 
+ * @FilePath: \blog3.0\.eslintrc
+ * @可以输入预定的版权声明、个性签名、空行等
+ */
+
+{
+	"env": {
+		"browser": true,
+		"es2020": true
+	},
+		"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+		"parser": "@typescript-eslint/parser",
+		"parserOptions": {
+		"ecmaFeatures": {
+		"jsx": true
+	},
+		"ecmaVersion": 11,
+		"sourceType": "module"
+	},
+		"plugins": [
+		"react",
+		"@typescript-eslint"
+	],
+	"rules": {
+	}
+}
