@@ -24,13 +24,12 @@
       "echarts-gl": ["node_modules/echarts-gl/dist/echarts-gl.min.js"]
     }
   },
-  "include": ["src/**/*", "src/**/**/*", "typings.d.ts"],
+  "include": ["src/**/*", "typings.d.ts"],
   "exclude": [
     "node_modules",
     "build",
     "scripts",
     "acceptance-tests",
-    "src/.umi/*",
     "webpack",
     "jest",
     "src/setupTests.ts",
