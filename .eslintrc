@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-11-03 20:41:24
- * @LastEditTime: 2020-11-03 20:57:38
+ * @LastEditTime: 2020-11-04 10:22:08
  * @LastEditors: zhangjicheng
  * @Description: 
  * @FilePath: \blog3.0\.eslintrc
@@ -31,7 +31,9 @@
 		"@typescript-eslint"
 	],
 	"rules": {
-		"import/no-unresolved": 0
+		"import/no-unresolved": 0,
+		"react/prop-types": 0,
+		"@typescript-eslint/no-explicit-any": 0
 		// "import/no-unresolved": [2, {
     //   "ignore": ["^@/", "^umi/", "^dva", "^assets/", "^pages/", "^components/", "^utils/", "^services/", "^models/",  "^themes/", "^public/"]
     // }]
