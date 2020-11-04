@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+// import { Layout } from "antd";
 import React, { FC } from "react";
 // import { connect } from "dva";
 import GlobalHeader from "@/components/GlobalHeader";
@@ -11,7 +11,7 @@ import styles from "./BasicLayout.less";
  * use Authorized check all menu item
  */
 
-const { Content } = Layout;
+// const { Content } = Layout;
 
 interface basicLayoutProps {
   route: { [key: string]: any };
@@ -42,11 +42,12 @@ const BasicLayout: FC<basicLayoutProps> = props => {
   };
 
   return (
-    <Layout>
+    <div>
       <GlobalHeader {...props} thatRoute={thatRoute} onSearch={globaSearch} />
-      <Content>{children}</Content>
+      {/* <Content>{children}</Content> */}
+      {children}
       {footerRender()}
-    </Layout>
+    </div>
   );
 };
 

@@ -1,4 +1,3 @@
-/* eslint-disable compat/compat */
 import { Button, message, notification } from 'antd';
 import React from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -78,7 +77,6 @@ if (pwa) {
     });
   });
 } else if ('serviceWorker' in navigator) {
-  // eslint-disable-next-line eslint-comments/no-duplicate-disable
   navigator.serviceWorker.ready
     .then(registration => {
       registration.unregister();
