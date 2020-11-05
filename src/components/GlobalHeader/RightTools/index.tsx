@@ -10,9 +10,9 @@
 
 import React, { FC, useState } from 'react';
 import HeaderSearch from '@/components/HeaderSearch';
+import SelectLang from '@/components/SelectLang';
 import AvatarDropdown from '../AvatarDropdown';
 import styles from './index.less';
-
 
 interface headerSearchProps {
   onSearch: (value: string, callBack: () => void) => void;
@@ -27,14 +27,13 @@ const GlobalHeader: FC<headerSearchProps> = () => {
   //   setSearchVisiable(false);
   // };
 
-  const onSearch = (value: string, callBack) => {
-    
-  };
+  const onSearch = (value: string, callBack) => {};
 
   return (
     <div className={styles.right_tools}>
       <HeaderSearch onSearch={onSearch} />
       <AvatarDropdown />
+      <SelectLang />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2019-12-06 14:48:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-10-31 05:35:32
+ * @LastEditors: zhangjicheng
  * @Description: In User Settings Edit
  * @FilePath: \blog3.0\config\router.config.js
  */
@@ -39,26 +39,30 @@ export default [
           {
             // 首页
             path: '/',
-            name: 'home',
+            name: 'HOME',
             icon: 'home',
             component: './Home',
           },
           {
+            path: '/homepage',
+            redirect: '/',
+          },
+          {
             // 文章详情
-            path: '/artical',
+            path: '/ARTICAL',
             component: './Artical',
           },
           {
             // 文章编辑
             path: '/editor',
-            name: 'editor',
-            icon: 'home',
+            name: 'EDIT',
+            icon: 'form',
             component: './Editor',
           },
           {
             // 实例
             path: '/demo',
-            name: 'demo',
+            name: 'DEMO',
             style: 'dark',
             icon: 'appstore',
             component: './Demo',
@@ -66,8 +70,26 @@ export default [
           {
             // 文章管理
             path: '/articalManage',
-            name: 'articalManage',
+            name: 'MANAGE',
+            icon: 'project',
             component: './articalManage',
+          },
+          {
+            // 测试
+            path: '/test',
+            name: 'TEST',
+            icon: 'deployment-unit',
+            routes: [
+              {
+                name: '403',
+                path: '/403',
+                component: './403',
+              },
+              {
+                name: '404',
+                component: './404',
+              },
+            ],
           },
           {
             path: '/403',

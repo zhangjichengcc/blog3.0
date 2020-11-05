@@ -1,13 +1,13 @@
 // import ProLayout from '@ant-design/pro-layout';
-import { Layout } from 'antd';
-import React, { useState } from 'react';
-import Link from 'umi/link';
-import { connect } from 'dva';
-import GlobalHeader from '@/components/GlobalHeader';
+import { Layout } from "antd";
+import React, { useState } from "react";
+import Link from "umi/link";
+import { connect } from "dva";
+import GlobalHeader from "@/components/GlobalHeader";
 // import { formatMessage } from 'umi-plugin-react/locale';
-import classnames from 'classnames';
-import Authorized from '@/utils/Authorized';
-import styles from './BasicLayout.less';
+import classnames from "classnames";
+import Authorized from "@/utils/Authorized";
+import styles from "./BasicLayout.less";
 // import RightContent from '@/components/GlobalHeader/RightContent';
 
 /**
@@ -18,7 +18,10 @@ const { Content } = Layout;
 
 const menuDataRender = menuList =>
   menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
+    const localItem = {
+      ...item,
+      children: item.children ? menuDataRender(item.children) : []
+    };
     return Authorized.check(item.authority, localItem, null);
   });
 
@@ -32,37 +35,30 @@ const BasicLayout = props => {
   const { dispatch, children, settings, route = {}, location } = props;
   const { routes = [] } = route;
   const { pathname } = location;
+  // 当前路由
   const thatRoute = routes.filter(v => v.path === pathname)[0] || {};
-  // 获取当前页面风格 dark || lignt
-  const style = thatRoute.style || 'light';
-  /**
-   * constructor
-   */
+  window.layoutProps = props;
+  // useState(() => {
+  //   if (dispatch) {
+  //     dispatch({
+  //       type: 'user/fetchCurrent',
+  //     });
+  //     dispatch({
+  //       type: 'settings/getSetting',
+  //     });
+  //   }
+  // });
 
-  useState(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-      dispatch({
-        type: 'settings/getSetting',
-      });
-    }
-  });
-  /**
-   * init variables
-   */
-
-  const handleMenuCollapse = payload =>
-    dispatch &&
-    dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload,
-    });
+  // const handleMenuCollapse = payload =>
+  //   dispatch &&
+  //   dispatch({
+  //     type: 'global/changeLayoutCollapsed',
+  //     payload,
+  //   });
 
   const footerRender = () => {
     return (
-      <div className={classnames(styles.footer, style === 'dark' ? styles.dark : {})}>
+      <div className={classnames(styles.footer)}>
         <span>Copyright &copy; 2019 Veigar</span>
         <span>坑位招租 坑位招租 坑位招租 赞助提供</span>
       </div>
@@ -100,13 +96,14 @@ const BasicLayout = props => {
     //   <div>{children}</div>
     // </ProLayout>
     <Layout>
-      <GlobalHeader />
+      <GlobalHeader {...props} thatRoute={thatRoute} />
       <Content>{children}</Content>
+      {footerRender()}
     </Layout>
   );
 };
 
 export default connect(({ global, settings }) => ({
   collapsed: global.collapsed,
-  settings,
+  settings
 }))(BasicLayout);

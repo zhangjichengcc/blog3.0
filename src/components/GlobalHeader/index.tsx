@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-04 18:05:07
+ * @LastEditTime: 2020-10-31 02:53:01
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\index.tsx
@@ -15,47 +15,31 @@ import TopMenu from './TopMenu';
 import logo from '@/assets/logo.png';
 import styles from './index.less';
 
-
 type logoProps = {
   src: string;
   pathname?: string;
   style?: object;
-}
-const Logo: FC<logoProps> = ({
-  src,
-  pathname = '/',
-  style = {},
-}) => {
+};
+const Logo: FC<logoProps> = ({ src, pathname = '/', style = {} }): React.ReactElement => {
   return (
     <Link to={pathname} className={styles.logo} key="logo">
-      <img src={src} alt="logo" style={style} />
+      <img className={styles.logo_img} src={src} alt="logo" style={style} />
     </Link>
-  )
-}
+  );
+};
 
-
-interface headerSearchProps {
+interface globalHeaderProps {
   onSearch: (value: string, callBack: () => void) => void;
+  route: Object;
+  thatRoute: Object;
 }
 
-const GlobalHeader: FC<headerSearchProps> = ({ onSearch }) => {
-  // const [searchVisiable, setSearchVisiable] = useState<boolean>(false);
-  // const [loading, setLoading] = useState<boolean>(false);
-
-  // const callBack = () => {
-  //   setLoading(false);
-  //   setSearchVisiable(false);
-  // };
-
-  // const search = (value: string) => {
-  //   setLoading(true);
-  //   onSearch(value, callBack);
-  // };
-
+const GlobalHeader: FC<globalHeaderProps> = props => {
+  const { route, thatRoute } = props;
   return (
     <div className={styles.global_header}>
-      <Logo src={logo} style={{height: '80%'}} />
-      <TopMenu />
+      <Logo src={logo} style={{ height: '80%' }} />
+      <TopMenu route={route} thatRoute={thatRoute} />
       <RightTools />
     </div>
   );
