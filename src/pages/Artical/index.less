@@ -1,16 +1,15 @@
-@import '~antd/es/style/themes/default.less';
-@import '~@/utils.less';
-@import '~@/default.less';
-@import '~@/utils/marked.less';
-@import '../../default.less';
+@import "~antd/es/style/themes/default.less";
+@import "~@/utils.less";
+@import "~@/default.less";
+@import "~@/utils/marked.less";
+@import "../../default.less";
 
 @center-width: 700px;
-@side-width: 35%;
 
 .Artical {
-  // max-width: 1320px;
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
+  background-color: @articalPage-bgColor;
   .banner {
     .page-banner-animate;
     width: 100%;
@@ -142,20 +141,45 @@
 .tools_bar_content {
   display: flex;
   flex-direction: column;
-  >.tools_icon_like,
-  >.tools_icon_message,
-  >.tools_icon_star {
+  > .tools_icon {
     position: relative;
     width: 36px;
     height: 36px;
+    font-size: 14px;
     background-color: #fff;
     border-radius: 50%;
     opacity: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.04);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
     margin-bottom: 20px;
+    cursor: pointer;
+    transition: color ease 0.3s;
+    color: #b2bac2;
+    &:hover {
+      color: #8a93a0;
+    }
+    &.badge {
+      &::before {
+        content: attr(data-badge);
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 0;
+        left: 75%;
+        line-height: 1;
+        white-space: nowrap;
+        color: #fff;
+        background-color: #b2bac2;
+        transform-origin: left top;
+        transform: scale(0.6);
+        font-size: 14px;
+        height: 19px;
+        border-radius: 19px;
+        padding: 0 6px;
+      }
+    }
   }
 }
 
@@ -163,7 +187,6 @@
   padding-top: 10vh;
   text-align: center;
 }
-
 
 // 以下为自适应样式
 @media screen and (max-width: @screen-lg) {

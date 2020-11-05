@@ -1,138 +1,22 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2019-12-05 14:25:35
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-05 18:45:23
+ * @LastEditors: zhangjicheng
  * @Description: In User Settings Edit
  * @FilePath: \blog3.0\src\layouts\BasicLayout.less
  */
-@import '~@/default.less';
-@import '../default.less';
+@import "../default.less";
 
-.footer {
-  margin-top: 30px;
-  padding: 30px 0;
-  text-align: center;
-  > span {
-    display: block;
-  }
-  > span:nth-child(1) {
-    color: @font-color2;
-    font-size: 14px;
-  }
-  > span:nth-child(2) {
-    margin-top: 8px;
-    color: @font-color1;
-    font-size: 13px;
-  }
-}
-
-:global {
-  .ant-drawer-wrapper-body {
-    background-color: #001529;
-  }
-}
-
-.ProLayout {
-  :global {
-    // .basicLayout,
-    // .ant-design-pro {
-    .ant-layout {
-      background-color: #fff;
-      transition: all ease 0.3s;
-      .ant-pro-basicLayout-content {
-        margin: 0;
-      }
-    }
-    .ant-layout-header {
-      height: @layout-header-height-def;
-      background-color: @mobile-header-bgcolor;
-      line-height: @layout-header-height-def;
-      position: fixed !important;
-      .ant-pro-top-nav-header {
-        height: @layout-header-height-def;
-      }
-      .ant-pro-top-nav-header-main {
-        height: @layout-header-height-def;
-      }
-      .ant-pro-top-nav-header-left {
-        // 导航动画
-        .page-nav-animate-left;
-        height: @layout-header-height-def;
-        .ant-pro-top-nav-header-logo {
-          height: @layout-header-height-def;
-          line-height: @layout-header-height-def;
-        }
-      }
-      .ant-menu.ant-menu-horizontal {
-        // 导航动画
-        .page-nav-animate-left;
-        height: @layout-header-height-def;
-        line-height: @layout-header-height-def;
-        background-color: transparent;
-      }
-      .ant-pro-global-header {
-        height: @layout-header-height-def;
-        background-color: transparent;
-        font-size: 0;
-        .ant-pro-global-header-logo {
-          height: @layout-header-height-def;
-          line-height: calc(@layout-header-height-def - 5px);
-        }
-        .ant-pro-global-header-trigger {
-          color: #fff;
-          height: @layout-header-height-def;
-          line-height: @layout-header-height-def;
-          padding: calc((@layout-header-height-def - 24px) / 2) 24px;
-          &:hover {
-            background-color: @mobile-header-bgcolor;
-          }
-        }
-      }
-    }
-    .ant-pro-basicLayout-content {
-      padding-top: 0 !important;
-    }
-
-    // 移动端
-    // &.screen-xs {
-    @media only screen and (max-width: @screen-xs) {
-      .ant-layout-header {
-        height: @mobile-header-height;
-        background-color: @mobile-header-bgcolor;
-        .ant-pro-global-header {
-          height: @mobile-header-height;
-          // background-color: @mobile-header-bgcolor;
-          background-color: transparent;
-          font-size: 0;
-          .ant-pro-global-header-logo {
-            height: @mobile-header-height;
-            line-height: calc(@mobile-header-height - 5px);
-          }
-          .ant-pro-global-header-trigger {
-            color: #fff;
-            height: @mobile-header-height;
-            line-height: @mobile-header-height;
-            padding: calc((@mobile-header-height - 24px) / 2) 24px;
-            &:hover {
-              background-color: @mobile-header-bgcolor;
-            }
-          }
-        }
-      }
-      .ant-pro-basicLayout-content {
-        padding-top: @mobile-header-height;
-      }
-    }
-  }
-  &.dark {
-    :global {
-      .ant-layout {
-        background-color: #0a0e18;
-        .ant-layout-header {
-          background-color: #001529;
-        }
-      }
-    }
+.basic_layout {
+  width: 100%;
+  min-height: 100vh;
+  background-color: @basicLayout_bgColor;
+  /**
+   * 解决高度塌陷问题(子元素maigin 无法撑开父元素)
+   */
+  &::before {
+    content: "";
+    display: table;
   }
 }

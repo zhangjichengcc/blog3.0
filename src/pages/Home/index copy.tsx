@@ -1,32 +1,35 @@
-import React, { Component } from 'react';
-import { Icon, Popover, Alert, BackTop, Button } from 'antd';
-import router from 'umi/router';
-import moment from 'js-moment';
+import React, { Component } from "react";
+import { Icon, Popover, Alert, BackTop, Button } from "antd";
+import router from "umi/router";
+import moment from "js-moment";
 // import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
-import classnames from 'classnames';
-import ArticalCard from '@/components/ArticalCard';
+import classnames from "classnames";
+import ArticalCard from "@/components/ArticalCard";
 // import advertImg1 from '@/assets/image/home/advert.jpg';
-import weChatImg from '@/assets/image/my-wechat.jpg';
-import config from '@/config';
-import styles from './index.less';
-import Ellipsis from '@/components/Ellipsis';
-import { queryArticalList } from '@/services/artical';
-import { isPc, offset } from '@/utils/utils';
+import weChatImg from "@/assets/image/my-wechat.jpg";
+import config from "@/config";
+import styles from "./index.less";
+import Ellipsis from "@/components/Ellipsis";
+import { queryArticalList } from "@/services/artical";
+import { isPc, offset } from "@/utils/utils";
 
 // const { TagCloud } = Charts;
 
 class Home extends Component {
-  state = {
-    articalList: [],
-    pageParams: {
-      pageSize: 10,
-      pageNum: 1,
-      total: 0,
-    },
-    articalLoaded: false,
-    articalLoading: false,
-  };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      articalList: [],
+      pageParams: {
+        pageSize: 10,
+        pageNum: 1,
+        total: 0
+      },
+      articalLoaded: false,
+      articalLoading: false
+    };
+  }
 
   componentDidMount() {
     global.that = this;
@@ -43,13 +46,13 @@ class Home extends Component {
     const isPC = isPc();
     this.setState(
       {
-        isPC,
+        isPC
       },
       () => {
         if (!isPC) {
-          window.addEventListener('scroll', this.scrollFun);
+          window.addEventListener("scroll", this.scrollFun);
         }
-      },
+      }
     );
   };
 
@@ -64,16 +67,16 @@ class Home extends Component {
     }
   };
 
-  openView = (type = '') => {
+  openView = (type = "") => {
     switch (type) {
-      case 'book':
-        window.open('https://zhangjichengcc.github.io/blog/');
+      case "book":
+        window.open("https://zhangjichengcc.github.io/blog/");
         break;
-      case 'github':
-        window.open('https://github.com/zhangjichengcc');
+      case "github":
+        window.open("https://github.com/zhangjichengcc");
         break;
       default:
-        console.warn('undefined');
+        console.warn("undefined");
     }
   };
 
@@ -83,7 +86,7 @@ class Home extends Component {
     const { pageNum, pageSize } = pageParams;
     const pagems = {
       pageNum,
-      pageSize,
+      pageSize
     };
     this.setState({ articalLoading: true });
     queryArticalList(pagems).then(res => {
@@ -97,18 +100,18 @@ class Home extends Component {
           articalList: [...articalList, ...list],
           pageParams: {
             ...pageParams,
-            total,
-          },
+            total
+          }
         });
       } else {
         this.setState(
           {
             articalLoading: false,
-            articalLoaded: true,
+            articalLoaded: true
           },
           () => {
             console.warn(msg);
-          },
+          }
         );
       }
     });
@@ -122,22 +125,22 @@ class Home extends Component {
       {
         pageParams: {
           ...pageParams,
-          pageNum: pageNum + 1,
-        },
+          pageNum: pageNum + 1
+        }
       },
       () => {
         this.fetchArtical();
-      },
+      }
     );
   };
 
   cardClick = item => {
     const { id } = item;
     router.push({
-      pathname: '/artical',
+      pathname: "/artical",
       query: {
-        id,
-      },
+        id
+      }
     });
   };
 
@@ -151,10 +154,12 @@ class Home extends Component {
       articalLoading = false,
       articalLoaded = false,
       isPC = true,
-      showContent = false,
+      showContent = false
     } = this.state;
     const { topArtical } = config;
-    const wechatContent = <img src={weChatImg} alt="微信二维码" className={styles.wechatContent} />;
+    const wechatContent = (
+      <img src={weChatImg} alt="微信二维码" className={styles.wechatContent} />
+    );
     const mailContent = <span>{config.mail}</span>;
 
     return (
@@ -166,14 +171,22 @@ class Home extends Component {
             <span>Just for a new height</span>
           </div>
           <Icon
-            className={classnames(styles.banner_openKey, showContent ? styles.active : '')}
-            type={showContent ? 'minus-circle' : 'plus-circle'}
+            className={classnames(
+              styles.banner_openKey,
+              showContent ? styles.active : ""
+            )}
+            type={showContent ? "minus-circle" : "plus-circle"}
             theme="filled"
             onClick={() => {
               this.setState({ showContent: !showContent });
             }}
           />
-          <div className={classnames(styles.banner_content, showContent ? styles.active : '')}>
+          <div
+            className={classnames(
+              styles.banner_content,
+              showContent ? styles.active : ""
+            )}
+          >
             {/* <p className={styles.avator} /> */}
             <div className={styles.content}>
               <span>{config.info}</span>
@@ -181,9 +194,9 @@ class Home extends Component {
                 <Icon
                   className={styles.icon}
                   onClick={() => {
-                    this.openView('book');
+                    this.openView("book");
                   }}
-                  style={{ fontSize: 22, transform: 'translateY(-2px)' }}
+                  style={{ fontSize: 22, transform: "translateY(-2px)" }}
                   type="book"
                   theme="filled"
                 />
@@ -198,27 +211,31 @@ class Home extends Component {
                 <Icon
                   className={styles.icon}
                   onClick={() => {
-                    this.openView('github');
+                    this.openView("github");
                   }}
-                  style={{ color: '#fff', fontSize: 26 }}
+                  style={{ color: "#fff", fontSize: 26 }}
                   type="github"
                   theme="filled"
                 />
                 <Icon
                   className={styles.icon}
                   onClick={() => {
-                    this.openView('weibo');
+                    this.openView("weibo");
                   }}
-                  style={{ color: '#fff' }}
+                  style={{ color: "#fff" }}
                   type="weibo"
                 />
-                <Popover content={mailContent} trigger="hover" placement="topRight">
+                <Popover
+                  content={mailContent}
+                  trigger="hover"
+                  placement="topRight"
+                >
                   <Icon
                     className={styles.icon}
                     onClick={() => {
-                      this.openView('mail');
+                      this.openView("mail");
                     }}
-                    style={{ color: '#fff', fontSize: 25 }}
+                    style={{ color: "#fff", fontSize: 25 }}
                     type="mail"
                     theme="filled"
                   />
@@ -242,7 +259,11 @@ class Home extends Component {
               <span>
                 之前的博客将继续保留再github博客上,
                 {/* eslint-disable-next-line react/jsx-no-target-blank */}
-                <a target="_blank" rel="博客v1.0" href="https://zhangjichengcc.github.io/blog/">
+                <a
+                  target="_blank"
+                  rel="博客v1.0"
+                  href="https://zhangjichengcc.github.io/blog/"
+                >
                   https://zhangjichengcc.github.io/blog/
                 </a>
                 。 同时，将会慢慢将博客同步到当前版本中。
@@ -313,8 +334,12 @@ class Home extends Component {
               {articalLoaded ? (
                 <span>很高兴你会看到这里，不过真的没有了...</span>
               ) : (
-                <Button onClick={this.loadMore} type="primary" loading={articalLoading}>
-                  {articalLoading ? '数据加载中' : '加载更多'}
+                <Button
+                  onClick={this.loadMore}
+                  type="primary"
+                  loading={articalLoading}
+                >
+                  {articalLoading ? "数据加载中" : "加载更多"}
                 </Button>
               )}
             </div>
@@ -324,7 +349,11 @@ class Home extends Component {
                 <span>很高兴你能够看到这里，不过真的没有了...</span>
               ) : (
                 <span>
-                  <Icon type="loading-3-quarters" style={{ marginRight: 5 }} spin />
+                  <Icon
+                    type="loading-3-quarters"
+                    style={{ marginRight: 5 }}
+                    spin
+                  />
                   数据加载中...
                 </span>
               )}

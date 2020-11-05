@@ -1,46 +1,46 @@
 /**
  * ArticalCard
- * create by zhangjicheng 
+ * create by zhangjicheng
  * email zhangjichengcc@163.com
  */
-import React, { Component } from 'react';
-import { Icon } from 'antd';
-import moment from 'js-moment';
-import styles from './index.less';
-import Ellipsis from '@/components/Ellipsis';
-import Img from '@/components/Img';
-import classnames from 'classnames';
-import { offset } from '@/utils/utils';
+import React, { Component } from "react";
+import { Icon } from "antd";
+import moment from "js-moment";
+import styles from "./index.less";
+import Ellipsis from "@/components/Ellipsis";
+import Img from "@/components/Img";
+import classnames from "classnames";
+import { offset } from "@/utils/utils";
 
 class InputForm extends Component {
   static defaultProps = {
-    title: '',
+    title: "",
     img: null,
     look: 0,
     like: 0,
     tag: null,
     msgCount: 0,
-    message: '',
+    message: "",
     createTime: null,
-    onClick: null,
+    onClick: null
   };
 
-  constructor(props) {
+  constructor(props: any | Readonly<any>) {
     super(props);
     this.state = {
       likeCount: 0,
-      loading: false,
+      loading: false
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     global.offset = offset;
     this.initCard();
-    window.addEventListener('scroll', this.scrollFun);
+    window.addEventListener("scroll", this.scrollFun);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.scrollFun);
+  componentWillUnmount(): void {
+    window.removeEventListener("scroll", this.scrollFun);
   }
 
   initCard = () => {
@@ -48,7 +48,7 @@ class InputForm extends Component {
     // 初始化组件直接判断当前位置决定是否加载
     this.scrollFun();
     this.setState({ likeCount: like });
-  }
+  };
 
   click = () => {
     const { onClick } = this.props;
@@ -57,35 +57,58 @@ class InputForm extends Component {
     }
   };
 
-  onLike = () => {
+  onLike = (): void => {
     const { onLike } = this.props;
     const { likeKey, likeCount = 0 } = this.state;
     const newLikeKey = !likeKey;
-    const newLikeCount = newLikeKey ? parseInt(likeCount, 10) + 1 : parseInt(likeCount, 10) - 1;
-    this.setState({
-      likeKey: newLikeKey,
-      likeCount: newLikeCount, 
-    }, () => {
-      onLike && onLike(newLikeKey, newLikeCount, this.props);
-    });
-  }
+    const newLikeCount = newLikeKey
+      ? parseInt(likeCount, 10) + 1
+      : parseInt(likeCount, 10) - 1;
+    this.setState(
+      {
+        likeKey: newLikeKey,
+        likeCount: newLikeCount
+      },
+      () => {
+        onLike && onLike(newLikeKey, newLikeCount, this.props);
+      }
+    );
+  };
 
   scrollFun = () => {
     if (offset(this.el).topBottom > -30) {
-      this.setState({
-        loading: true,
-      }, () => {
-        window.removeEventListener('scroll', this.scrollFun);
-      });
+      this.setState(
+        {
+          loading: true
+        },
+        () => {
+          window.removeEventListener("scroll", this.scrollFun);
+        }
+      );
     }
   };
 
-
   render() {
-    const { title, img, look, like, tag, msgCount, message, type, createTime } = this.props;
+    const {
+      title,
+      img,
+      look,
+      like,
+      tag,
+      msgCount,
+      message,
+      type,
+      createTime
+    } = this.props;
     const { loading = false, likeKey = false, likeCount } = this.state;
     return (
-      <div ref={e => this.el = e } className={classnames(styles.artical_card, loading ? styles.active : '')}>
+      <div
+        ref={e => (this.el = e)}
+        className={classnames(
+          styles.artical_card,
+          loading ? styles.active : ""
+        )}
+      >
         <div className={styles.artical_card_img} onClick={this.click}>
           {/* 滚动到可视范围内，开始加载图片 */}
           {/* 图片加载完毕，展示图片 */}
@@ -93,7 +116,7 @@ class InputForm extends Component {
             src={img}
             alt="banner"
             loading={loading}
-            style={{borderRadius: 10}}
+            style={{ borderRadius: 10 }}
           />
         </div>
         <div className={styles.artical_card_content}>
@@ -106,10 +129,19 @@ class InputForm extends Component {
                 <Icon style={{ marginRight: 5 }} type="eye" />
                 {look}
               </span>
-            ) : ''}
-            <span onClick={this.onLike} className={likeKey ? styles.likeTag : ''}>
+            ) : (
+              ""
+            )}
+            <span
+              onClick={this.onLike}
+              className={likeKey ? styles.likeTag : ""}
+            >
               <Icon className={styles.likeIcon} type="like" />
-              <Icon style={{ marginRight: 5 }} theme={likeKey ? 'filled' : ''} type="heart" />
+              <Icon
+                style={{ marginRight: 5 }}
+                theme={likeKey ? "filled" : undefined}
+                type="heart"
+              />
               {likeCount || 0}
             </span>
             {tag ? (
@@ -117,24 +149,29 @@ class InputForm extends Component {
                 <Icon style={{ marginRight: 5 }} type="tag" />
                 {tag}
               </span>
-            ) : ''}
+            ) : (
+              ""
+            )}
             {msgCount ? (
               <span>
                 <Icon style={{ marginRight: 5 }} type="message" />
                 {msgCount}
               </span>
-            ) : ''}
-            {
-              type ? (
-                <span>
-                  <Icon style={{ marginRight: 5 }} type="folder-open" />
-                  {type}
-                </span>
-              ) : ''
-            }
+            ) : (
+              ""
+            )}
+            {type ? (
+              <span>
+                <Icon style={{ marginRight: 5 }} type="folder-open" />
+                {type}
+              </span>
+            ) : (
+              ""
+            )}
           </div>
           <span className={styles.artical_card_createTime}>
-            发布于{moment(createTime.replace(/\-/g, '/')).format('YYYY年MM月DD日')}
+            发布于
+            {moment(createTime.replace(/\-/g, "/")).format("YYYY年MM月DD日")}
           </span>
           <div className={styles.artical_card_message}>
             <Ellipsis lines={4}>{message}</Ellipsis>
