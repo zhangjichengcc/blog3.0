@@ -1,7 +1,15 @@
-import React, { Component } from 'react';
-import moment from 'moment';
+import React, { Component } from "react";
+import moment from "moment";
 import {
-  Icon,
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  PlusOutlined
+} from "@ant-design/icons";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import {
   Button,
   Input,
   DatePicker,
@@ -10,17 +18,21 @@ import {
   Spin,
   Tooltip,
   Progress,
-  Modal,
-  Form,
-} from 'antd';
+  Modal
+} from "antd";
 // import Charts from '@/components/Charts';
-import SimpleMDE from 'react-simplemde-editor';
-import router from 'umi/router';
-import styles from './index.less';
-import 'easymde/dist/easymde.min.css';
-import { uploadImg } from '@/services/image';
-import { insertArtical, updateArtical, getArtical, deleteArtical } from '@/services/artical';
-import { pageLoading, timeout, getBase64 } from '@/utils/utils';
+import SimpleMDE from "react-simplemde-editor";
+import { history } from "umi";
+import styles from "./index.less";
+import "easymde/dist/easymde.min.css";
+import { uploadImg } from "@/services/image";
+import {
+  insertArtical,
+  updateArtical,
+  getArtical,
+  deleteArtical
+} from "@/services/artical";
+import { pageLoading, timeout, getBase64 } from "@/utils/utils";
 // import Ellipsis from '@/components/Ellipsis';
 
 const { TextArea } = Input;
@@ -29,17 +41,17 @@ const { confirm } = Modal;
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 4 },
+    sm: { span: 4 }
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 20 },
-  },
+    sm: { span: 20 }
+  }
 };
 
 class Editor extends Component {
   state = {
-    banner: null,
+    banner: null
   };
 
   componentDidMount() {
@@ -57,11 +69,18 @@ class Editor extends Component {
     getArtical({ id }).then(res => {
       const { code, data = {} } = res;
       if (code === 0) {
-        const { banner, createTime, introduction, mainContent, title, publish } = data;
+        const {
+          banner,
+          createTime,
+          introduction,
+          mainContent,
+          title,
+          publish
+        } = data;
         this.setState(
           {
             banner,
-            base64Banner: banner,
+            base64Banner: banner
           },
           () => {
             setFieldsValue({
@@ -69,13 +88,13 @@ class Editor extends Component {
               introduction,
               mainContent,
               title,
-              publish,
+              publish
             });
             timeout(pageLoading, [0], 1000);
-          },
+          }
         );
       } else {
-        message.warn('获取文章信息失败！');
+        message.warn("获取文章信息失败！");
         pageLoading(0);
       }
     });
@@ -87,13 +106,13 @@ class Editor extends Component {
     const { setFieldsValue } = form;
     setFieldsValue({
       createTime: moment(),
-      publish: true,
+      publish: true
     });
   };
 
   initPage = () => {
     const {
-      location: { query },
+      location: { query }
     } = this.props;
     const { id } = query;
     if (id) {
@@ -122,7 +141,7 @@ class Editor extends Component {
   bannerUploaded = () => {
     setTimeout(() => {
       this.setState({
-        showPercent: false,
+        showPercent: false
       });
     }, 1000);
   };
@@ -130,7 +149,7 @@ class Editor extends Component {
   // XHR 请求方式，获取进度
   uploadXHR = formData => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/image/uploadImage');
+    xhr.open("POST", "/api/image/uploadImage");
     xhr.upload.onprogress = event => {
       if (event.lengthComputable) {
         const percent = Math.round((event.loaded / event.total) * 100);
@@ -139,32 +158,32 @@ class Editor extends Component {
     };
     xhr.onload = res => {
       const {
-        target: { response = {} },
+        target: { response = {} }
       } = res;
       const { code, data } = JSON.parse(response);
       if (code === -1) {
-        message.error('图片上传失败！');
+        message.error("图片上传失败！");
         this.setState(
           {
-            progressStatus: 'error',
+            progressStatus: "error",
             banner: null,
-            base64Banner: null,
+            base64Banner: null
           },
           () => {
             this.bannerUploaded();
-          },
+          }
         );
       } else {
-        message.success('图片上传成功');
+        message.success("图片上传成功");
         this.setState(
           {
             banner: data,
             percent: 100,
-            progressStatus: 'success',
+            progressStatus: "success"
           },
           () => {
             this.bannerUploaded();
-          },
+          }
         );
       }
     };
@@ -174,15 +193,15 @@ class Editor extends Component {
   // fetch 请求方式，项目通用方式
   uploadFetch = (formData, mainContent) => {
     const {
-      form: { setFieldsValue },
+      form: { setFieldsValue }
     } = this.props;
     uploadImg(formData).then(res => {
       const { code, data } = res;
       if (code === -1) {
-        message.error('图片上传失败！');
+        message.error("图片上传失败！");
       } else {
-        message.success('图片上传成功');
-        setFieldsValue('mainContent', `${mainContent} ![](${data})`);
+        message.success("图片上传成功");
+        setFieldsValue("mainContent", `${mainContent} ![](${data})`);
       }
     });
   };
@@ -190,21 +209,21 @@ class Editor extends Component {
   // 上传 || 插入图片
   uploadImg = (tar, type) => {
     const { form } = this.props;
-    const mainContent = form.getFieldValue('mainContent');
+    const mainContent = form.getFieldValue("mainContent");
     const file = tar.target.files[0];
     const formData = new FormData();
-    formData.append('upload', file);
-    if (type === 'banner') {
+    formData.append("upload", file);
+    if (type === "banner") {
       getBase64(file).then(res => {
         this.setState(
           {
             base64Banner: res,
-            progressStatus: 'active',
-            showPercent: true,
+            progressStatus: "active",
+            showPercent: true
           },
           () => {
             this.uploadXHR(formData);
-          },
+          }
         );
       });
     } else {
@@ -217,27 +236,33 @@ class Editor extends Component {
     const { banner = null } = this.state;
     const {
       location: { query = {} },
-      form,
+      form
     } = this.props;
     const { getFieldsValue } = form;
-    const { title, createTime, publish, mainContent, introduction } = getFieldsValue();
+    const {
+      title,
+      createTime,
+      publish,
+      mainContent,
+      introduction
+    } = getFieldsValue();
     const params = {
       title,
-      createTime: moment(createTime).format('YYYY-MM-DD hh:mm:ss'),
+      createTime: moment(createTime).format("YYYY-MM-DD hh:mm:ss"),
       publish,
       mainContent,
       introduction,
-      banner,
+      banner
     };
     const next = res => {
       const { code, data = {} } = res;
       const { id } = data;
       this.setState({ loading: false });
       if (code === -1) {
-        message.error('文章提交失败！');
+        message.error("文章提交失败！");
       } else {
-        message.success('文章提交成功');
-        router.push(`/artical?id=${id}`);
+        message.success("文章提交成功");
+        history.push(`/artical?id=${id}`);
       }
     };
     this.setState({ loading: true });
@@ -256,23 +281,23 @@ class Editor extends Component {
   // 删除文章
   beforeDelete = () => {
     confirm({
-      title: '确认删除该文章？',
-      content: '删除操作不可逆，请谨慎操作！',
-      okText: '确认',
-      cancelText: '取消',
+      title: "确认删除该文章？",
+      content: "删除操作不可逆，请谨慎操作！",
+      okText: "确认",
+      cancelText: "取消",
       onOk: () => {
         const {
-          location: { query },
+          location: { query }
         } = this.props;
         const { id } = query;
         deleteArtical({ id }).then(res => {
           const { code } = res;
           if (code === 0) {
-            message.success('操作完成！');
-            router.replace('/');
+            message.success("操作完成！");
+            history.replace("/");
           }
         });
-      },
+      }
     });
   };
 
@@ -282,49 +307,49 @@ class Editor extends Component {
       loading = false,
       showPercent = false,
       percent = 0,
-      progressStatus = 'active',
+      progressStatus = "active"
     } = this.state;
     const {
       location: { query },
-      form,
+      form
     } = this.props;
     const { getFieldDecorator } = form;
     const { id } = query;
 
     const options = {
       toolbar: [
-        'bold',
-        'italic',
-        'strikethrough',
-        'code',
-        '|',
-        'quote',
-        'unordered-list',
-        'ordered-list',
-        'clean-block',
-        'table',
-        '|',
-        'link',
+        "bold",
+        "italic",
+        "strikethrough",
+        "code",
+        "|",
+        "quote",
+        "unordered-list",
+        "ordered-list",
+        "clean-block",
+        "table",
+        "|",
+        "link",
         {
-          name: 'image',
+          name: "image",
           action: this.uploadeArtImg,
-          className: 'fa fa-image',
-          title: 'image',
+          className: "fa fa-image",
+          title: "image"
         },
-        '|',
-        'preview',
-        'side-by-side',
-        'fullscreen',
+        "|",
+        "preview",
+        "side-by-side",
+        "fullscreen"
       ],
-      placeholder: '请使用 markdown 语法编辑文章',
+      placeholder: "请使用 markdown 语法编辑文章"
     };
 
     return (
       <div className={styles.Editor}>
         <input
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           onChange={e => {
-            this.uploadImg(e, 'artical');
+            this.uploadImg(e, "artical");
           }}
           ref={c => {
             this.uploadImgBtn = c;
@@ -333,9 +358,9 @@ class Editor extends Component {
           accept="image/*"
         />
         <input
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           onChange={e => {
-            this.uploadImg(e, 'banner');
+            this.uploadImg(e, "banner");
           }}
           ref={c => {
             this.uploadBanBtn = c;
@@ -345,43 +370,47 @@ class Editor extends Component {
         />
         <Form {...formItemLayout}>
           <Form.Item label="发布时间：">
-            {getFieldDecorator('createTime', {
-              rules: [{ required: true, message: '请选择发布时间!' }],
+            {getFieldDecorator("createTime", {
+              rules: [{ required: true, message: "请选择发布时间!" }]
             })(<DatePicker showTime />)}
           </Form.Item>
           <Form.Item label="公开">
-            {getFieldDecorator('publish', {
-              valuePropName: 'checked',
-              rules: [{ required: true }],
+            {getFieldDecorator("publish", {
+              valuePropName: "checked",
+              rules: [{ required: true }]
             })(
               <Switch
-                checkedChildren={<Icon type="check" />}
-                unCheckedChildren={<Icon type="close" />}
-              />,
+                checkedChildren={<CheckOutlined />}
+                unCheckedChildren={<CloseOutlined />}
+              />
             )}
           </Form.Item>
           <Form.Item label="文章标题">
-            {getFieldDecorator('title', {
-              rules: [{ required: true, message: '请输入文章标题!' }],
+            {getFieldDecorator("title", {
+              rules: [{ required: true, message: "请输入文章标题!" }]
             })(<Input placeholder="请输入文章标题" />)}
           </Form.Item>
           <Form.Item label="文章banner：">
-            {getFieldDecorator('banner')(
+            {getFieldDecorator("banner")(
               <div
                 className={styles.bannerArea}
-                style={base64Banner ? { backgroundImage: `url(${base64Banner})` } : {}}
+                style={
+                  base64Banner
+                    ? { backgroundImage: `url(${base64Banner})` }
+                    : {}
+                }
               >
                 {base64Banner ? (
                   <div className={styles.bannerImgEdit}>
                     <div className={styles.btnGroup}>
                       <Tooltip placement="top" title="预览">
                         <span>
-                          <Icon type="eye" />
+                          <EyeOutlined />
                         </span>
                       </Tooltip>
                       <Tooltip placement="top" title="删除">
                         <span>
-                          <Icon type="delete" />
+                          <DeleteOutlined />
                         </span>
                       </Tooltip>
                     </div>
@@ -389,8 +418,11 @@ class Editor extends Component {
                 ) : (
                   <div className={styles.btnGroup}>
                     <Tooltip placement="top" title="上传图片">
-                      <span onClick={this.uploadeBanImg} style={{ fontSize: 50 }}>
-                        <Icon type="plus" />
+                      <span
+                        onClick={this.uploadeBanImg}
+                        style={{ fontSize: 50 }}
+                      >
+                        <PlusOutlined />
                       </span>
                     </Tooltip>
                   </div>
@@ -400,24 +432,31 @@ class Editor extends Component {
                     <Progress percent={percent} status={progressStatus} />
                   </div>
                 )}
-              </div>,
+              </div>
             )}
           </Form.Item>
           <Form.Item label="文章简介：">
-            {getFieldDecorator('introduction', {
-              rules: [{ required: true, message: '请输入文章简介!' }],
-            })(<TextArea placeholder="请输入文章简介" autoSize={{ minRows: 2, maxRows: 6 }} />)}
+            {getFieldDecorator("introduction", {
+              rules: [{ required: true, message: "请输入文章简介!" }]
+            })(
+              <TextArea
+                placeholder="请输入文章简介"
+                autoSize={{ minRows: 2, maxRows: 6 }}
+              />
+            )}
           </Form.Item>
           <Form.Item label="文章正文：">
-            {getFieldDecorator('mainContent', {
-              rules: [{ required: true, message: '请输入文章正文!' }],
-            })(<SimpleMDE options={options} style={{ lineHeight: 'normal' }} />)}
+            {getFieldDecorator("mainContent", {
+              rules: [{ required: true, message: "请输入文章正文!" }]
+            })(
+              <SimpleMDE options={options} style={{ lineHeight: "normal" }} />
+            )}
           </Form.Item>
         </Form>
         <div className={styles.btnGroup}>
           <Button
             type="primary"
-            style={{ padding: '0 50px', margin: '0 20px' }}
+            style={{ padding: "0 50px", margin: "0 20px" }}
             onClick={this.submit}
             loading={loading}
           >
@@ -426,7 +465,7 @@ class Editor extends Component {
           {id && (
             <Button
               type="danger"
-              style={{ padding: '0 50px', margin: '0 20px' }}
+              style={{ padding: "0 50px", margin: "0 20px" }}
               onClick={this.beforeDelete}
             >
               删除
@@ -439,4 +478,4 @@ class Editor extends Component {
   }
 }
 
-export default Form.create({ name: 'coordinated' })(Editor);
+export default Form.create({ name: "coordinated" })(Editor);

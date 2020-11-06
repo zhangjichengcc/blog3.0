@@ -1,54 +1,55 @@
-import React, { Component } from 'react';
-import { Menu, Icon, Tabs } from 'antd';
-import classnames from 'classnames';
-import styles from './index.less';
-import Plates from './Plates';
-import Bar3d from './Bar3d';
+import React, { Component } from "react";
+import { Icon as LegacyIcon } from "@ant-design/compatible";
+import { Menu, Tabs } from "antd";
+import classnames from "classnames";
+import styles from "./index.less";
+import Plates from "./Plates";
+import Bar3d from "./Bar3d";
 
 const { SubMenu, Item: MenuItem } = Menu;
 const { TabPane } = Tabs;
 
 const routes = [
   {
-    pathname: '/demo/plates',
-    name: '无限延伸图谱',
-    key: 'plates',
-    icon: 'apartment',
-    components: <Plates />,
+    pathname: "/demo/plates",
+    name: "无限延伸图谱",
+    key: "plates",
+    icon: "apartment",
+    components: <Plates />
   },
   {
-    pathname: '/demo/bar3d',
-    name: '3d柱状图',
-    key: 'bar3d',
-    icon: 'apartment',
-    components: <Bar3d />,
+    pathname: "/demo/bar3d",
+    name: "3d柱状图",
+    key: "bar3d",
+    icon: "apartment",
+    components: <Bar3d />
   },
   {
-    name: '算法集合',
-    key: 'sfhj',
-    icon: 'calculator',
+    name: "算法集合",
+    key: "sfhj",
+    icon: "calculator",
     children: [
       {
-        name: '数据合并',
-        key: 'sjhb',
-        icon: 'pushpin',
-        components: <span>暂无数据</span>,
+        name: "数据合并",
+        key: "sjhb",
+        icon: "pushpin",
+        components: <span>暂无数据</span>
       },
       {
-        name: '解析树结构',
-        key: 'jxsjg',
-        icon: 'pushpin',
-        components: <span>暂无数据</span>,
-      },
-    ],
-  },
+        name: "解析树结构",
+        key: "jxsjg",
+        icon: "pushpin",
+        components: <span>暂无数据</span>
+      }
+    ]
+  }
 ];
 
 class Demo extends Component {
   state = {
     inlineCollapsed: true,
-    selectedTab: 'plates',
-    mainTitle: '无限延伸图谱',
+    selectedTab: "plates",
+    mainTitle: "无限延伸图谱"
   };
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class Demo extends Component {
   changeTab = (key, name) => {
     this.setState({
       selectedTab: key,
-      mainTitle: name,
+      mainTitle: name
     });
   };
 
@@ -96,7 +97,7 @@ class Demo extends Component {
                 key={key}
                 title={
                   <span>
-                    {icon && <Icon type={icon} />}
+                    {icon && <LegacyIcon type={icon} />}
                     <span>{name}</span>
                   </span>
                 }
@@ -107,7 +108,7 @@ class Demo extends Component {
           }
           return (
             <MenuItem key={key} onClick={() => this.changeTab(key, name)}>
-              {icon && <Icon type={icon} />}
+              {icon && <LegacyIcon type={icon} />}
               <span>{name}</span>
             </MenuItem>
           );
@@ -118,14 +119,19 @@ class Demo extends Component {
 
     return (
       <div className={styles.pageView}>
-        <div className={classnames(styles.menuBox, inlineCollapsed && styles.inlineCollapsed)}>
+        <div
+          className={classnames(
+            styles.menuBox,
+            inlineCollapsed && styles.inlineCollapsed
+          )}
+        >
           <span
             className={styles.collapsed}
             onClick={() => {
               this.setState({ inlineCollapsed: !inlineCollapsed });
             }}
           >
-            <Icon type={inlineCollapsed ? 'menu-unfold' : 'menu-fold'} />
+            <LegacyIcon type={inlineCollapsed ? "menu-unfold" : "menu-fold"} />
           </span>
           <Menu
             selectedKeys={selectedTab}
@@ -136,7 +142,12 @@ class Demo extends Component {
             {displayMenus(routes)}
           </Menu>
         </div>
-        <div className={classnames(styles.pageMain, inlineCollapsed && styles.inlineCollapsed)}>
+        <div
+          className={classnames(
+            styles.pageMain,
+            inlineCollapsed && styles.inlineCollapsed
+          )}
+        >
           <span className={styles.mainTitle}>{mainTitle}</span>
           <div className={styles.mainContent}>
             <Tabs activeKey={selectedTab}>{this.displayTabs(routes)}</Tabs>

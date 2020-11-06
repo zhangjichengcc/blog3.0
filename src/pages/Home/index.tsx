@@ -1,5 +1,18 @@
 import React, { FC, useState, useEffect } from "react";
-import { Icon, Popover, Alert, BackTop, Button } from "antd";
+import { Icon as LegacyIcon } from "@ant-design/compatible";
+
+import {
+  BookFilled,
+  BookOutlined,
+  GithubFilled,
+  GlobalOutlined,
+  Loading3QuartersOutlined,
+  MailFilled,
+  WechatFilled,
+  WeiboOutlined
+} from "@ant-design/icons";
+
+import { Popover, Alert, BackTop, Button } from "antd";
 import router from "umi/router";
 import moment from "js-moment";
 // import Advert from '@/components/Advert';
@@ -99,7 +112,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
   // 选择文章卡片
   const cardClick = (item: { id: any }) => {
     const { id } = item;
-    router.push({
+    history.push({
       pathname: "/artical",
       query: { id }
     });
@@ -137,7 +150,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
           <span>只为一个全新的高度</span>
           <span>Just for a new height</span>
         </div>
-        <Icon
+        <LegacyIcon
           className={classnames(
             styles.banner_openKey,
             showContent ? styles.active : ""
@@ -156,53 +169,44 @@ const Home: FC<homeProps> = (): React.ReactElement => {
           <div className={styles.content}>
             <span>{config.info}</span>
             <div className={styles.btnContent}>
-              <Icon
+              <BookFilled
                 className={styles.icon}
                 onClick={() => {
                   openView("book");
                 }}
                 style={{ fontSize: 22, transform: "translateY(-2px)" }}
-                type="book"
-                theme="filled"
               />
               <Popover content={wechatContent} trigger="hover">
-                <Icon
+                <WechatFilled
                   className={styles.icon}
                   style={{ fontSize: 28 }}
-                  type="wechat"
-                  theme="filled"
                 />
               </Popover>
-              <Icon
+              <GithubFilled
                 className={styles.icon}
                 onClick={() => {
                   openView("github");
                 }}
                 style={{ color: "#fff", fontSize: 26 }}
-                type="github"
-                theme="filled"
               />
-              <Icon
+              <WeiboOutlined
                 className={styles.icon}
                 onClick={() => {
                   openView("weibo");
                 }}
                 style={{ color: "#fff" }}
-                type="weibo"
               />
               <Popover
                 content={mailContent}
                 trigger="hover"
                 placement="topRight"
               >
-                <Icon
+                <MailFilled
                   className={styles.icon}
                   onClick={() => {
                     openView("mail");
                   }}
                   style={{ color: "#fff", fontSize: 25 }}
-                  type="mail"
-                  theme="filled"
                 />
               </Popover>
             </div>
@@ -233,7 +237,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
         />
         <div className={styles.title} style={{ marginTop: 50 }}>
           <span>
-            <Icon type="global" className={styles.title_icon} />
+            <GlobalOutlined className={styles.title_icon} />
             常用网站
           </span>
         </div>
@@ -261,7 +265,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
         </div>
         <div className={styles.title} style={{ marginTop: 50 }}>
           <span>
-            <Icon type="book" className={styles.title_icon} />
+            <BookOutlined className={styles.title_icon} />
             最新文章
           </span>
         </div>
@@ -305,11 +309,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
               <span>很高兴你能够看到这里，不过真的没有了...</span>
             ) : (
               <span>
-                <Icon
-                  type="loading-3-quarters"
-                  style={{ marginRight: 5 }}
-                  spin
-                />
+                <Loading3QuartersOutlined style={{ marginRight: 5 }} spin />
                 数据加载中...
               </span>
             )}

@@ -4,7 +4,16 @@
  * email zhangjichengcc@163.com
  */
 import React, { Component } from "react";
-import { Icon } from "antd";
+
+import {
+  EyeOutlined,
+  FolderOpenOutlined,
+  LikeOutlined,
+  MessageOutlined,
+  TagOutlined
+} from "@ant-design/icons";
+
+import { Icon as LegacyIcon } from "@ant-design/compatible";
 import moment from "js-moment";
 import styles from "./index.less";
 import Ellipsis from "@/components/Ellipsis";
@@ -126,7 +135,7 @@ class InputForm extends Component {
           <div className={styles.artical_card_tag}>
             {look ? (
               <span>
-                <Icon style={{ marginRight: 5 }} type="eye" />
+                <EyeOutlined style={{ marginRight: 5 }} />
                 {look}
               </span>
             ) : (
@@ -136,8 +145,8 @@ class InputForm extends Component {
               onClick={this.onLike}
               className={likeKey ? styles.likeTag : ""}
             >
-              <Icon className={styles.likeIcon} type="like" />
-              <Icon
+              <LikeOutlined className={styles.likeIcon} />
+              <LegacyIcon
                 style={{ marginRight: 5 }}
                 theme={likeKey ? "filled" : undefined}
                 type="heart"
@@ -146,7 +155,7 @@ class InputForm extends Component {
             </span>
             {tag ? (
               <span>
-                <Icon style={{ marginRight: 5 }} type="tag" />
+                <TagOutlined style={{ marginRight: 5 }} />
                 {tag}
               </span>
             ) : (
@@ -154,7 +163,7 @@ class InputForm extends Component {
             )}
             {msgCount ? (
               <span>
-                <Icon style={{ marginRight: 5 }} type="message" />
+                <MessageOutlined style={{ marginRight: 5 }} />
                 {msgCount}
               </span>
             ) : (
@@ -162,7 +171,7 @@ class InputForm extends Component {
             )}
             {type ? (
               <span>
-                <Icon style={{ marginRight: 5 }} type="folder-open" />
+                <FolderOpenOutlined style={{ marginRight: 5 }} />
                 {type}
               </span>
             ) : (

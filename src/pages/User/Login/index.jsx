@@ -1,14 +1,27 @@
-import React, { Component } from 'react';
-import { Icon, message } from 'antd';
-import SHA2 from 'sha2';
-import { FormattedMessage } from 'umi-plugin-react/locale';
-import router from 'umi/router';
-import classnames from 'classnames';
-import SelectLang from '@/components/SelectLang';
-import BackgroundImage from './BackgroundImage';
-import 'particles.js';
-import styles from './index.less';
-import { login } from '@/services/user';
+import React, { Component } from "react";
+
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  FacebookOutlined,
+  GithubOutlined,
+  KeyOutlined,
+  QqOutlined,
+  UserOutlined,
+  WechatOutlined,
+  WeiboOutlined
+} from "@ant-design/icons";
+
+import { message } from "antd";
+import SHA2 from "sha2";
+import { FormattedMessage } from "umi-plugin-react/locale";
+import { history } from "umi";
+import classnames from "classnames";
+import SelectLang from "@/components/SelectLang";
+import BackgroundImage from "./BackgroundImage";
+import "particles.js";
+import styles from "./index.less";
+import { login } from "@/services/user";
 
 const timeout = ms => {
   // eslint-disable-next-line compat/compat
@@ -21,14 +34,14 @@ const timeout = ms => {
 
 class Home extends Component {
   state = {
-    redirect: '',
+    redirect: "",
     signIconAction: {
       signIconAction1: false,
       signIconAction2: false,
       signIconAction3: false,
       signIconAction4: false,
-      signIconAction5: false,
-    },
+      signIconAction5: false
+    }
   };
 
   componentDidMount() {
@@ -42,11 +55,11 @@ class Home extends Component {
   // 初始化页面数据
   initData = () => {
     const {
-      location: { query },
+      location: { query }
     } = this.props;
-    const { redirect = '' } = query;
+    const { redirect = "" } = query;
     this.setState({
-      redirect,
+      redirect
     });
   };
 
@@ -71,25 +84,28 @@ class Home extends Component {
     this.setState(
       {
         animateStep1: true,
-        animateStep2: false,
+        animateStep2: false
       },
       () => {
         timeout(700).then(() => {
           this.setState({
             animateStep1: key,
-            animateStep2: key,
+            animateStep2: key
           });
         });
-      },
+      }
     );
   };
 
   // 展示第三方登陆方式
   showSignWay = () => {
-    const { signIconAction: defSignAction, signWayVisiable = false } = this.state;
+    const {
+      signIconAction: defSignAction,
+      signWayVisiable = false
+    } = this.state;
     const keys = Object.keys(defSignAction);
     this.setState({
-      signWayVisiable: !signWayVisiable,
+      signWayVisiable: !signWayVisiable
     });
     if (signWayVisiable) {
       this.setState({
@@ -99,7 +115,7 @@ class Home extends Component {
             res[item] = false;
           });
           return res;
-        })(),
+        })()
       });
     } else {
       keys.forEach((item, idx) => {
@@ -108,8 +124,8 @@ class Home extends Component {
           this.setState({
             signIconAction: {
               ...signIconAction,
-              [item]: true,
-            },
+              [item]: true
+            }
           });
         }, idx * 120);
       });
@@ -121,14 +137,16 @@ class Home extends Component {
     // https://www.npmjs.com/package/sha2
     const { SHA256 } = SHA2;
     const { username, password, redirect } = this.state;
-    const sha2Pwd = SHA256(SHA256(password)).toString('hex') + SHA256(username).toString('hex');
+    const sha2Pwd =
+      SHA256(SHA256(password)).toString("hex") +
+      SHA256(username).toString("hex");
     const params = {
       username,
-      password: sha2Pwd,
+      password: sha2Pwd
     };
     const msgList = {
-      username: '用户名不能为空！',
-      password: '密码不能为空！',
+      username: "用户名不能为空！",
+      password: "密码不能为空！"
     };
     // eslint-disable-next-line no-restricted-syntax
     for (const item of Object.keys(params)) {
@@ -145,18 +163,23 @@ class Home extends Component {
         const { code, data, msg } = res;
         if (code === 0) {
           const userInfo = { ...data, password };
-          localStorage.setItem('userInfo', JSON.stringify({ ...data, password }));
+          localStorage.setItem(
+            "userInfo",
+            JSON.stringify({ ...data, password })
+          );
           this.setState(
             {
               // userInfo,
             },
             () => {
               console.log(userInfo);
-              router.push(redirect);
-            },
+              history.push(redirect);
+            }
           );
         } else {
-          message.error(msg === 'error username' ? '用户名不存在！' : '密码错误！');
+          message.error(
+            msg === "error username" ? "用户名不存在！" : "密码错误！"
+          );
         }
       });
     });
@@ -168,9 +191,9 @@ class Home extends Component {
       animateStep1 = false,
       animateStep2 = false,
       iconAnimate = false,
-      username = '',
-      password = '',
-      signIconAction = {},
+      username = "",
+      password = "",
+      signIconAction = {}
     } = this.state;
 
     const {
@@ -178,7 +201,7 @@ class Home extends Component {
       signIconAction2 = false,
       signIconAction3 = false,
       signIconAction4 = false,
-      signIconAction5 = false,
+      signIconAction5 = false
     } = signIconAction;
 
     return (
@@ -191,11 +214,14 @@ class Home extends Component {
               className={classnames(
                 styles.loginMain,
                 animateStep1 && styles.active,
-                animateStep2 && styles.moveLeft,
+                animateStep2 && styles.moveLeft
               )}
             >
               <span
-                className={classnames(styles.userIcon, iconAnimate && styles.active)}
+                className={classnames(
+                  styles.userIcon,
+                  iconAnimate && styles.active
+                )}
                 onMouseEnter={() => {
                   this.setState({ iconAnimate: true });
                 }}
@@ -204,7 +230,7 @@ class Home extends Component {
                 }}
               />
               <div className={styles.inputItem}>
-                <Icon type="user" className={styles.itemIcon} style={{ left: 8 }} />
+                <UserOutlined className={styles.itemIcon} style={{ left: 8 }} />
                 <input
                   placeholder="username"
                   type="text"
@@ -214,42 +240,52 @@ class Home extends Component {
                 />
               </div>
               <div className={styles.inputItem}>
-                <Icon type="key" className={styles.itemIcon} style={{ left: 8 }} />
+                <KeyOutlined className={styles.itemIcon} style={{ left: 8 }} />
                 <input
                   placeholder="password"
-                  type={showPwd ? 'text' : 'password'}
+                  type={showPwd ? "text" : "password"}
                   name=""
                   onChange={this.inputPassword}
                   onKeyPress={this.onKeyPress}
                   value={password}
                 />
                 {showPwd ? (
-                  <Icon
-                    type="eye"
+                  <EyeOutlined
                     onMouseLeave={() => this.setState({ showPwd: false })}
                     className={styles.itemIcon}
-                    style={{ right: 8, cursor: 'pointer' }}
+                    style={{ right: 8, cursor: "pointer" }}
                   />
                 ) : (
-                  <Icon
-                    type="eye-invisible"
+                  <EyeInvisibleOutlined
                     className={styles.itemIcon}
                     onMouseEnter={() => this.setState({ showPwd: true })}
-                    style={{ right: 8, cursor: 'pointer' }}
+                    style={{ right: 8, cursor: "pointer" }}
                   />
                 )}
               </div>
               <div className={styles.btnContent}>
                 <span className={styles.loginBtn} onClick={this.login}>
-                  <FormattedMessage id="user.login.signin" defaultMessage="sign in" />
+                  <FormattedMessage
+                    id="user.login.signin"
+                    defaultMessage="sign in"
+                  />
                 </span>
                 <div className={styles.otherBtn}>
-                  <span className={styles.registerBtn} onClick={this.showSignWay}>
-                    <FormattedMessage id="user.login.SignInWith" defaultMessage="Sign in with" />
+                  <span
+                    className={styles.registerBtn}
+                    onClick={this.showSignWay}
+                  >
+                    <FormattedMessage
+                      id="user.login.SignInWith"
+                      defaultMessage="Sign in with"
+                    />
                   </span>
                   <i className={styles.btnLine} />
                   <span className={styles.registerBtn}>
-                    <FormattedMessage id="user.login.register" defaultMessage="register" />
+                    <FormattedMessage
+                      id="user.login.register"
+                      defaultMessage="register"
+                    />
                   </span>
                   <i className={styles.btnLine} />
                   <span className={styles.getPsdBtn}>
@@ -261,11 +297,13 @@ class Home extends Component {
                 </div>
               </div>
               <div className={classnames(styles.signinWith)}>
-                <Icon type="github" className={signIconAction1 && styles.active} />
-                <Icon type="weibo" className={signIconAction2 && styles.active} />
-                <Icon type="wechat" className={signIconAction3 && styles.active} />
-                <Icon type="qq" className={signIconAction4 && styles.active} />
-                <Icon type="facebook" className={signIconAction5 && styles.active} />
+                <GithubOutlined className={signIconAction1 && styles.active} />
+                <WeiboOutlined className={signIconAction2 && styles.active} />
+                <WechatOutlined className={signIconAction3 && styles.active} />
+                <QqOutlined className={signIconAction4 && styles.active} />
+                <FacebookOutlined
+                  className={signIconAction5 && styles.active}
+                />
               </div>
               <span className={styles.loginInfo}>
                 <FormattedMessage
@@ -274,7 +312,12 @@ class Home extends Component {
                 />
               </span>
             </div>
-            <div className={classnames(styles.loginLoader, animateStep2 && styles.active)}>
+            <div
+              className={classnames(
+                styles.loginLoader,
+                animateStep2 && styles.active
+              )}
+            >
               <div className={styles.loaderInner}>
                 <i />
                 <i />

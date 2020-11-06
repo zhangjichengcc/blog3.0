@@ -1,5 +1,16 @@
 import React, { FC, useEffect, useState, useRef } from "react";
-import { Spin, Anchor, Affix, Button, Icon } from "antd";
+
+import {
+  EditOutlined,
+  GithubFilled,
+  LikeFilled,
+  MessageFilled,
+  StarFilled,
+  WechatFilled,
+  WeiboCircleFilled
+} from "@ant-design/icons";
+
+import { Spin, Anchor, Affix, Button } from "antd";
 // import Charts from '@/components/Charts';
 import marked from "marked";
 import router from "umi/router";
@@ -142,7 +153,7 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
 
   // 编辑文章
   const editArtical = (): void => {
-    router.push({
+    history.push({
       pathname: "/editor",
       query: { id }
     });
@@ -204,7 +215,7 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
                       )}
                       data-badge={likeCount}
                     >
-                      <Icon type="like" theme="filled" />
+                      <LikeFilled />
                     </span>
                     <span
                       className={classnames(
@@ -213,19 +224,19 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
                       )}
                       data-badge={readCount}
                     >
-                      <Icon type="message" theme="filled" />
+                      <MessageFilled />
                     </span>
                     <span className={styles.tools_icon} data-badge={null}>
-                      <Icon type="star" theme="filled" />
+                      <StarFilled />
                     </span>
                     <span className={styles.tools_icon} data-badge={null}>
-                      <Icon type="weibo-circle" theme="filled" />
+                      <WeiboCircleFilled />
                     </span>
                     <span className={styles.tools_icon} data-badge={null}>
-                      <Icon type="wechat" theme="filled" />
+                      <WechatFilled />
                     </span>
                     <span className={styles.tools_icon} data-badge={null}>
-                      <Icon type="github" theme="filled" />
+                      <GithubFilled />
                     </span>
                   </div>
                 </Affix>
@@ -250,7 +261,7 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
               style={{ position: "absolute", bottom: 20, right: 20 }}
               type="primary"
               shape="round"
-              icon="edit"
+              icon={<EditOutlined />}
               onClick={editArtical}
             />
           </Affix>

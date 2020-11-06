@@ -1,9 +1,10 @@
-import { Badge, Icon, Spin, Tabs } from 'antd';
-import React, { Component } from 'react';
-import classNames from 'classnames';
-import NoticeList from './NoticeList';
-import HeaderDropdown from '../HeaderDropdown';
-import styles from './index.less';
+import { BellOutlined } from "@ant-design/icons";
+import { Badge, Spin, Tabs } from "antd";
+import React, { Component } from "react";
+import classNames from "classnames";
+import NoticeList from "./NoticeList";
+import HeaderDropdown from "../HeaderDropdown";
+import styles from "./index.less";
 const { TabPane } = Tabs;
 export default class NoticeIcon extends Component {
   static Tab = NoticeList;
@@ -15,10 +16,11 @@ export default class NoticeIcon extends Component {
     onViewMore: () => {},
     loading: false,
     clearClose: false,
-    emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
+    emptyImage:
+      "https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"
   };
   state = {
-    visible: false,
+    visible: false
   };
   onItemClick = (item, tabProps) => {
     const { onItemClick } = this.props;
@@ -61,7 +63,14 @@ export default class NoticeIcon extends Component {
         return null;
       }
 
-      const { list, title, count, tabKey, showClear, showViewMore } = child.props;
+      const {
+        list,
+        title,
+        count,
+        tabKey,
+        showClear,
+        showViewMore
+      } = child.props;
       const len = list && list.length ? list.length : 0;
       const msgCount = count || count === 0 ? count : len;
       const tabTitle = msgCount > 0 ? `${title} (${msgCount})` : title;
@@ -94,7 +103,7 @@ export default class NoticeIcon extends Component {
   handleVisibleChange = visible => {
     const { onPopupVisibleChange } = this.props;
     this.setState({
-      visible,
+      visible
     });
 
     if (onPopupVisibleChange) {
@@ -107,17 +116,17 @@ export default class NoticeIcon extends Component {
     const { visible } = this.state;
     const noticeButtonClass = classNames(className, styles.noticeButton);
     const notificationBox = this.getNotificationBox();
-    const NoticeBellIcon = bell || <Icon type="bell" className={styles.icon} />;
+    const NoticeBellIcon = bell || <BellOutlined className={styles.icon} />;
     const trigger = (
       <span
         className={classNames(noticeButtonClass, {
-          opened: visible,
+          opened: visible
         })}
       >
         <Badge
           count={count}
           style={{
-            boxShadow: 'none',
+            boxShadow: "none"
           }}
           className={styles.badge}
         >
@@ -132,7 +141,7 @@ export default class NoticeIcon extends Component {
 
     const popoverProps = {};
 
-    if ('popupVisible' in this.props) {
+    if ("popupVisible" in this.props) {
       popoverProps.visible = popupVisible;
     }
 
@@ -141,7 +150,7 @@ export default class NoticeIcon extends Component {
         placement="bottomRight"
         overlay={notificationBox}
         overlayClassName={styles.popover}
-        trigger={['click']}
+        trigger={["click"]}
         visible={visible}
         onVisibleChange={this.handleVisibleChange}
         {...popoverProps}

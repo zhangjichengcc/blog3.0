@@ -11,7 +11,7 @@
 import React, { FC } from "react";
 import classname from "classnames";
 import styles from "./index.less";
-import { Icon } from "antd";
+import { Icon as LegacyIcon } from "@ant-design/compatible";
 import { Link } from "umi";
 
 // 过滤路由，返回符合条件路由
@@ -66,7 +66,7 @@ const MenuItem: FC<menuItemProps> = ({
     if (prefix) {
       return (
         <span className={styles.menu_item_prefix}>
-          {typeof prefix === "string" ? <Icon type={prefix} /> : prefix}
+          {typeof prefix === "string" ? <LegacyIcon type={prefix} /> : prefix}
         </span>
       );
     }
@@ -94,7 +94,7 @@ const MenuColItem: FC<menuItemProps> = ({
     if (prefix) {
       return (
         <span className={styles.menu_item_prefix}>
-          {typeof prefix === "string" ? <Icon type={prefix} /> : prefix}
+          {typeof prefix === "string" ? <LegacyIcon type={prefix} /> : prefix}
         </span>
       );
     }

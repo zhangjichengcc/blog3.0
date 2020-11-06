@@ -12,51 +12,64 @@ const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
 const isAntDesignProPreview =
   ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === "site";
-const plugins = [
-  [
-    "umi-plugin-react",
-    {
-      antd: true,
-      dva: {
-        hmr: true
-      },
-      locale: {
-        enable: true,
-        default: "zh-CN",
-        baseNavigator: true
-      },
-      dynamicImport: {
-        loadingComponent: "./components/PageLoading/index",
-        webpackChunkName: true,
-        level: 3
-      },
-      pwa: pwa
-        ? {
-            workboxPluginMode: "InjectManifest",
-            workboxOptions: {
-              importWorkboxFrom: "local"
-            }
-          }
-        : false,
-      dll: {
-        include: ["dva", "dva/router", "dva/saga", "dva/fetch"],
-        exclude: ["@babel/runtime", "netlify-lambda"]
-      }
-    }
-  ],
-  [
-    "umi-plugin-pro-block",
-    {
-      moveMock: false,
-      moveService: false,
-      modifyRequest: true,
-      autoAddMenu: true
-    }
-  ]
-];
+// const plugins = [
+//   [
+//     "umi-plugin-react",
+//     {
+//       antd: true,
+//       dva: {
+//         hmr: true
+//       },
+//       locale: {
+//         enable: true,
+//         default: "zh-CN",
+//         baseNavigator: true
+//       },
+//       dynamicImport: {
+//         loadingComponent: "./components/PageLoading/index",
+//         webpackChunkName: true,
+//         level: 3
+//       },
+//       pwa: pwa
+//         ? {
+//             workboxPluginMode: "InjectManifest",
+//             workboxOptions: {
+//               importWorkboxFrom: "local"
+//             }
+//           }
+//         : false,
+//       dll: {
+//         include: ["dva", "dva/router", "dva/saga", "dva/fetch"],
+//         exclude: ["@babel/runtime", "netlify-lambda"]
+//       }
+//     }
+//   ],
+//   [
+//     "umi-plugin-pro-block",
+//     {
+//       moveMock: false,
+//       moveService: false,
+//       modifyRequest: true,
+//       autoAddMenu: true
+//     }
+//   ]
+// ];
+
+const plugins = {
+  // antd: true,
+  dva: {
+    skipModelValidate: false, // boolean 是否跳过model验证 default：false
+    extraModels: [], // string[] 配置额外到dva model default: []
+    immer: false, // boolean 是否启用immer，以方便修改reducer default: false
+    hmr: true // boolean 是否启用dva model 热更新 default false
+  },
+  locale: {
+    default: "zh-CN"
+  }
+};
 
 export default {
-  plugins,
+  ...plugins,
   hash: true,
   targets: {
     ie: 11
@@ -76,10 +89,10 @@ export default {
     utils: path.resolve(__dirname, "../src/utils"),
     services: path.resolve(__dirname, "../src/services")
   },
-  lessLoaderOptions: {
-    javascriptEnabled: true
-  },
-  disableRedirectHoist: true,
+  // lessLoaderOptions: {
+  //   javascriptEnabled: true
+  // },
+  // disableRedirectHoist: true,
   // cssLoaderOptions: {
   //   modules: true,
   //   getLocalIdent: (context: {[key: string]: any}, _: unknown, localName: {[key: string]: any}): any => {
