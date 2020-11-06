@@ -1,4 +1,4 @@
-import React, { FC } from "React";
+import React, { FC } from "react";
 import styles from "./index.less";
 
 const Footer: FC<any> = (): React.ReactElement => {
