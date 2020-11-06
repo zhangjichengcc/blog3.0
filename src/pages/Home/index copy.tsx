@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Icon as LegacyIcon } from "@ant-design/compatible";
 
 import {
   BookFilled,
@@ -13,7 +12,6 @@ import {
 } from "@ant-design/icons";
 
 import { Popover, Alert, BackTop, Button } from "antd";
-import router from "umi/router";
 import moment from "js-moment";
 // import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
@@ -183,7 +181,7 @@ class Home extends Component {
             <span>只为一个全新的高度</span>
             <span>Just for a new height</span>
           </div>
-          <LegacyIcon
+          {/* <LegacyIcon
             className={classnames(
               styles.banner_openKey,
               showContent ? styles.active : ""
@@ -193,7 +191,7 @@ class Home extends Component {
             onClick={() => {
               this.setState({ showContent: !showContent });
             }}
-          />
+          /> */}
           <div
             className={classnames(
               styles.banner_content,

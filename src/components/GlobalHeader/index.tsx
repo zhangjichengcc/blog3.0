@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-11-04 10:45:39
+ * @LastEditTime: 2020-11-06 20:20:17
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\index.tsx
@@ -9,7 +9,7 @@
  */
 
 import React, { FC } from "react";
-import Link from "umi/link";
+import { Link } from "umi";
 import RightTools from "./RightTools";
 import TopMenu from "./TopMenu";
 import logo from "@/assets/logo.png";

@@ -1,5 +1,5 @@
 {
-  "name": "Blog3.0",
+  "name": "blog3.0",
   "version": "2.0.0",
   "private": true,
   "description": "personal blog by zhangjicheng",
@@ -47,6 +47,8 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "@antv/g6": "^3.1.9",
+    "@umijs/preset-react": "^1",
+    "antd": "^4.8.0",
     "bizcharts": "^3.5.4",
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
     "classnames": "^2.2.6",
@@ -66,8 +68,7 @@
     "react-fittext": "^1.0.0",
     "react-simplemde-editor": "^4.0.3",
     "sha2": "^1.0.2",
-    "umi": "^3",
-    "@umijs/preset-react": "^1"
+    "umi": "^3.2.26"
   },
   "devDependencies": {
     "@ant-design/colors": "^3.1.0",
@@ -96,8 +97,7 @@
     "stylelint": "^10.1.0",
     "webpack-theme-color-replacer": "^1.2.15"
   },
-  "optionalDependencies": {
-  },
+  "optionalDependencies": {},
   "engines": {
     "node": ">=10.0.0"
   },

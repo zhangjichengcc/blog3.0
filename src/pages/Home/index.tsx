@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from "react";
-import { Icon as LegacyIcon } from "@ant-design/compatible";
 
 import {
   BookFilled,
@@ -13,7 +12,6 @@ import {
 } from "@ant-design/icons";
 
 import { Popover, Alert, BackTop, Button } from "antd";
-import router from "umi/router";
 import moment from "js-moment";
 // import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
@@ -150,7 +148,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
           <span>只为一个全新的高度</span>
           <span>Just for a new height</span>
         </div>
-        <LegacyIcon
+        {/* <LegacyIcon
           className={classnames(
             styles.banner_openKey,
             showContent ? styles.active : ""
@@ -158,7 +156,7 @@ const Home: FC<homeProps> = (): React.ReactElement => {
           type={showContent ? "minus-circle" : "plus-circle"}
           theme="filled"
           onClick={() => setShowContent(!showContent)}
-        />
+        /> */}
         <div
           className={classnames(
             styles.banner_content,

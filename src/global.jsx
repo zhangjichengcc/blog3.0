@@ -1,6 +1,6 @@
 import { Button, message, notification } from 'antd';
 import React from 'react';
-import { formatMessage } from 'umi-plugin-react/locale';
+// import { formatMessage } from 'umi-plugin-react/locale';
 import defaultSettings from '../config/defaultSettings';
 
 const { pwa } = defaultSettings; // if pwa is true
@@ -9,9 +9,9 @@ if (pwa) {
   // Notify user if offline now
   window.addEventListener('sw.offline', () => {
     message.warning(
-      formatMessage({
-        id: 'app.pwa.offline',
-      }),
+      // formatMessage({
+      //   id: 'app.pwa.offline',
+      // }),
     );
   }); // Pop up a prompt on the page asking the user if they want to use the latest version
 
@@ -59,18 +59,18 @@ if (pwa) {
           reloadSW();
         }}
       >
-        {formatMessage({
+        {/* {formatMessage({
           id: 'app.pwa.serviceworker.updated.ok',
-        })}
+        })} */}
       </Button>
     );
     notification.open({
-      message: formatMessage({
-        id: 'app.pwa.serviceworker.updated',
-      }),
-      description: formatMessage({
-        id: 'app.pwa.serviceworker.updated.hint',
-      }),
+      // message: formatMessage({
+      //   id: 'app.pwa.serviceworker.updated',
+      // }),
+      // description: formatMessage({
+      //   id: 'app.pwa.serviceworker.updated.hint',
+      // }),
       btn,
       key,
       onClose: async () => {},

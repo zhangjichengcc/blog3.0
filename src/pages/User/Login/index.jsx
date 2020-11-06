@@ -14,7 +14,7 @@ import {
 
 import { message } from "antd";
 import SHA2 from "sha2";
-import { FormattedMessage } from "umi-plugin-react/locale";
+// import { FormattedMessage } from "umi-plugin-react/locale";
 import { history } from "umi";
 import classnames from "classnames";
 import SelectLang from "@/components/SelectLang";
@@ -24,7 +24,6 @@ import styles from "./index.less";
 import { login } from "@/services/user";
 
 const timeout = ms => {
-  // eslint-disable-next-line compat/compat
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
@@ -265,34 +264,34 @@ class Home extends Component {
               </div>
               <div className={styles.btnContent}>
                 <span className={styles.loginBtn} onClick={this.login}>
-                  <FormattedMessage
+                  {/* <FormattedMessage
                     id="user.login.signin"
                     defaultMessage="sign in"
-                  />
+                  /> */}
                 </span>
                 <div className={styles.otherBtn}>
                   <span
                     className={styles.registerBtn}
                     onClick={this.showSignWay}
                   >
-                    <FormattedMessage
+                    {/* <FormattedMessage
                       id="user.login.SignInWith"
                       defaultMessage="Sign in with"
-                    />
+                    /> */}
                   </span>
                   <i className={styles.btnLine} />
                   <span className={styles.registerBtn}>
-                    <FormattedMessage
+                    {/* <FormattedMessage
                       id="user.login.register"
                       defaultMessage="register"
-                    />
+                    /> */}
                   </span>
                   <i className={styles.btnLine} />
                   <span className={styles.getPsdBtn}>
-                    <FormattedMessage
+                    {/* <FormattedMessage
                       id="user.login.forgetPsd"
                       defaultMessage="Forgot your password？"
-                    />
+                    /> */}
                   </span>
                 </div>
               </div>
@@ -306,10 +305,10 @@ class Home extends Component {
                 />
               </div>
               <span className={styles.loginInfo}>
-                <FormattedMessage
+                {/* <FormattedMessage
                   id="user.login.loginInfo"
                   defaultMessage="It’s no use logging in"
-                />
+                /> */}
               </span>
             </div>
             <div

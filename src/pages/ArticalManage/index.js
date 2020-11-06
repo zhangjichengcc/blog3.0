@@ -1,8 +1,8 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-12-04 10:59:22
- * @LastEditTime : 2020-01-04 15:05:48
- * @LastEditors  : Please set LastEditors
+ * @LastEditTime: 2020-11-06 20:25:51
+ * @LastEditors: zhangjicheng
  * @Description: 文章管理页面
  * @FilePath: \blog3.0\src\pages\ArticalManage\index.js
  */
@@ -14,8 +14,7 @@ import {
   SaveOutlined,
   UndoOutlined
 } from "@ant-design/icons";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
+import { Form } from "antd";
 // import moment from 'moment';
 import { Table, Input, Divider, Modal, message } from "antd";
 import { history } from "umi";

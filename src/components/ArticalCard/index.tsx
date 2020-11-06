@@ -13,7 +13,6 @@ import {
   TagOutlined
 } from "@ant-design/icons";
 
-import { Icon as LegacyIcon } from "@ant-design/compatible";
 import moment from "js-moment";
 import styles from "./index.less";
 import Ellipsis from "@/components/Ellipsis";
@@ -146,11 +145,11 @@ class InputForm extends Component {
               className={likeKey ? styles.likeTag : ""}
             >
               <LikeOutlined className={styles.likeIcon} />
-              <LegacyIcon
+              {/* <LegacyIcon
                 style={{ marginRight: 5 }}
                 theme={likeKey ? "filled" : undefined}
                 type="heart"
-              />
+              /> */}
               {likeCount || 0}
             </span>
             {tag ? (

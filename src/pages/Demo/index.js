@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Icon as LegacyIcon } from "@ant-design/compatible";
 import { Menu, Tabs } from "antd";
 import classnames from "classnames";
 import styles from "./index.less";
@@ -97,7 +96,7 @@ class Demo extends Component {
                 key={key}
                 title={
                   <span>
-                    {icon && <LegacyIcon type={icon} />}
+                    {/* {icon && <LegacyIcon type={icon} />} */}
                     <span>{name}</span>
                   </span>
                 }
@@ -108,7 +107,7 @@ class Demo extends Component {
           }
           return (
             <MenuItem key={key} onClick={() => this.changeTab(key, name)}>
-              {icon && <LegacyIcon type={icon} />}
+              {/* {icon && <LegacyIcon type={icon} />} */}
               <span>{name}</span>
             </MenuItem>
           );
@@ -131,7 +130,7 @@ class Demo extends Component {
               this.setState({ inlineCollapsed: !inlineCollapsed });
             }}
           >
-            <LegacyIcon type={inlineCollapsed ? "menu-unfold" : "menu-fold"} />
+            {/* <LegacyIcon type={inlineCollapsed ? "menu-unfold" : "menu-fold"} /> */}
           </span>
           <Menu
             selectedKeys={selectedTab}

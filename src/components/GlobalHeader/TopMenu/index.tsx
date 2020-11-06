@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-11-05 18:02:39
+ * @LastEditTime: 2020-11-06 20:26:07
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\TopMenu\index.tsx
@@ -11,7 +11,6 @@
 import React, { FC } from "react";
 import classname from "classnames";
 import styles from "./index.less";
-import { Icon as LegacyIcon } from "@ant-design/compatible";
 import { Link } from "umi";
 
 // 过滤路由，返回符合条件路由
@@ -62,20 +61,20 @@ const MenuItem: FC<menuItemProps> = ({
   children = "",
   active
 }): React.ReactElement => {
-  const prefixDom = (() => {
-    if (prefix) {
-      return (
-        <span className={styles.menu_item_prefix}>
-          {typeof prefix === "string" ? <LegacyIcon type={prefix} /> : prefix}
-        </span>
-      );
-    }
-    return "";
-  })();
+  // const prefixDom = (() => {
+  //   if (prefix) {
+  //     return (
+  //       <span className={styles.menu_item_prefix}>
+  //         {typeof prefix === "string" ? <LegacyIcon type={prefix} /> : prefix}
+  //       </span>
+  //     );
+  //   }
+  //   return "";
+  // })();
   return (
     <div className={classname(styles.menu_item, active ? styles.active : "")}>
       <MenuLink to={url}>
-        {prefixDom}
+        {/* {prefixDom} */}
         <span>{title}</span>
       </MenuLink>
       {children}
