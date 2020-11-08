@@ -14,7 +14,7 @@ import {
   SaveOutlined,
   UndoOutlined
 } from "@ant-design/icons";
-import { Form } from "antd";
+// import { Form } from "antd";
 // import moment from 'moment';
 import { Table, Input, Divider, Modal, message } from "antd";
 import { history } from "umi";
@@ -25,7 +25,7 @@ import { queryArticalList, deleteArtical } from "@/services/artical";
 // import { insertArtical, updateArtical, getArtical, deleteArtical } from '@/services/artical';
 // import { pageLoading, timeout } from '@/utils/utils';
 
-const { Item } = Form;
+// const { Item } = Form;
 const { confirm } = Modal;
 
 class Home extends Component {
@@ -175,20 +175,21 @@ class Home extends Component {
     const unTest = !value;
     // eslint-disable-next-line no-nested-ternary
     return editId === record.id ? (
-      <Item
-        hasFeedback
-        validateStatus={unTest ? "error" : "success"}
-        help={unTest ? toast : ""}
-      >
-        <Input
-          placeholder="请输入文章名称"
-          style={{ paddingRight: 26 }}
-          value={value}
-          onChange={e => {
-            this.inputChange(e, `${key}`, type);
-          }}
-        />
-      </Item>
+      // <Item
+      //   hasFeedback
+      //   validateStatus={unTest ? "error" : "success"}
+      //   help={unTest ? toast : ""}
+      // >
+      //   <Input
+      //     placeholder="请输入文章名称"
+      //     style={{ paddingRight: 26 }}
+      //     value={value}
+      //     onChange={e => {
+      //       this.inputChange(e, `${key}`, type);
+      //     }}
+      //   />
+      // </Item>
+      "debug"
     ) : key === "title" ? (
       <a onClick={() => history.push(`/artical?id=${record.id}`)}>
         {record[key]}

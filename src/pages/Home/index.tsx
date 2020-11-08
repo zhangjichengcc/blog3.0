@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 
 import { Popover, Alert, BackTop, Button } from "antd";
+import { history } from "umi";
 import moment from "js-moment";
 // import Advert from '@/components/Advert';
 // import Charts from '@/components/Charts';
