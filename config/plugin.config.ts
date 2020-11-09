@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-11-04 10:48:35
- * @LastEditTime: 2020-11-05 17:53:22
+ * @LastEditTime: 2020-11-09 09:58:26
  * @LastEditors: zhangjicheng
  * @Description:
  * @FilePath: \blog3.0\config\plugin.config.ts
@@ -22,7 +22,6 @@ function getModulePackageName(module: { context: string }) {
   let packageName = moduleDirName; // handle tree shaking
 
   if (packageName && packageName.match("^_")) {
-    // eslint-disable-next-line prefer-destructuring
     packageName = packageName?.match(/^_(@?[^@]+)/)?.[1] || "";
   }
 
