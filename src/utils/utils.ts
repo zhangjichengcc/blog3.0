@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2020-11-09 14:49:24
+ * @LastEditTime: 2020-11-09 18:46:52
  * @LastEditors: zhangjicheng
  * @Description:
  * @FilePath: \blog3.0\src\utils\utils.ts
@@ -83,13 +83,15 @@ export const numberFormat = (num: number): string => {
  */
 export function throttle(
   fn: { (): void; call?: any },
-  delay: number = 300,
-  first: boolean = true
+  delay = 300,
+  first = true
 ) {
   let timer: any = null;
   let isFirst = first;
   return (...args: any) => {
     if (isFirst) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       fn.call(this, args);
       isFirst = false;
     }
@@ -106,7 +108,7 @@ export function throttle(
  * @param {function, number} 执行的方法；延迟时间ms
  * @return {type}
  */
-export function debounce(fn: { (): void; call?: any }, delay: number = 300) {
+export function debounce(fn: { (): void; call?: any }, delay = 300) {
   let timer: any = null;
   return (...args: any) => {
     if (timer) clearTimeout(timer);
