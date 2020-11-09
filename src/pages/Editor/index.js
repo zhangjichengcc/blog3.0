@@ -7,7 +7,7 @@ import {
   EyeOutlined,
   PlusOutlined
 } from "@ant-design/icons";
-import { Form } from 'antd';
+import { Form } from "antd";
 import {
   Button,
   Input,
@@ -63,7 +63,7 @@ class Editor extends Component {
 
   // 载入文章信息
   loadArticalInfo = id => {
-    const { form } = this.props;
+    const [form] = Form.useForm();
     const { setFieldsValue } = form;
     getArtical({ id }).then(res => {
       const { code, data = {} } = res;
@@ -101,7 +101,7 @@ class Editor extends Component {
 
   // 初始化文章信息
   initArtical = () => {
-    const { form } = this.props;
+    const [form] = Form.useForm();
     const { setFieldsValue } = form;
     setFieldsValue({
       createTime: moment(),
@@ -191,9 +191,11 @@ class Editor extends Component {
 
   // fetch 请求方式，项目通用方式
   uploadFetch = (formData, mainContent) => {
-    const {
-      form: { setFieldsValue }
-    } = this.props;
+    const [form] = Form.useForm();
+    const { setFieldsValue } = from;
+    // const {
+    //   form: { setFieldsValue }
+    // } = this.props;
     uploadImg(formData).then(res => {
       const { code, data } = res;
       if (code === -1) {
@@ -207,7 +209,7 @@ class Editor extends Component {
 
   // 上传 || 插入图片
   uploadImg = (tar, type) => {
-    const { form } = this.props;
+    const [form] = Form.useForm();
     const mainContent = form.getFieldValue("mainContent");
     const file = tar.target.files[0];
     const formData = new FormData();
@@ -233,9 +235,9 @@ class Editor extends Component {
   // 提交文章
   submit = () => {
     const { banner = null } = this.state;
+    const [form] = Form.useForm();
     const {
-      location: { query = {} },
-      form
+      location: { query = {} }
     } = this.props;
     const { getFieldsValue } = form;
     const {
@@ -309,9 +311,9 @@ class Editor extends Component {
       progressStatus = "active"
     } = this.state;
     const {
-      location: { query },
-      form
+      location: { query }
     } = this.props;
+    const [form] = Form.useForm();
     const { getFieldDecorator } = form;
     const { id } = query;
 
@@ -368,88 +370,85 @@ class Editor extends Component {
           accept="image/*"
         />
         <Form {...formItemLayout}>
-          <Form.Item label="发布时间：">
-            {getFieldDecorator("createTime", {
-              rules: [{ required: true, message: "请选择发布时间!" }]
-            })(<DatePicker showTime />)}
+          <Form.Item
+            label="发布时间："
+            name="createTime"
+            rules={[{ required: true, message: "请选择发布时间!" }]}
+          >
+            <DatePicker showTime />
           </Form.Item>
-          <Form.Item label="公开">
-            {getFieldDecorator("publish", {
-              valuePropName: "checked",
-              rules: [{ required: true }]
-            })(
-              <Switch
-                checkedChildren={<CheckOutlined />}
-                unCheckedChildren={<CloseOutlined />}
-              />
-            )}
+          <Form.Item
+            label="公开"
+            name="publish"
+            valuePropName="checked"
+            rules={[{ required: true }]}
+          >
+            <Switch
+              checkedChildren={<CheckOutlined />}
+              unCheckedChildren={<CloseOutlined />}
+            />
           </Form.Item>
-          <Form.Item label="文章标题">
-            {getFieldDecorator("title", {
-              rules: [{ required: true, message: "请输入文章标题!" }]
-            })(<Input placeholder="请输入文章标题" />)}
+          <Form.Item
+            label="文章标题"
+            name="title"
+            rules={[{ required: true, message: "请输入文章标题!" }]}
+          >
+            <Input placeholder="请输入文章标题" />
           </Form.Item>
-          <Form.Item label="文章banner：">
-            {getFieldDecorator("banner")(
-              <div
-                className={styles.bannerArea}
-                style={
-                  base64Banner
-                    ? { backgroundImage: `url(${base64Banner})` }
-                    : {}
-                }
-              >
-                {base64Banner ? (
-                  <div className={styles.bannerImgEdit}>
-                    <div className={styles.btnGroup}>
-                      <Tooltip placement="top" title="预览">
-                        <span>
-                          <EyeOutlined />
-                        </span>
-                      </Tooltip>
-                      <Tooltip placement="top" title="删除">
-                        <span>
-                          <DeleteOutlined />
-                        </span>
-                      </Tooltip>
-                    </div>
-                  </div>
-                ) : (
+          <Form.Item label="文章banner：" name="banner">
+            <div
+              className={styles.bannerArea}
+              style={
+                base64Banner ? { backgroundImage: `url(${base64Banner})` } : {}
+              }
+            >
+              {base64Banner ? (
+                <div className={styles.bannerImgEdit}>
                   <div className={styles.btnGroup}>
-                    <Tooltip placement="top" title="上传图片">
-                      <span
-                        onClick={this.uploadeBanImg}
-                        style={{ fontSize: 50 }}
-                      >
-                        <PlusOutlined />
+                    <Tooltip placement="top" title="预览">
+                      <span>
+                        <EyeOutlined />
+                      </span>
+                    </Tooltip>
+                    <Tooltip placement="top" title="删除">
+                      <span>
+                        <DeleteOutlined />
                       </span>
                     </Tooltip>
                   </div>
-                )}
-                {showPercent && (
-                  <div className={styles.progressBox}>
-                    <Progress percent={percent} status={progressStatus} />
-                  </div>
-                )}
-              </div>
-            )}
+                </div>
+              ) : (
+                <div className={styles.btnGroup}>
+                  <Tooltip placement="top" title="上传图片">
+                    <span onClick={this.uploadeBanImg} style={{ fontSize: 50 }}>
+                      <PlusOutlined />
+                    </span>
+                  </Tooltip>
+                </div>
+              )}
+              {showPercent && (
+                <div className={styles.progressBox}>
+                  <Progress percent={percent} status={progressStatus} />
+                </div>
+              )}
+            </div>
           </Form.Item>
-          <Form.Item label="文章简介：">
-            {getFieldDecorator("introduction", {
-              rules: [{ required: true, message: "请输入文章简介!" }]
-            })(
-              <TextArea
-                placeholder="请输入文章简介"
-                autoSize={{ minRows: 2, maxRows: 6 }}
-              />
-            )}
+          <Form.Item
+            label="文章简介："
+            name="introduction"
+            rules={[{ required: true, message: "请输入文章简介!" }]}
+          >
+            <TextArea
+              placeholder="请输入文章简介"
+              autoSize={{ minRows: 2, maxRows: 6 }}
+            />
           </Form.Item>
-          <Form.Item label="文章正文：">
-            {getFieldDecorator("mainContent", {
-              rules: [{ required: true, message: "请输入文章正文!" }]
-            })(
-              <SimpleMDE options={options} style={{ lineHeight: "normal" }} />
-            )}
+          <Form.Item
+            label="文章正文："
+            name="mainContent"
+            rules={[{ required: true, message: "请输入文章正文!" }]}
+          >
+            <SimpleMDE options={options} style={{ lineHeight: "normal" }} />
           </Form.Item>
         </Form>
         <div className={styles.btnGroup}>
@@ -477,4 +476,4 @@ class Editor extends Component {
   }
 }
 
-export default Form.create({ name: "coordinated" })(Editor);
+export default Editor;

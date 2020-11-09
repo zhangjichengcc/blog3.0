@@ -13,7 +13,7 @@ import {
 import { Spin, Anchor, Affix, Button } from "antd";
 // import Charts from '@/components/Charts';
 import marked from "marked";
-import router from "umi/router";
+import { history } from "umi";
 import highlight from "highlight.js";
 import moment from "js-moment";
 import classnames from "classnames";

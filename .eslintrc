@@ -23,7 +23,9 @@
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true,
-			"tsx": true
+			"tsx": true,
+			"js": true,
+			"ts": true
 		},
 		"ecmaVersion": 11,
 		"sourceType": "module"
