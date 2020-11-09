@@ -12,7 +12,7 @@ class AvatarDropdown extends React.Component {
   onMenuClick = (event: { key: any }) => {
     const { key } = event;
     if (key === "logout") {
-      const { location } = window;
+      const { location } = globalThis;
       const { pathname, search } = location;
       history.push({
         pathname: "/user/login",

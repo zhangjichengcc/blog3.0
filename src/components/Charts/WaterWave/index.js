@@ -15,7 +15,7 @@ class WaterWave extends PureComponent {
   componentDidMount() {
     this.renderChart();
     this.resize();
-    window.addEventListener(
+    globalThis.addEventListener(
       'resize',
       () => {
         requestAnimationFrame(() => this.resize());
@@ -37,7 +37,7 @@ class WaterWave extends PureComponent {
     if (this.node) {
       this.node.innerHTML = '';
     }
-    window.removeEventListener('resize', this.resize);
+    globalThis.removeEventListener('resize', this.resize);
   }
 
   resize = () => {

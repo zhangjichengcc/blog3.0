@@ -19,7 +19,7 @@ class Pie extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener(
+    globalThis.addEventListener(
       'resize',
       () => {
         this.requestRef = requestAnimationFrame(() => this.resize());
@@ -38,8 +38,8 @@ class Pie extends Component {
   }
 
   componentWillUnmount() {
-    window.cancelAnimationFrame(this.requestRef);
-    window.removeEventListener('resize', this.resize);
+    globalThis.cancelAnimationFrame(this.requestRef);
+    globalThis.removeEventListener('resize', this.resize);
     this.resize.cancel();
   }
 
@@ -93,14 +93,14 @@ class Pie extends Component {
     });
   };
 
-  // for window resize auto responsive legend
+  // for globalThis resize auto responsive legend
   @Bind()
   @Debounce(300)
   resize() {
     const { hasLegend } = this.props;
     const { legendBlock } = this.state;
     if (!hasLegend || !this.root) {
-      window.removeEventListener('resize', this.resize);
+      globalThis.removeEventListener('resize', this.resize);
       return;
     }
     if (this.root.parentNode.clientWidth <= 380) {

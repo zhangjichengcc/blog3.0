@@ -1,3 +1,12 @@
+/*
+ * @Author: zhangjicheng
+ * @Date: 2020-11-04 10:48:35
+ * @LastEditTime: 2020-11-09 11:18:32
+ * @LastEditors: zhangjicheng
+ * @Description: 
+ * @FilePath: \blog3.0\src\components\Advert\index.js
+ * @可以输入预定的版权声明、个性签名、空行等
+ */
 /**
  * ArticalCard
  */
@@ -27,7 +36,7 @@ class Advert extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.scrollFun);
+    globalThis.removeEventListener('scroll', this.scrollFun);
   }
 
   init = () => {
@@ -37,7 +46,7 @@ class Advert extends Component {
         clientHeight,
       },
       () => {
-        window.addEventListener('scroll', this.scrollFun);
+        globalThis.addEventListener('scroll', this.scrollFun);
       },
     );
   };

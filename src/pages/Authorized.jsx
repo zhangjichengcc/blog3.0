@@ -45,7 +45,7 @@ const AuthComponent = ({
   );
 };
 
-window.process = process;
+globalThis.process = process;
 
 export default connect(({ user }) => ({
   user,

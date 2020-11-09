@@ -1,39 +1,23 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2020-11-05 17:02:03
+ * @LastEditTime: 2020-11-09 14:49:24
  * @LastEditors: zhangjicheng
  * @Description:
  * @FilePath: \blog3.0\src\utils\utils.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
-import React from "react";
+// import React from "react";
 
-/* eslint no-useless-escape:0 import/prefer-default-export:0 */
-const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
-
-const isUrl = (path: string) => reg.test(path);
-
-const isAntDesignPro = () => {
-  // eslint-disable-next-line no-undef
-  if (ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === "site") {
-    return true;
-  }
-
-  // eslint-disable-next-line compat/compat
-  return window.location.hostname === "preview.pro.ant.design";
-}; // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
-
-// 判断当前项目
-const isAntDesignProOrDev = () => {
-  const { NODE_ENV } = process.env;
-
-  if (NODE_ENV === "development") {
-    return true;
-  }
-
-  return isAntDesignPro();
+/**
+ * @description: 是否为url
+ * @param {string} path
+ * @return {boolean}
+ */
+export const isUrl = (path: string): boolean => {
+  const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\\+\\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\\+\\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\\+~%\\/.\w-_]*)?\??(?:[-\\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+  return reg.test(path);
 };
 
 /**
@@ -45,17 +29,10 @@ export const thousandNum = (
   num: string | number, // 目标字段
   dec?: number // 小数位
 ): string => {
-  if (!num) return "0";
-  const _num =
-    typeof num === "number"
-      ? num.toFixed(dec || 2)
-      : parseFloat(num).toFixed(dec || 2);
-  return _num.replace(/^(\d+)(\.?)(\d*)$/, (_$0, $1, $2, $3) => {
-    return `${$1.replace(/(\d)(?=(\d{3})+$)/g, "$1,")}${$2}${$3}`;
-  });
+  const _num = Number(num).toFixed(dec || 2);
+  return _num.replace(/(\d)(?=(\d{3})+(\.\d+)*$)/g, '$1,');
 };
 
-//
 /**
  * @description: 返回 min-max 随机数
  * @param {number}
@@ -88,7 +65,6 @@ export const numberFormat = (num: number): string => {
   const unitArr = ["", "万", "亿", "万亿"];
   let index = 0;
   let res = "";
-  // eslint-disable-next-line wrap-iife
   (function travel(count) {
     if (count > 10000) {
       index += 1;
@@ -221,7 +197,7 @@ const compress = img => {
 };
 
 // 仿jq offset()
-const offset = el => {
+const offset = (el: HTMLElement | null) => {
   if (!el) return { top: 0, left: 0, height: 0, topBottom: 0 };
   const clientHeight =
     document.documentElement.clientHeight || document.body.clientHeight;
@@ -272,9 +248,7 @@ const pageLoading = (key = false, text: any) => {
 };
 
 // 模拟延迟
-// eslint-disable-next-line compat/compat
 const timeout = (fn, params, ms = 300) =>
-  // eslint-disable-next-line compat/compat
   new Promise(resolve => {
     setTimeout(() => {
       const res = fn(...params);
@@ -283,8 +257,7 @@ const timeout = (fn, params, ms = 300) =>
   });
 
 // 转换base64编码图片
-const getBase64 = file => {
-  // eslint-disable-next-line compat/compat
+const getBase64 = (file: Blob): Promise<any> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -294,9 +267,6 @@ const getBase64 = file => {
 };
 
 export {
-  isAntDesignProOrDev,
-  isAntDesignPro,
-  isUrl,
   compress,
   offset,
   isPc,

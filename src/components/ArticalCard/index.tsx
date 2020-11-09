@@ -44,11 +44,11 @@ class InputForm extends Component {
   componentDidMount(): void {
     global.offset = offset;
     this.initCard();
-    window.addEventListener("scroll", this.scrollFun);
+    globalThis.addEventListener("scroll", this.scrollFun);
   }
 
   componentWillUnmount(): void {
-    window.removeEventListener("scroll", this.scrollFun);
+    globalThis.removeEventListener("scroll", this.scrollFun);
   }
 
   initCard = () => {
@@ -90,7 +90,7 @@ class InputForm extends Component {
           loading: true
         },
         () => {
-          window.removeEventListener("scroll", this.scrollFun);
+          globalThis.removeEventListener("scroll", this.scrollFun);
         }
       );
     }

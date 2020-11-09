@@ -61,7 +61,7 @@ class Home extends Component {
       },
       () => {
         if (!isPC) {
-          window.addEventListener("scroll", this.scrollFun);
+          globalThis.addEventListener("scroll", this.scrollFun);
         }
       }
     );
@@ -81,10 +81,10 @@ class Home extends Component {
   openView = (type = "") => {
     switch (type) {
       case "book":
-        window.open("https://zhangjichengcc.github.io/blog/");
+        globalThis.open("https://zhangjichengcc.github.io/blog/");
         break;
       case "github":
-        window.open("https://github.com/zhangjichengcc");
+        globalThis.open("https://github.com/zhangjichengcc");
         break;
       default:
         console.warn("undefined");
@@ -289,7 +289,7 @@ class Home extends Component {
                   <div
                     style={{ backgroundImage: `url(${item.img})` }}
                     onClick={() => {
-                      window.open(item.link);
+                      globalThis.open(item.link);
                     }}
                   >
                     <span className={styles.top_artical_card_title}>
