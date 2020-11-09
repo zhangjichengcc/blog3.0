@@ -41,6 +41,16 @@ interface articalDataProps {
   mainContent?: string;
 }
 
+class MenuAnchor {
+  htmlStr: string;
+  constructor(props: string) {
+    this.htmlStr = props;
+  }
+  static a = '1';
+  public b = '2';
+  
+}
+
 // 文章导航
 const MenuList: FC<{ markdownString: string }> = ({
   markdownString
@@ -61,7 +71,7 @@ const MenuList: FC<{ markdownString: string }> = ({
   const navListSource = markdownString?.match(/#+\s+(.*)?/g) || [];
   const titleObj = navListSource.map((v: any = "") => ({
     level: v?.match(/^#+/g)[0]?.length,
-    title: v?.replace(/^#+\s+/, ""),
+    title: v?.replace(/^#+\s+/, ''  ),
     text: v
   }));
 
