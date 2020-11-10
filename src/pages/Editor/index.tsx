@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 import moment from "moment";
 import {
   CheckOutlined,
@@ -37,40 +37,123 @@ import { pageLoading, timeout, getBase64 } from "@/utils/utils";
 const { TextArea } = Input;
 const { confirm } = Modal;
 
+const useUpload = () => {
+  // const percentRef = useRef<number>(0);
+  const [percent, setPercent] = useState<number>(0);
+  const status = useRef<string>('ready');
+  // percentRef.current = percent;
+  // let percent = 0;
+  // const setPercent = value => percent = value;
+  const timer = () => {
+    setTimeout(() => {
+      if(percent < 20) {
+        setPercent(percent + 1);
+      }
+    }, 1000);
+  }
+  useEffect(() => {
+    timer();
+  }, [percent]);
+  return [percent, status];
+}
+
+const UploadImg: FC<any> = ({
+  value = '',
+}) => {
+  const uploadRef = useRef(null);
+  const percentRef = useRef<number>(0);
+  
+  // XHR 请求方式，获取进度
+  // const uploadXHR = formData => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open("POST", "/api/image/uploadImage");
+  //   xhr.upload.onprogress = event => {
+  //     if (event.lengthComputable) {
+  //       const percent = Math.round((event.loaded / event.total) * 100);
+  //       percentRef.current = percent;
+  //     }
+  //   };
+  //   xhr.onload = (res: {target: any}) => {
+  //     const {
+  //       target: { response = {} }
+  //     } = res;
+  //     const { code, data } = JSON.parse(response);
+  //     if (code === -1) {
+  //       message.error("图片上传失败！");
+  //       this.setState(
+  //         {
+  //           progressStatus: "error",
+  //           banner: null,
+  //           base64Banner: null
+  //         },
+  //         () => {
+  //           this.bannerUploaded();
+  //         }
+  //       );
+  //     } else {
+  //       message.success("图片上传成功");
+  //       this.setState(
+  //         {
+  //           banner: data,
+  //           percent: 100,
+  //           progressStatus: "success"
+  //         },
+  //         () => {
+  //           this.bannerUploaded();
+  //         }
+  //       );
+  //     }
+  //   };
+  //   xhr.send(formData);
+  // };
+
+  return (
+    <div className={styles.bannerUploadArea}>
+      <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} />
+      <div className={styles.upload_area_content}>
+        <div className={styles.btnGroup}>
+          <Tooltip placement="top" title="上传图片">
+            {/* @ts-ignore */}
+            <PlusOutlined className={styles.plusBtn} onClick={() => {uploadRef.current?.click()}} />
+          </Tooltip>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const Editor: FC<any> = ({
 
 }): React.ReactElement => {
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [form] = Form.useForm();
+
+  const [percent, status] = useUpload();
+
+  useEffect(() => {
+    console.log(percent)
+  }, [percent])
+  
+
+  globalThis.form = form;
+
   return (
     <div className={styles.Editor}>
-      <input
-        style={{ display: "none" }}
-        onChange={e => {
-          this.uploadImg(e, "artical");
-        }}
-        ref={c => {
-          this.uploadImgBtn = c;
-        }}
-        type="file"
-        accept="image/*"
-      />
-      <input
-        style={{ display: "none" }}
-        onChange={e => {
-          this.uploadImg(e, "banner");
-        }}
-        ref={c => {
-          this.uploadBanBtn = c;
-        }}
-        type="file"
-        accept="image/*"
-      />
-      <Form {...formItemLayout}>
-        <Form.Item
+      <Form form={form}>
+        {/* <Form.Item
           label="发布时间："
           name="createTime"
           rules={[{ required: true, message: "请选择发布时间!" }]}
         >
           <DatePicker showTime />
+        </Form.Item> */}
+        <Form.Item
+          label="文章标题"
+          name="title"
+          rules={[{ required: true, message: "请输入文章标题!" }]}
+        >
+          <Input placeholder="请输入文章标题" />
         </Form.Item>
         <Form.Item
           label="公开"
@@ -83,14 +166,10 @@ const Editor: FC<any> = ({
             unCheckedChildren={<CloseOutlined />}
           />
         </Form.Item>
-        <Form.Item
-          label="文章标题"
-          name="title"
-          rules={[{ required: true, message: "请输入文章标题!" }]}
-        >
-          <Input placeholder="请输入文章标题" />
-        </Form.Item>
         <Form.Item label="文章banner：" name="banner">
+          
+        </Form.Item>
+        {/* <Form.Item label="文章banner：" name="banner">
           <div
             className={styles.bannerArea}
             style={
@@ -127,7 +206,7 @@ const Editor: FC<any> = ({
               </div>
             )}
           </div>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="文章简介："
           name="introduction"
@@ -143,27 +222,11 @@ const Editor: FC<any> = ({
           name="mainContent"
           rules={[{ required: true, message: "请输入文章正文!" }]}
         >
-          <SimpleMDE options={options} style={{ lineHeight: "normal" }} />
+          {/* <SimpleMDE options={options} style={{ lineHeight: "normal" }} /> */}
         </Form.Item>
       </Form>
       <div className={styles.btnGroup}>
-        <Button
-          type="primary"
-          style={{ padding: "0 50px", margin: "0 20px" }}
-          onClick={this.submit}
-          loading={loading}
-        >
-          提交
-        </Button>
-        {id && (
-          <Button
-            type="danger"
-            style={{ padding: "0 50px", margin: "0 20px" }}
-            onClick={this.beforeDelete}
-          >
-            删除
-          </Button>
-        )}
+        
       </div>
       <Spin spinning={loading} tip="Loading..." className={styles.spin} />
     </div>
