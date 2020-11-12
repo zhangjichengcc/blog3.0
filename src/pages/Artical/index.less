@@ -1,7 +1,7 @@
 @import "~antd/es/style/themes/default.less";
 @import "~@/utils.less";
 @import "~@/default.less";
-@import "~@/utils/marked.less";
+// @import "~@/utils/marked.less";
 @import "../../default.less";
 
 @center-width: 700px;
@@ -68,7 +68,6 @@
       background-color: #fff;
       margin: 0 10px;
       box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
       .tools_bar {
         position: absolute;
         left: -80px;
@@ -103,38 +102,6 @@
     //   content: '';
     //   clear: both;
     // }
-  }
-
-  // 目录导航样式
-  .anchor {
-    font-weight: 500;
-    width: 100%;
-    &.h1 {
-      font-size: 15px;
-      font-weight: bold;
-      padding-left: calc(0 * @anchor-indentation);
-    }
-    &.h2 {
-      font-size: 14px;
-      font-weight: bold;
-      padding-left: calc(1 * @anchor-indentation);
-    }
-    &.h3 {
-      font-size: 14px;
-      padding-left: calc(2 * @anchor-indentation);
-    }
-    &.h4 {
-      font-size: 13px;
-      padding-left: calc(3 * @anchor-indentation);
-    }
-    &.h5 {
-      font-size: 12px;
-      padding-left: calc(4 * @anchor-indentation);
-    }
-    &.h6 {
-      font-size: 12px;
-      padding-left: calc(5 * @anchor-indentation);
-    }
   }
 }
 

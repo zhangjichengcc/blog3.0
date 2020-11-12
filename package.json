@@ -47,6 +47,7 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "@antv/g6": "^3.1.9",
+    "@types/react-syntax-highlighter": "^13.5.0",
     "@umijs/preset-react": "^1",
     "antd": "^4.8.0",
     "bizcharts": "^3.5.4",

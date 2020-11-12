@@ -10,23 +10,17 @@ import {
   WeiboCircleFilled
 } from "@ant-design/icons";
 
-import { Spin, Anchor, Affix, Button } from "antd";
-// import Charts from '@/components/Charts';
-import marked from "marked";
-import ReactMarkdown from 'react-markdown'
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-// 设置高亮样式
-import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Spin, Affix, Button } from "antd";
 import { history } from "umi";
-import highlight from "highlight.js";
 import moment from "js-moment";
 import classnames from "classnames";
 import { offset } from "@/utils/utils";
 import Img from "@/components/Img";
 import { getArtical } from "@/services/artical";
+import MdArtical, { MdMenus } from "./components/MdArtical";
 // import "highlight.js/styles/atom-one-dark.css";
 
-const { Link } = Anchor;
+
 
 import styles from "./index.less";
 
@@ -55,51 +49,6 @@ class MenuAnchor {
   
 }
 
-// 文章导航
-const MenuList: FC<{ markdownString: string }> = ({
-  markdownString
-}): React.ReactElement => {
-  const handleClick = (e: { preventDefault: () => void }) => {
-    // params (@e, @link)
-    e.preventDefault();
-  };
-
-  const options = {
-    offsetTop: 86,
-    onClick: handleClick,
-    showInkInFixed: true
-    // targetOffset: -300,
-    // bounds: 1000,
-  };
-
-  const navListSource = markdownString?.match(/#+\s+(.*)?/g) || [];
-  const titleObj = navListSource.map((v: any = "") => ({
-    level: v?.match(/^#+/g)[0]?.length,
-    title: v?.replace(/^#+\s+/, ''  ),
-    text: v
-  }));
-
-  return (
-    <Anchor {...options}>
-      {titleObj.map((item: any = {}, idx) => {
-        const { title, level } = item;
-        const keys = `key_${idx + 1}`;
-        return (
-          <Link
-            key={keys}
-            href={`#${title}`}
-            title={
-              <span className={classnames(styles.anchor, styles[`h${level}`])}>
-                {title}
-              </span>
-            }
-          />
-        );
-      })}
-    </Anchor>
-  );
-};
-
 // 文章
 const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
   const { query } = location;
@@ -116,36 +65,6 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
     introduction = "",
     mainContent = ""
   } = articalData;
-
-  // 格式化marked文本，使其支持锚点
-  const addAnchor = (text: string) => {
-    if (typeof text !== "string") return "";
-    return text.replace(
-      /#+\s+(.*)?(?=\s+)?/g,
-      ($0, $1) =>
-        `${$0}<p style="height: 0; margin: 0; overflow: hidden;"><a id="${$1}" href="#${$1}" name="${$1}" class="anchor">#</a></p> \r`
-    );
-  };
-
-  // 将markdown转义为html
-  const htmlStr = marked(mainContent);
-
-  // 初始化markdown样式
-  const initMarkdownStyle = () => {
-    marked.setOptions({
-      renderer: new marked.Renderer(),
-      highlight: code => {
-        return highlight.highlightAuto(code).value;
-      },
-      pedantic: false,
-      gfm: true,
-      breaks: false,
-      sanitize: false,
-      smartLists: true,
-      smartypants: false,
-      xhtml: false
-    });
-  };
 
   // 获取文章数据
   const fetchData = (): void => {
@@ -175,7 +94,7 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
 
   // 初始化页面数据
   const initPage = () => {
-    initMarkdownStyle();
+    // initMarkdownStyle();
     fetchData();
   };
 
@@ -266,18 +185,11 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
                 dangerouslySetInnerHTML={{ __html: htmlStr }}
               /> */}
               <div className={styles.articalBody}>
-                <ReactMarkdown
-                  renderers={{
-                    code: ({language, value}) => {
-                      return <SyntaxHighlighter style={darcula} language={language} children={value} />
-                    }
-                  }}
-                  children={mainContent}
-                />
+                <MdArtical>{mainContent}</MdArtical>
               </div>
             </div>
             <div className={styles.rightContent}>
-              <MenuList markdownString={mainContent} />
+              <MdMenus markdownString={mainContent} />
             </div>
           </div>
           <Affix offsetBottom={20}>
