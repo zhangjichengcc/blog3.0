@@ -13,6 +13,10 @@ import {
 import { Spin, Anchor, Affix, Button } from "antd";
 // import Charts from '@/components/Charts';
 import marked from "marked";
+import ReactMarkdown from 'react-markdown'
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+// 设置高亮样式
+import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { history } from "umi";
 import highlight from "highlight.js";
 import moment from "js-moment";
@@ -20,7 +24,7 @@ import classnames from "classnames";
 import { offset } from "@/utils/utils";
 import Img from "@/components/Img";
 import { getArtical } from "@/services/artical";
-import "highlight.js/styles/atom-one-dark.css";
+// import "highlight.js/styles/atom-one-dark.css";
 
 const { Link } = Anchor;
 
@@ -124,7 +128,7 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
   };
 
   // 将markdown转义为html
-  const htmlStr = marked(addAnchor(mainContent));
+  const htmlStr = marked(mainContent);
 
   // 初始化markdown样式
   const initMarkdownStyle = () => {
@@ -257,10 +261,20 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
                   <span>{introduction}</span>
                 </div>
               </div>
-              <div
+              {/* <div
                 className={styles.articalBody}
                 dangerouslySetInnerHTML={{ __html: htmlStr }}
-              />
+              /> */}
+              <div className={styles.articalBody}>
+                <ReactMarkdown
+                  renderers={{
+                    code: ({language, value}) => {
+                      return <SyntaxHighlighter style={darcula} language={language} children={value} />
+                    }
+                  }}
+                  children={mainContent}
+                />
+              </div>
             </div>
             <div className={styles.rightContent}>
               <MenuList markdownString={mainContent} />
