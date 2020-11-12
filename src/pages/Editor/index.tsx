@@ -37,79 +37,58 @@ import { pageLoading, timeout, getBase64 } from "@/utils/utils";
 const { TextArea } = Input;
 const { confirm } = Modal;
 
-const useUpload = () => {
-  // const percentRef = useRef<number>(0);
+const useUploadPercent = () => {
   const [percent, setPercent] = useState<number>(0);
-  const status = useRef<string>('ready');
-  // percentRef.current = percent;
-  // let percent = 0;
-  // const setPercent = value => percent = value;
-  const timer = () => {
-    setTimeout(() => {
-      if(percent < 20) {
-        setPercent(percent + 1);
+  const [status, setStatus] = useState<'ready' | 'fetching' | 'success' | 'error'>('ready');
+  const [url, setUrl] = useState<string>('');
+  // XHR 请求方式，获取进度
+  const uploadXHR = (file: string | Blob) => {
+    const formData = new FormData();
+    formData.append("upload", file);
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/image/uploadImage");
+    xhr.upload.onprogress = event => {
+      if (event.lengthComputable) {
+        const _percent = Math.round((event.loaded / event.total) * 100);
+        setPercent(_percent)
       }
-    }, 1000);
+    };
+    xhr.onload = (res: {target: any}) => {
+      const { target: { response = {} } } = res;
+      const { code, data } = JSON.parse(response);
+      if (code === 0) {
+        setPercent(100);
+        setStatus('success');
+        setUrl(data);
+      } else {
+        setStatus('error');
+      }
+    };
+    xhr.send(formData);
+  };
+  const setFile = (file: any) => {
+    debugger
+    uploadXHR(file);
   }
-  useEffect(() => {
-    timer();
-  }, [percent]);
-  return [percent, status];
+  return [{percent, status, url}, setFile];
 }
 
 const UploadImg: FC<any> = ({
   value = '',
 }) => {
   const uploadRef = useRef(null);
-  const percentRef = useRef<number>(0);
-  
-  // XHR 请求方式，获取进度
-  // const uploadXHR = formData => {
-  //   const xhr = new XMLHttpRequest();
-  //   xhr.open("POST", "/api/image/uploadImage");
-  //   xhr.upload.onprogress = event => {
-  //     if (event.lengthComputable) {
-  //       const percent = Math.round((event.loaded / event.total) * 100);
-  //       percentRef.current = percent;
-  //     }
-  //   };
-  //   xhr.onload = (res: {target: any}) => {
-  //     const {
-  //       target: { response = {} }
-  //     } = res;
-  //     const { code, data } = JSON.parse(response);
-  //     if (code === -1) {
-  //       message.error("图片上传失败！");
-  //       this.setState(
-  //         {
-  //           progressStatus: "error",
-  //           banner: null,
-  //           base64Banner: null
-  //         },
-  //         () => {
-  //           this.bannerUploaded();
-  //         }
-  //       );
-  //     } else {
-  //       message.success("图片上传成功");
-  //       this.setState(
-  //         {
-  //           banner: data,
-  //           percent: 100,
-  //           progressStatus: "success"
-  //         },
-  //         () => {
-  //           this.bannerUploaded();
-  //         }
-  //       );
-  //     }
-  //   };
-  //   xhr.send(formData);
-  // };
+  const [{percent, status, url}, setFile] = useUploadPercent();
+  const inputOnChange = (e: { target: any; }) => {
+    const { target: { files } } = e;
+    setFile(files?.[0])
+  }
 
+  useEffect(() => {
+    console.log(percent, status, url);
+  }, [percent, status, url])
   return (
     <div className={styles.bannerUploadArea}>
-      <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} />
+      <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} onChange={inputOnChange} />
       <div className={styles.upload_area_content}>
         <div className={styles.btnGroup}>
           <Tooltip placement="top" title="上传图片">
@@ -129,7 +108,7 @@ const Editor: FC<any> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const [percent, status] = useUpload();
+  const [percent, status] = useUploadPercent();
 
   useEffect(() => {
     console.log(percent)
@@ -167,7 +146,7 @@ const Editor: FC<any> = ({
           />
         </Form.Item>
         <Form.Item label="文章banner：" name="banner">
-          
+          <UploadImg />
         </Form.Item>
         {/* <Form.Item label="文章banner：" name="banner">
           <div
