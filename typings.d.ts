@@ -1,9 +1,9 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-05-26 10:58:22
- * @LastEditTime: 2020-11-05 17:14:46
+ * @LastEditTime: 2020-11-13 16:09:35
  * @LastEditors: zhangjicheng
- * @Description: In User Settings Edit
+ * @Description: 配置引入module
  * @FilePath: \blog3.0\typings.d.ts
  */
 

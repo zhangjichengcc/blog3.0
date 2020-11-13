@@ -39,15 +39,15 @@ interface articalDataProps {
   mainContent?: string;
 }
 
-class MenuAnchor {
-  htmlStr: string;
-  constructor(props: string) {
-    this.htmlStr = props;
-  }
-  static a = '1';
-  public b = '2';
+// class MenuAnchor {
+//   htmlStr: string;
+//   constructor(props: string) {
+//     this.htmlStr = props;
+//   }
+//   static a = '1';
+//   public b = '2';
   
-}
+// }
 
 // 文章
 const Artical: FC<articalProps> = ({ location }): React.ReactElement => {

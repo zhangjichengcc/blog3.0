@@ -79,15 +79,13 @@ const MdArtical: FC<{ children: string }> = ({
   children,
 }): React.ReactElement => {
   const headDom = ({level, node, children}) => {
-
+    debugger
   }
   return (
     <ReactMarkdown
       renderers={{
         // eslint-disable-next-line react/display-name
-        code: ({language, value}) => {
-          return <SyntaxHighlighter style={darcula} language={language}>{value}</SyntaxHighlighter>
-        },
+        code: ({language, value}) => <SyntaxHighlighter style={darcula} language={language}>{value}</SyntaxHighlighter>,
         heading: headDom,
       }}
     >
