@@ -1,39 +1,23 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2020-10-04 15:49:10
+ * @LastEditTime: 2020-11-09 18:46:52
  * @LastEditors: zhangjicheng
  * @Description:
  * @FilePath: \blog3.0\src\utils\utils.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
-import React from 'react';
+// import React from "react";
 
-/* eslint no-useless-escape:0 import/prefer-default-export:0 */
-const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
-
-const isUrl = (path: string) => reg.test(path);
-
-const isAntDesignPro = () => {
-  // eslint-disable-next-line no-undef
-  if (ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site') {
-    return true;
-  }
-
-  // eslint-disable-next-line compat/compat
-  return window.location.hostname === 'preview.pro.ant.design';
-}; // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
-
-// 判断当前项目
-const isAntDesignProOrDev = () => {
-  const { NODE_ENV } = process.env;
-
-  if (NODE_ENV === 'development') {
-    return true;
-  }
-
-  return isAntDesignPro();
+/**
+ * @description: 是否为url
+ * @param {string} path
+ * @return {boolean}
+ */
+export const isUrl = (path: string): boolean => {
+  const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\\+\\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\\+\\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\\+~%\\/.\w-_]*)?\??(?:[-\\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+  return reg.test(path);
 };
 
 /**
@@ -43,16 +27,12 @@ const isAntDesignProOrDev = () => {
  */
 export const thousandNum = (
   num: string | number, // 目标字段
-  dec?: number, // 小数位
+  dec?: number // 小数位
 ): string => {
-  if (!num) return '0';
-  const _num = typeof num === 'number' ? num.toFixed(dec || 2) : parseFloat(num).toFixed(dec || 2);
-  return _num.replace(/^(\d+)(\.?)(\d*)$/, (_$0, $1, $2, $3) => {
-    return `${$1.replace(/(\d)(?=(\d{3})+$)/g, '$1,')}${$2}${$3}`;
-  });
+  const _num = Number(num).toFixed(dec || 2);
+  return _num.replace(/(\d)(?=(\d{3})+(\.\d+)*$)/g, '$1,');
 };
 
-//
 /**
  * @description: 返回 min-max 随机数
  * @param {number}
@@ -72,9 +52,9 @@ export function fileSizeFormat(size: number | string): string {
   function getBaseLog(x: number, y: number): number {
     return Math.log(y) / Math.log(x);
   }
-  if (!size) return '0Bytes';
-  const unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const num = typeof size === 'number' ? size : parseFloat(size);
+  if (!size) return "0Bytes";
+  const unitArr = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  const num = typeof size === "number" ? size : parseFloat(size);
   const index = Math.floor(getBaseLog(1024, num));
   const res = num / 1024 ** index;
   return `${res.toFixed(2)}${unitArr[index]}`;
@@ -82,10 +62,9 @@ export function fileSizeFormat(size: number | string): string {
 
 // 数字格式化
 export const numberFormat = (num: number): string => {
-  const unitArr = ['', '万', '亿', '万亿'];
+  const unitArr = ["", "万", "亿", "万亿"];
   let index = 0;
-  let res = '';
-  // eslint-disable-next-line wrap-iife
+  let res = "";
   (function travel(count) {
     if (count > 10000) {
       index += 1;
@@ -102,11 +81,17 @@ export const numberFormat = (num: number): string => {
  * @param {function, number, boolean} 执行的方法；延迟时间ms；是否首次执行
  * @return {void}
  */
-export function throttle(fn: { (): void; call?: any }, delay: number = 300, first: boolean = true) {
+export function throttle(
+  fn: { (): void; call?: any },
+  delay = 300,
+  first = true
+) {
   let timer: any = null;
   let isFirst = first;
   return (...args: any) => {
     if (isFirst) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       fn.call(this, args);
       isFirst = false;
     }
@@ -123,7 +108,7 @@ export function throttle(fn: { (): void; call?: any }, delay: number = 300, firs
  * @param {function, number} 执行的方法；延迟时间ms
  * @return {type}
  */
-export function debounce(fn: { (): void; call?: any }, delay: number = 300) {
+export function debounce(fn: { (): void; call?: any }, delay = 300) {
   let timer: any = null;
   return (...args: any) => {
     if (timer) clearTimeout(timer);
@@ -159,17 +144,17 @@ const compress = img => {
     width /= ratio;
     height = 640;
   }
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   let ctx;
   if (canvas.getContext) {
-    ctx = canvas.getContext('2d');
+    ctx = canvas.getContext("2d");
   }
   // canvas的toDataURL只能转jpg的
   if (ctx) {
     // 铺底色
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
@@ -181,15 +166,25 @@ const compress = img => {
     // 计算每块瓦片的宽和高
     const nw = parseInt(width / count, 10);
     const nh = parseInt(height / count, 10);
-    const tCanvas = document.createElement('canvas');
+    const tCanvas = document.createElement("canvas");
     tCanvas.width = nw;
     tCanvas.height = nh;
     let tctx;
     if (tCanvas.getContext) {
-      tctx = tCanvas.getContext('2d');
+      tctx = tCanvas.getContext("2d");
       for (let i = 0; i < count; i += 1) {
         for (let j = 0; j < count; j += 1) {
-          tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh);
+          tctx.drawImage(
+            img,
+            i * nw * ratio,
+            j * nh * ratio,
+            nw * ratio,
+            nh * ratio,
+            0,
+            0,
+            nw,
+            nh
+          );
           ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh);
         }
       }
@@ -198,28 +193,37 @@ const compress = img => {
     ctx.drawImage(img, 0, 0, width, height);
   }
 
-  const ndata = canvas.toDataURL('image/jpeg', 0.6);
+  const ndata = canvas.toDataURL("image/jpeg", 0.6);
 
   return ndata;
 };
 
 // 仿jq offset()
-const offset = el => {
-  const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+const offset = (el: HTMLElement | null) => {
+  if (!el) return { top: 0, left: 0, height: 0, topBottom: 0 };
+  const clientHeight =
+    document.documentElement.clientHeight || document.body.clientHeight;
   const domRect = el.getBoundingClientRect();
   const { top = 0, left = 0, height = 0 } = domRect;
   return {
     top,
     left,
     height,
-    topBottom: clientHeight - top, // dom头部距离client底部距离
+    topBottom: clientHeight - top // dom头部距离client底部距离
   };
 };
 
 // 判断设备pc || 移动
 const isPc = () => {
   const userAgentInfo = navigator.userAgent;
-  const Agents = ['Android', 'iPhone', 'ymbianOS', 'Windows Phone', 'iPad', 'iPod'];
+  const Agents = [
+    "Android",
+    "iPhone",
+    "ymbianOS",
+    "Windows Phone",
+    "iPad",
+    "iPod"
+  ];
   let flag = true;
   for (let v = 0; v < Agents.length; v += 1) {
     if (userAgentInfo.indexOf(Agents[v]) > 0) {
@@ -233,22 +237,20 @@ const isPc = () => {
 // 全局loading
 const pageLoading = (key = false, text: any) => {
   if (key) {
-    const child = document.createElement('dev');
-    child.setAttribute('id', 'pageLoading_page');
+    const child = document.createElement("dev");
+    child.setAttribute("id", "pageLoading_page");
     // if (pageStyle === 'black') child.setAttribute('class', 'black');
     child.innerHTML = `<div class="ball-content"><i></i><i></i><i></i></div><p>${text ||
-      'loading'}<span>.</span><span>.</span><span>.</span></p>`;
+      "loading"}<span>.</span><span>.</span><span>.</span></p>`;
     document.body.appendChild(child);
   } else {
-    const child = document.getElementById('pageLoading_page');
+    const child = document.getElementById("pageLoading_page");
     if (child) document.body.removeChild(child);
   }
 };
 
 // 模拟延迟
-// eslint-disable-next-line compat/compat
 const timeout = (fn, params, ms = 300) =>
-  // eslint-disable-next-line compat/compat
   new Promise(resolve => {
     setTimeout(() => {
       const res = fn(...params);
@@ -257,8 +259,7 @@ const timeout = (fn, params, ms = 300) =>
   });
 
 // 转换base64编码图片
-const getBase64 = file => {
-  // eslint-disable-next-line compat/compat
+const getBase64 = (file: Blob): Promise<any> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -268,13 +269,10 @@ const getBase64 = file => {
 };
 
 export {
-  isAntDesignProOrDev,
-  isAntDesignPro,
-  isUrl,
   compress,
   offset,
   isPc,
   pageLoading,
   timeout,
-  getBase64,
+  getBase64
 };

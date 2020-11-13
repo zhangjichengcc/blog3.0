@@ -23,7 +23,7 @@ class TagCloud extends Component {
       this.initTagCloud();
       this.renderChart();
     });
-    window.addEventListener('resize', this.resize, { passive: true });
+    globalThis.addEventListener('resize', this.resize, { passive: true });
   }
 
   componentDidUpdate(preProps) {
@@ -35,8 +35,8 @@ class TagCloud extends Component {
 
   componentWillUnmount() {
     this.isUnmount = true;
-    window.cancelAnimationFrame(this.requestRef);
-    window.removeEventListener('resize', this.resize);
+    globalThis.cancelAnimationFrame(this.requestRef);
+    globalThis.removeEventListener('resize', this.resize);
   }
 
   resize = () => {

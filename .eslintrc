@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-11-03 20:41:24
- * @LastEditTime: 2020-11-03 20:57:38
+ * @LastEditTime: 2020-11-09 18:52:54
  * @LastEditors: zhangjicheng
  * @Description: 
  * @FilePath: \blog3.0\.eslintrc
@@ -11,17 +11,21 @@
 {
 	"env": {
 		"browser": true,
-		"es2020": true
+		"es2020": true,
+		"node": true
 	},
+	"parser": "@typescript-eslint/parser",
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/recommended"
 	],
-	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaFeatures": {
-			"jsx": true
+			"jsx": true,
+			"tsx": true,
+			"js": true,
+			"ts": true
 		},
 		"ecmaVersion": 11,
 		"sourceType": "module"
@@ -31,7 +35,11 @@
 		"@typescript-eslint"
 	],
 	"rules": {
-		"import/no-unresolved": 0
+		"import/no-unresolved": 0,
+		"react/prop-types": 0,
+		"@typescript-eslint/no-explicit-any": 0,
+		"@typescript-eslint/explicit-module-boundary-types": 0,
+		"@typescript-eslint/ban-ts-comment": 0
 		// "import/no-unresolved": [2, {
     //   "ignore": ["^@/", "^umi/", "^dva", "^assets/", "^pages/", "^components/", "^utils/", "^services/", "^models/",  "^themes/", "^public/"]
     // }]

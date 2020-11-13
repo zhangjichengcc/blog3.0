@@ -99,3 +99,43 @@
     margin: 20px 12px;
   }
 }
+
+
+.bannerUploadArea {
+  position: relative;
+  height: 0;
+  padding-bottom: 46%;
+  background-color: #eee;
+  .file_input_dom {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    overflow: hide;
+    opacity: 0;
+  }
+  .upload_area_content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .btnGroup {
+    position: relative;
+    overflow: hidden;
+    .plusBtn {
+      font-size: 50px;
+      cursor: pointer;
+      color: #bebebe;
+      transition: all ease .3s;
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+}

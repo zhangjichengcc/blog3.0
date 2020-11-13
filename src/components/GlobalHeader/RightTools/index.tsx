@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-10-04 16:55:51
+ * @LastEditTime: 2020-11-06 20:36:55
  * @LastEditors: zhangjicheng
  * @Description: 头部导航
  * @FilePath: \blog3.0\src\components\GlobalHeader\RightTools\index.tsx
@@ -10,7 +10,7 @@
 
 import React, { FC, useState } from 'react';
 import HeaderSearch from '@/components/HeaderSearch';
-import SelectLang from '@/components/SelectLang';
+// import SelectLang from '@/components/SelectLang';
 import AvatarDropdown from '../AvatarDropdown';
 import styles from './index.less';
 
@@ -33,7 +33,7 @@ const GlobalHeader: FC<headerSearchProps> = () => {
     <div className={styles.right_tools}>
       <HeaderSearch onSearch={onSearch} />
       <AvatarDropdown />
-      <SelectLang />
+      {/* <SelectLang /> */}
     </div>
   );
 };

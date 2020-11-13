@@ -1,6 +1,6 @@
 import React from 'react';
-import Redirect from 'umi/redirect';
-import { connect } from 'dva';
+// import Redirect from 'umi/redirect';
+import { connect, redirect } from 'umi';
 import pathToRegexp from 'path-to-regexp';
 import Authorized from '@/utils/Authorized';
 
@@ -45,7 +45,7 @@ const AuthComponent = ({
   );
 };
 
-window.process = process;
+globalThis.process = process;
 
 export default connect(({ user }) => ({
   user,

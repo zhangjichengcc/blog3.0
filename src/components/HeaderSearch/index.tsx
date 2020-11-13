@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2020-10-02 17:34:50
- * @LastEditTime: 2020-11-03 20:19:53
+ * @LastEditTime: 2020-11-05 17:59:23
  * @LastEditors: zhangjicheng
  * @Description: 头部搜索框
  * @FilePath: \blog3.0\src\components\HeaderSearch\index.tsx
@@ -18,7 +18,7 @@ const { Search } = Input;
 
 interface headerSearchProps {
   onSearch: (value: string, callBack: () => void) => void;
-  style?: object;
+  style?: Record<string, unknown>;
 }
 
 const HeaderSearch: FC<headerSearchProps> = ({ onSearch, style = {} }) => {
