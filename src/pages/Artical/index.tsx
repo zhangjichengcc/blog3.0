@@ -18,9 +18,6 @@ import { offset } from "@/utils/utils";
 import Img from "@/components/Img";
 import { getArtical } from "@/services/artical";
 import MdArtical, { MdMenus } from "./components/MdArtical";
-// import "highlight.js/styles/atom-one-dark.css";
-
-
 
 import styles from "./index.less";
 

@@ -9,21 +9,6 @@ import styles from './index.less';
 
 const { Link } = Anchor;
 
-// 格式化marked文本，使其支持锚点
-const addAnchor = (text: string) => {
-  if (typeof text !== "string") return "";
-  return text.replace(
-    /#+\s+(.*)?(?=\s+)?/g,
-    ($0, $1, idx) => {
-      const anchor = $1.replace(/[^\u4e00-\u9fa5|\w]/g, '');
-      return `<h2 id="a">aaa</h2>`;
-      // return `${$0}\n[](#head)`;
-    }
-  );
-};
-
-//
-
 // 文章导航
 const MdMenus: FC<{ markdownString: string }> = ({
   markdownString
@@ -42,7 +27,7 @@ const MdMenus: FC<{ markdownString: string }> = ({
   };
 
   const navListSource = markdownString?.match(/#+\s+(.*)?/g) || [];
-  const titleObj = navListSource.map((v: any = "", idx) => {
+  const titleObj = navListSource.map((v: any = "") => {
     const level = v?.match(/^#+/g)[0]?.length;
     const title = v?.replace(/^#+\s+/, '');
     const anchor = `#${title?.replace(/[^\u4e00-\u9fa5|\w]/g, '')}`;
@@ -78,15 +63,30 @@ const MdMenus: FC<{ markdownString: string }> = ({
 const MdArtical: FC<{ children: string }> = ({
   children,
 }): React.ReactElement => {
-  const headDom = ({level, node, children}) => {
-    debugger
+  interface HeadDomProps {
+    level: number;
+    node: any;
+    children: any;
+  }
+  const HeadDom: FC<HeadDomProps> = ({level, node, children}): any => {
+    const text = node.children.reduce((prev: string, cur: { value: string; }) => prev.concat(cur?.value), '');
+    const id = `${text?.replace(/[^\u4e00-\u9fa5|\w]/g, '')}`;
+    const h_type = `h${level}`;
+    const h_props = {id}
+    const h_content = (
+      <>
+        <span>{children}</span>
+        <a href={`#${id}`} />
+      </>
+    )
+    return React.createElement(h_type, h_props, h_content)
   }
   return (
     <ReactMarkdown
       renderers={{
         // eslint-disable-next-line react/display-name
         code: ({language, value}) => <SyntaxHighlighter style={darcula} language={language}>{value}</SyntaxHighlighter>,
-        heading: headDom,
+        heading: HeadDom,
       }}
     >
       {children}
