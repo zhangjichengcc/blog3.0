@@ -2,6 +2,25 @@
 // 文章导航缩进
 @anchor-indentation: 10px;
 
+.menu {
+  :global {
+    .ant-anchor-wrapper {
+      .ant-anchor {
+        .ant-anchor-ink::before {
+          background-color: #bfbfbf;
+        }
+        .ant-anchor-link {
+          padding: 7px 5px;
+          transition: all ease .5s;
+          &.ant-anchor-link-active {
+            background-color: #eee;
+          }
+        }
+      }
+    }
+  }
+}
+
 .menuTitle {
   font-size: 15px;
   font-weight: bold;

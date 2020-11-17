@@ -21,7 +21,8 @@ const MdMenus: FC<{ markdownString: string }> = ({
   const options = {
     offsetTop: 86,
     onClick: handleClick,
-    showInkInFixed: true
+    showInkInFixed: true,
+    affix: false,
     // targetOffset: -300,
     // bounds: 1000,
   };
@@ -37,25 +38,27 @@ const MdMenus: FC<{ markdownString: string }> = ({
   });
 
   return (
-    <Anchor {...options}>
+    <div className={styles.menu}>
       <p className={styles.menuTitle}>目录</p>
-      {titleObj.map((item: any = {}, idx) => {
-        const { title, level, anchor } = item;
-        const keys = `key_${idx + 1}`;
-        return (
-          <Link
-            key={keys}
-            href={anchor}
-            target={anchor}
-            title={
-              <span className={classnames(styles.anchor, styles[`h${level}`])}>
-                {title}
-              </span>
-            }
-          />
-        );
-      })}
-    </Anchor>
+      <Anchor {...options}>
+        {titleObj.map((item: any = {}, idx) => {
+          const { title, level, anchor } = item;
+          const keys = `key_${idx + 1}`;
+          return (
+            <Link
+              key={keys}
+              href={anchor}
+              target={anchor}
+              title={
+                <span title={title} className={classnames(styles.anchor, styles[`h${level}`])}>
+                  {title}
+                </span>
+              }
+            />
+          );
+        })}
+      </Anchor>
+    </div>
   );
 };
 

@@ -186,7 +186,9 @@ const Artical: FC<articalProps> = ({ location }): React.ReactElement => {
               </div>
             </div>
             <div className={styles.rightContent}>
-              <MdMenus markdownString={mainContent} />
+              <Affix offsetTop={86}>
+                <MdMenus markdownString={mainContent} />
+              </Affix>
             </div>
           </div>
           <Affix offsetBottom={20}>

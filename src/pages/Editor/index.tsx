@@ -37,9 +37,10 @@ import { pageLoading, timeout, getBase64 } from "@/utils/utils";
 const { TextArea } = Input;
 const { confirm } = Modal;
 
-const useUploadPercent = () => {
+type statusType = 'ready' | 'fetching' | 'success' | 'error';
+const useUploadPercent = (): [{percent: number, status: statusType, url: string}, (arg0: any) => void] => {
   const [percent, setPercent] = useState<number>(0);
-  const [status, setStatus] = useState<'ready' | 'fetching' | 'success' | 'error'>('ready');
+  const [status, setStatus] = useState<statusType>('ready');
   const [url, setUrl] = useState<string>('');
   // XHR 请求方式，获取进度
   const uploadXHR = (file: string | Blob) => {
@@ -67,7 +68,6 @@ const useUploadPercent = () => {
     xhr.send(formData);
   };
   const setFile = (file: any) => {
-    debugger
     uploadXHR(file);
   }
   return [{percent, status, url}, setFile];
@@ -80,7 +80,7 @@ const UploadImg: FC<any> = ({
   const [{percent, status, url}, setFile] = useUploadPercent();
   const inputOnChange = (e: { target: any; }) => {
     const { target: { files } } = e;
-    setFile(files?.[0])
+    setFile(files?.[0]);
   }
 
   useEffect(() => {
@@ -120,13 +120,6 @@ const Editor: FC<any> = ({
   return (
     <div className={styles.Editor}>
       <Form form={form}>
-        {/* <Form.Item
-          label="发布时间："
-          name="createTime"
-          rules={[{ required: true, message: "请选择发布时间!" }]}
-        >
-          <DatePicker showTime />
-        </Form.Item> */}
         <Form.Item
           label="文章标题"
           name="title"
