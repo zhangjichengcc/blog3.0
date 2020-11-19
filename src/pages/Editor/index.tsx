@@ -19,6 +19,7 @@ import {
   Progress,
   Modal
 } from "antd";
+import classnames from 'classnames';
 // import Charts from '@/components/Charts';
 import SimpleMDE from "react-simplemde-editor";
 import { history } from "umi";
@@ -38,64 +39,113 @@ const { TextArea } = Input;
 const { confirm } = Modal;
 
 type statusType = 'ready' | 'fetching' | 'success' | 'error';
-const useUploadPercent = (): [{percent: number, status: statusType, url: string}, (arg0: any) => void] => {
+const useUploadPercent = (): [{percent: number, status: statusType, url: string, base64: string}, (arg0: any) => void] => {
   const [percent, setPercent] = useState<number>(0);
   const [status, setStatus] = useState<statusType>('ready');
   const [url, setUrl] = useState<string>('');
+  const [base64, setBase64] = useState<string>('');
   // XHR 请求方式，获取进度
   const uploadXHR = (file: string | Blob) => {
-    const formData = new FormData();
-    formData.append("upload", file);
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/image/uploadImage");
-    xhr.upload.onprogress = event => {
-      if (event.lengthComputable) {
-        const _percent = Math.round((event.loaded / event.total) * 100);
-        setPercent(_percent)
-      }
-    };
-    xhr.onload = (res: {target: any}) => {
-      const { target: { response = {} } } = res;
-      const { code, data } = JSON.parse(response);
-      if (code === 0) {
-        setPercent(100);
-        setStatus('success');
-        setUrl(data);
-      } else {
-        setStatus('error');
-      }
-    };
-    xhr.send(formData);
+    // const formData = new FormData();
+    // formData.append("upload", file);
+    // const xhr = new XMLHttpRequest();
+    // xhr.open("POST", "/api/image/uploadImage");
+    // xhr.upload.onprogress = event => {
+      //   if (event.lengthComputable) {
+    //     const _percent = Math.round((event.loaded / event.total) * 100);
+    //     setPercent(_percent < 99 ? _percent : 99);
+    //   }
+    // };
+    // xhr.onload = (res: {target: any}) => {
+    //   const { target: { response = {} } } = res;
+    //   const { code, data } = JSON.parse(response);
+    //   if (code === 0) {
+      //     setTimeout(() => {
+    //       setPercent(100);
+    //       setStatus('success');
+    //     }, 1000);
+    //     setUrl(data);
+    //   } else {
+    //     setStatus('error');
+    //   }
+    // };
+    // xhr.send(formData);
+    let _p = 0;
+    const fn = () => {
+      setTimeout(() => {
+        setPercent(_p + 1);
+        _p = _p + 5;
+        if(_p < 100) {
+          fn()
+        } else {
+          setStatus('success');
+        }
+      }, 500);
+    }
+    fn();
   };
+  // 调用上次方法
   const setFile = (file: any) => {
+    setStatus('fetching');
+    getBase64(file).then(res => {
+      setBase64(res);
+    })
     uploadXHR(file);
   }
-  return [{percent, status, url}, setFile];
+  return [{percent, status, url, base64}, setFile];
 }
 
 const UploadImg: FC<any> = ({
   value = '',
+  onChange,
 }) => {
   const uploadRef = useRef(null);
-  const [{percent, status, url}, setFile] = useUploadPercent();
+  const [mask, setMask] = useState<boolean>(true);
+  const [{percent, status, url, base64}, setFile] = useUploadPercent();
   const inputOnChange = (e: { target: any; }) => {
     const { target: { files } } = e;
     setFile(files?.[0]);
   }
 
+  // 当url改变时代表有文件上传成功或初始化有文件存在
   useEffect(() => {
-    console.log(percent, status, url);
-  }, [percent, status, url])
+    onChange(url);
+  }, [url]);
+
+  // 当url改变时代表有文件上传成功或初始化有文件存在
+  useEffect(() => {
+    if(status === 'fetching' || status === 'success') setMask(true);
+  }, [status])
+
+  useEffect(() => {
+    console.log(percent, status, url, base64);
+  }, [percent, status, url, base64])
   return (
     <div className={styles.bannerUploadArea}>
       <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} onChange={inputOnChange} />
-      <div className={styles.upload_area_content}>
-        <div className={styles.btnGroup}>
-          <Tooltip placement="top" title="上传图片">
-            {/* @ts-ignore */}
-            <PlusOutlined className={styles.plusBtn} onClick={() => {uploadRef.current?.click()}} />
-          </Tooltip>
-        </div>
+      <div className={styles.upload_area_content} style={(value || base64) ? {backgroundImage: `url(${value || base64})`} : {}}>
+        <div onAnimationEnd={() => setMask(false)} className={classnames(styles.mask, status === 'success' ? styles.hide : '')} />
+        {
+          status === 'ready' &&
+          <div className={styles.btnGroup}>
+            <Tooltip placement="top" title="上传图片">
+              {/* @ts-ignore */}
+              <PlusOutlined className={styles.plusBtn} onClick={() => {uploadRef.current?.click()}} />
+            </Tooltip>
+          </div>
+        }
+        {
+          (status === 'fetching' || status === 'error') &&
+          <div>
+            <Progress type="circle" percent={percent} />
+          </div>
+        }
+        {
+          value &&
+          <div>
+            {value}
+          </div>
+        }
       </div>
     </div>
   )
