@@ -74,17 +74,21 @@ const useUploadPercent = (): [{percent: number, status: statusType, url: string,
     const fn = () => {
       setTimeout(() => {
         setPercent(_p + 1);
-        _p = _p + 5;
+        _p = _p + 1;
         if(_p < 100) {
           fn()
         } else {
-          setStatus('success');
+          setPercent(100);
+          setTimeout(() => {
+            setStatus('success');
+          }, 1000)
+          setUrl('666');
         }
       }, 500);
     }
     fn();
   };
-  // 调用上次方法
+  // 调用上传方法
   const setFile = (file: any) => {
     setStatus('fetching');
     getBase64(file).then(res => {
@@ -93,6 +97,23 @@ const useUploadPercent = (): [{percent: number, status: statusType, url: string,
     uploadXHR(file);
   }
   return [{percent, status, url, base64}, setFile];
+}
+
+const Mask: FC<any> = ({
+  type = 'hide',
+}) => {
+
+  const [display, setDisplay] = useState<'block' | 'none'>('block');
+  const onMaskAnimationEnd = () => {
+    setDisplay({show: 'block', hide: 'none'}[type]);
+  }
+  useEffect(() => {
+    setDisplay('block');
+  }, [type])
+  
+  return (
+    <div onAnimationEnd={onMaskAnimationEnd} style={{display}} className={classnames(styles.mask, styles[type])} />
+  )
 }
 
 const UploadImg: FC<any> = ({
@@ -112,19 +133,16 @@ const UploadImg: FC<any> = ({
     onChange(url);
   }, [url]);
 
-  // 当url改变时代表有文件上传成功或初始化有文件存在
-  useEffect(() => {
-    if(status === 'fetching' || status === 'success') setMask(true);
-  }, [status])
 
   useEffect(() => {
-    console.log(percent, status, url, base64);
+    console.log(percent, status, url);
   }, [percent, status, url, base64])
+
   return (
     <div className={styles.bannerUploadArea}>
       <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} onChange={inputOnChange} />
       <div className={styles.upload_area_content} style={(value || base64) ? {backgroundImage: `url(${value || base64})`} : {}}>
-        <div onAnimationEnd={() => setMask(false)} className={classnames(styles.mask, status === 'success' ? styles.hide : '')} />
+        <Mask type={status === 'fetching' ? 'show' : 'hide'} />
         {
           status === 'ready' &&
           <div className={styles.btnGroup}>
@@ -136,9 +154,7 @@ const UploadImg: FC<any> = ({
         }
         {
           (status === 'fetching' || status === 'error') &&
-          <div>
-            <Progress type="circle" percent={percent} />
-          </div>
+          <Progress type="circle" percent={percent} />
         }
         {
           value &&

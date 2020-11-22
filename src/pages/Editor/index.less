@@ -128,26 +128,35 @@
     background-repeat: no-repeat;
     background-size: cover;
     >.mask {
-      @keyframes hide {
+      @keyframes leave {
         0% {
           opacity: 1;
         }
-        99% {
+        100% {
+          display: 0;
+        }
+      }
+      @keyframes enter {
+        0% {
           opacity: 0;
         }
         100% {
-          display: none;
+          display: 1;
         }
       }
       position: absolute;
-      width: 100%;
-      height: 100%;
+      right: 0;
+      bottom: 0;
       left: 0;
       top: 0;
       background: rgba(255,255,255,.6);
-      animation: name duration timing-function delay iteration-count direction fill-mode;
-      animation: hide .3s ease;
       animation-fill-mode: forwards;
+      &.show {
+        animation: enter ease .3s;
+      }
+      &.hide {
+        animation: leave ease .3s;
+      }
     }
   }
   .btnGroup {
