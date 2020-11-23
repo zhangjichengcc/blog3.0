@@ -103,14 +103,18 @@ const Mask: FC<any> = ({
   type = 'hide',
 }) => {
 
-  const [display, setDisplay] = useState<'block' | 'none'>('block');
+  const [display, setDisplay] = useState<'block' | 'none'>('none');
+  const [isFirst, setIsFirst] = useState<boolean>(true);
   const onMaskAnimationEnd = () => {
     setDisplay({show: 'block', hide: 'none'}[type]);
   }
   useEffect(() => {
+    if(isFirst) {
+      setIsFirst(false);
+      return;
+    }
     setDisplay('block');
   }, [type])
-  
   return (
     <div onAnimationEnd={onMaskAnimationEnd} style={{display}} className={classnames(styles.mask, styles[type])} />
   )
