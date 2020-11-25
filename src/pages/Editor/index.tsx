@@ -73,8 +73,8 @@ const useUploadPercent = (): [{percent: number, status: statusType, url: string,
     let _p = 0;
     const fn = () => {
       setTimeout(() => {
-        setPercent(_p + 1);
-        _p = _p + 1;
+        setPercent(_p + 20);
+        _p = _p + 20;
         if(_p < 100) {
           fn()
         } else {
@@ -99,24 +99,30 @@ const useUploadPercent = (): [{percent: number, status: statusType, url: string,
   return [{percent, status, url, base64}, setFile];
 }
 
-const Mask: FC<any> = ({
-  type = 'hide',
+interface maskProps {
+  show: boolean;
+}
+const Mask: FC<maskProps> = ({
+  show = true,
 }) => {
+  // 状态样式类，show === true，立刻设为show(display: block;); show === false 待动画结束后设为hide(display: none;);
+  const [stateClass, setStateClass] = useState<'show' | 'hide'>(show ? 'show' : 'hide');
+  // 动作样式类，show === true 设为进程动画enter; show === false 设为离场动画leave; 动画结束后设为空
+  const [actionClass, setActionClass] = useState<'enter' | 'leave' | ''>('');
 
-  const [display, setDisplay] = useState<'block' | 'none'>('none');
-  const [isFirst, setIsFirst] = useState<boolean>(true);
   const onMaskAnimationEnd = () => {
-    setDisplay({show: 'block', hide: 'none'}[type]);
-  }
+    setActionClass('');
+    if (!show) setStateClass('hide');
+  };
+  
   useEffect(() => {
-    if(isFirst) {
-      setIsFirst(false);
-      return;
-    }
-    setDisplay('block');
-  }, [type])
+    setActionClass(show ? 'enter' : 'leave')
+    if(show) setStateClass('show');
+  }, [show]);
+  console.log(show)
+
   return (
-    <div onAnimationEnd={onMaskAnimationEnd} style={{display}} className={classnames(styles.mask, styles[type])} />
+    <div onAnimationEnd={onMaskAnimationEnd} className={classnames(styles.mask, styles[stateClass], styles[actionClass])} />
   )
 }
 
@@ -146,7 +152,7 @@ const UploadImg: FC<any> = ({
     <div className={styles.bannerUploadArea}>
       <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} onChange={inputOnChange} />
       <div className={styles.upload_area_content} style={(value || base64) ? {backgroundImage: `url(${value || base64})`} : {}}>
-        <Mask type={status === 'fetching' ? 'show' : 'hide'} />
+        <Mask show={status === 'fetching'} />
         {
           status === 'ready' &&
           <div className={styles.btnGroup}>

@@ -144,7 +144,6 @@
           display: 1;
         }
       }
-      display: none;
       position: absolute;
       right: 0;
       bottom: 0;
@@ -152,14 +151,17 @@
       top: 0;
       background: rgba(255,255,255,.6);
       animation-fill-mode: forwards;
-      &.active {
+      &.show {
         display: block;
       }
-      &.show {
-        animation: enter ease .3s;
-      }
       &.hide {
-        animation: leave ease .3s;
+        display: none;
+      }
+      &.enter {
+        animation: enter ease 3s;
+      }
+      &.leave {
+        animation: leave ease 3s;
       }
     }
   }
