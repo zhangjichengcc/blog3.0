@@ -1,7 +1,7 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2020-11-09 18:46:52
+ * @LastEditTime: 2020-11-26 20:39:17
  * @LastEditors: zhangjicheng
  * @Description:
  * @FilePath: \blog3.0\src\utils\utils.ts
@@ -30,7 +30,7 @@ export const thousandNum = (
   dec?: number // 小数位
 ): string => {
   const _num = Number(num).toFixed(dec || 2);
-  return _num.replace(/(\d)(?=(\d{3})+(\.\d+)*$)/g, '$1,');
+  return _num.replace(/(\d)(?=(\d{3})+(\.\d+)*$)/g, "$1,");
 };
 
 /**
@@ -268,11 +268,94 @@ const getBase64 = (file: Blob): Promise<any> => {
   });
 };
 
-export {
-  compress,
-  offset,
-  isPc,
-  pageLoading,
-  timeout,
-  getBase64
-};
+// const uploadFiless = (files: Array<any>, option: optionProps, callback: (fs: {[key: string]: any}) => void) => {
+//   const {
+//     url,
+//     headers,
+//   } = option;
+//   // eslint-disable-next-line no-underscore-dangle
+//   const _files = [...files].map(item => ({
+//     name: item.name,
+//     lastModified: item.lastModified,
+//     lastModifiedDate: item.lastModifiedDate,
+//     size: item.size,
+//     type: item.type,
+//     precent: 0,
+//     status: 'fetching',
+//     response: {},
+//     base64: null,
+//   }));
+//   //
+//   const base64 = (file: any, idx: number) => (
+//     new Promise((resolve) => {
+//       if (new RegExp(/image/).test(file.type)) {
+//         const reader = new FileReader();
+//         reader.readAsDataURL(file);
+//         reader.onload = () => {
+//           resolve(reader.result);
+//           _files[idx].base64 = reader.result;
+//         };
+//         reader.onerror = () => {
+//           resolve(null);
+//           _files[idx].base64 = null;
+//         };
+//       } else {
+//         resolve(null);
+//         _files[idx].base64 = null;
+//       }
+//     })
+//   );
+//   const upload = (file: any, idx: number) => {
+//     const xhr = new XMLHttpRequest();
+//     const formData = new FormData();
+//     formData.append('file', file);
+//     xhr.open('POST', url);
+//     Object.keys(headers).forEach((key: string) => {
+//       xhr.setRequestHeader(key, headers[key]);
+//     })
+//     xhr.upload.onprogress = event => {
+//       if (event.lengthComputable) {
+//         const percent = Math.round((event.loaded / event.total) * 100);
+//         _files[idx].precent = percent;
+//         callback(_files);
+//       }
+//     };
+//     return new Promise((resolve, reject) => {
+//       xhr.onload = (res: any) => {
+//         try {
+//           const {
+//             target: { response = {} },
+//           } = res;
+//           const { code, data } = JSON.parse(response) || {};
+//           if (code === 0) {
+//             resolve(data);
+//             _files[idx].status = 'success';
+//             _files[idx].response = data;
+//           } else {
+//             reject(new Error('error'));
+//             _files[idx].status = 'error';
+//           }
+//         } catch {
+//           reject(new Error('error'));
+//         }
+//       }
+//       xhr.send(formData);
+//     })
+//   }
+//   // return Promise.all([...files].map((item, idx) => base64(item, idx)))
+//   // .then(() => (
+//   //   Promise.all([...files].map((item, idx) => upload(item, idx).catch(() => new Promise(resolve => resolve())))).then(() =>
+//   //     new Promise((resolve) => {
+//   //       resolve(_files);
+//   //     }
+//   //   ))
+//   // ))
+//   return Promise.all([...files].map((item, idx) => upload(item, idx).catch(() => {}))).then(() => {
+//     debugger
+//     return new Promise((resolve) => {
+//       resolve(_files);
+//     })
+//   })
+// }
+
+export { compress, offset, isPc, pageLoading, timeout, getBase64 };
