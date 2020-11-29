@@ -206,6 +206,7 @@ class Editor extends Component {
       }
     });
   };
+  //
 
   // 上传 || 插入图片
   uploadImg = (tar, type) => {
