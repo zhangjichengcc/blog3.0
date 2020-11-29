@@ -3,7 +3,7 @@ import moment from "moment";
 import {
   CheckOutlined,
   CloseOutlined,
-  DeleteOutlined,
+  DeleteFilled,
   EyeOutlined,
   PlusOutlined
 } from "@ant-design/icons";
@@ -20,162 +20,21 @@ import {
   Modal
 } from "antd";
 import classnames from 'classnames';
-// import Charts from '@/components/Charts';
-import SimpleMDE from "react-simplemde-editor";
-import { history } from "umi";
+import UploadBanner from '@/components/UploadBanner';
+import MarkdownEditor from '@/components/MarkdownEditor';
+
+// import { history } from "umi";
 import styles from "./index.less";
 import "easymde/dist/easymde.min.css";
-import { uploadImg } from "@/services/image";
-import {
-  insertArtical,
-  updateArtical,
-  getArtical,
-  deleteArtical
-} from "@/services/artical";
-import { pageLoading, timeout, getBase64 } from "@/utils/utils";
-// import Ellipsis from '@/components/Ellipsis';
+// import {
+//   insertArtical,
+//   updateArtical,
+//   getArtical,
+//   deleteArtical
+// } from "@/services/artical";
 
 const { TextArea } = Input;
-const { confirm } = Modal;
-
-type statusType = 'ready' | 'fetching' | 'success' | 'error';
-const useUploadPercent = (): [{percent: number, status: statusType, url: string, base64: string}, (arg0: any) => void] => {
-  const [percent, setPercent] = useState<number>(0);
-  const [status, setStatus] = useState<statusType>('ready');
-  const [url, setUrl] = useState<string>('');
-  const [base64, setBase64] = useState<string>('');
-  // XHR 请求方式，获取进度
-  const uploadXHR = (file: string | Blob) => {
-    // const formData = new FormData();
-    // formData.append("upload", file);
-    // const xhr = new XMLHttpRequest();
-    // xhr.open("POST", "/api/image/uploadImage");
-    // xhr.upload.onprogress = event => {
-      //   if (event.lengthComputable) {
-    //     const _percent = Math.round((event.loaded / event.total) * 100);
-    //     setPercent(_percent < 99 ? _percent : 99);
-    //   }
-    // };
-    // xhr.onload = (res: {target: any}) => {
-    //   const { target: { response = {} } } = res;
-    //   const { code, data } = JSON.parse(response);
-    //   if (code === 0) {
-      //     setTimeout(() => {
-    //       setPercent(100);
-    //       setStatus('success');
-    //     }, 1000);
-    //     setUrl(data);
-    //   } else {
-    //     setStatus('error');
-    //   }
-    // };
-    // xhr.send(formData);
-    let _p = 0;
-    const fn = () => {
-      setTimeout(() => {
-        setPercent(_p + 20);
-        _p = _p + 20;
-        if(_p < 100) {
-          fn()
-        } else {
-          setPercent(100);
-          setTimeout(() => {
-            setStatus('success');
-          }, 1000)
-          setUrl('666');
-        }
-      }, 500);
-    }
-    fn();
-  };
-  // 调用上传方法
-  const setFile = (file: any) => {
-    setStatus('fetching');
-    getBase64(file).then(res => {
-      setBase64(res);
-    })
-    uploadXHR(file);
-  }
-  return [{percent, status, url, base64}, setFile];
-}
-
-interface maskProps {
-  show: boolean;
-}
-const Mask: FC<maskProps> = ({
-  show = true,
-}) => {
-  // 状态样式类，show === true，立刻设为show(display: block;); show === false 待动画结束后设为hide(display: none;);
-  const [stateClass, setStateClass] = useState<'show' | 'hide'>(show ? 'show' : 'hide');
-  // 动作样式类，show === true 设为进程动画enter; show === false 设为离场动画leave; 动画结束后设为空
-  const [actionClass, setActionClass] = useState<'enter' | 'leave' | ''>('');
-
-  const onMaskAnimationEnd = () => {
-    setActionClass('');
-    if (!show) setStateClass('hide');
-  };
-  
-  useEffect(() => {
-    setActionClass(show ? 'enter' : 'leave')
-    if(show) setStateClass('show');
-  }, [show]);
-  console.log(show)
-
-  return (
-    <div onAnimationEnd={onMaskAnimationEnd} className={classnames(styles.mask, styles[stateClass], styles[actionClass])} />
-  )
-}
-
-const UploadImg: FC<any> = ({
-  value = '',
-  onChange,
-}) => {
-  const uploadRef = useRef(null);
-  const [mask, setMask] = useState<boolean>(true);
-  const [{percent, status, url, base64}, setFile] = useUploadPercent();
-  const inputOnChange = (e: { target: any; }) => {
-    const { target: { files } } = e;
-    setFile(files?.[0]);
-  }
-
-  // 当url改变时代表有文件上传成功或初始化有文件存在
-  useEffect(() => {
-    onChange(url);
-  }, [url]);
-
-
-  useEffect(() => {
-    console.log(percent, status, url);
-  }, [percent, status, url, base64])
-
-  return (
-    <div className={styles.bannerUploadArea}>
-      <input type="file" accept=".png,.jpg,.jpeg" ref={uploadRef} className={styles.file_input_dom} onChange={inputOnChange} />
-      <div className={styles.upload_area_content} style={(value || base64) ? {backgroundImage: `url(${value || base64})`} : {}}>
-        <Mask show={status === 'fetching'} />
-        {
-          status === 'ready' &&
-          <div className={styles.btnGroup}>
-            <Tooltip placement="top" title="上传图片">
-              {/* @ts-ignore */}
-              <PlusOutlined className={styles.plusBtn} onClick={() => {uploadRef.current?.click()}} />
-            </Tooltip>
-          </div>
-        }
-        {
-          (status === 'fetching' || status === 'error') &&
-          <Progress type="circle" percent={percent} />
-        }
-        {
-          value &&
-          <div>
-            {value}
-          </div>
-        }
-      </div>
-    </div>
-  )
-}
+// const { confirm } = Modal;
 
 const Editor: FC<any> = ({
 
@@ -184,14 +43,12 @@ const Editor: FC<any> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const [percent, status] = useUploadPercent();
-
-  useEffect(() => {
-    console.log(percent)
-  }, [percent])
+  
   
 
   globalThis.form = form;
+
+  form.setFieldsValue({banner: "http://118.190.52.53/images/u=3346477101,3512940777&fm=26&gp=0-1606644261597.jpg", mainContent: '666'})
 
   return (
     <div className={styles.Editor}>
@@ -215,46 +72,8 @@ const Editor: FC<any> = ({
           />
         </Form.Item>
         <Form.Item label="文章banner：" name="banner">
-          <UploadImg />
+          <UploadBanner />
         </Form.Item>
-        {/* <Form.Item label="文章banner：" name="banner">
-          <div
-            className={styles.bannerArea}
-            style={
-              base64Banner ? { backgroundImage: `url(${base64Banner})` } : {}
-            }
-          >
-            {base64Banner ? (
-              <div className={styles.bannerImgEdit}>
-                <div className={styles.btnGroup}>
-                  <Tooltip placement="top" title="预览">
-                    <span>
-                      <EyeOutlined />
-                    </span>
-                  </Tooltip>
-                  <Tooltip placement="top" title="删除">
-                    <span>
-                      <DeleteOutlined />
-                    </span>
-                  </Tooltip>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.btnGroup}>
-                <Tooltip placement="top" title="上传图片">
-                  <span onClick={this.uploadeBanImg} style={{ fontSize: 50 }}>
-                    <PlusOutlined />
-                  </span>
-                </Tooltip>
-              </div>
-            )}
-            {showPercent && (
-              <div className={styles.progressBox}>
-                <Progress percent={percent} status={progressStatus} />
-              </div>
-            )}
-          </div>
-        </Form.Item> */}
         <Form.Item
           label="文章简介："
           name="introduction"
@@ -270,7 +89,8 @@ const Editor: FC<any> = ({
           name="mainContent"
           rules={[{ required: true, message: "请输入文章正文!" }]}
         >
-          {/* <SimpleMDE options={options} style={{ lineHeight: "normal" }} /> */}
+          {/* @ts-ignore */}
+          <MarkdownEditor />
         </Form.Item>
       </Form>
       <div className={styles.btnGroup}>

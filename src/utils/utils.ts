@@ -8,6 +8,8 @@
  * @可以输入预定的版权声明、个性签名、空行等
  */
 
+import { stringify } from "qs";
+
 // import React from "react";
 
 /**
@@ -270,23 +272,35 @@ const getBase64 = (file: Blob): Promise<any> => {
 
 interface optionProps {
   url: string;
-  headers: {[key: string]: any};
+  headers?: {[key: string]: any};
 }
 
-const uploadFiless = (files: Array<any>, option: optionProps, callback: (fs: {[key: string]: any}) => void) => {
+interface fsProps {
+  name: string;
+  lastModified: number;
+  lastModifiedDate: Date;
+  size: number;
+  type: string;
+  precent: number;
+  status: string;
+  response: any;
+  base64: string | null;
+}
+
+const uploadFiles = (files: Array<any>, option: optionProps, callback?: (fs: Array<{[key: string]: any}>) => void) => {
   const {
     url,
     headers,
   } = option;
   // eslint-disable-next-line no-underscore-dangle
-  const _files = [...files].map(item => ({
+  const _files: Array<fsProps> = [...files].map(item => ({
     name: item.name,
     lastModified: item.lastModified,
     lastModifiedDate: item.lastModifiedDate,
     size: item.size,
     type: item.type,
     precent: 0,
-    status: 'fetching',
+    status: 'uploading',
     response: {},
     base64: null,
   }));
@@ -298,6 +312,7 @@ const uploadFiless = (files: Array<any>, option: optionProps, callback: (fs: {[k
         reader.readAsDataURL(file);
         reader.onload = () => {
           resolve(reader.result);
+          // @ts-ignore
           _files[idx].base64 = reader.result;
         };
         reader.onerror = () => {
@@ -316,9 +331,11 @@ const uploadFiless = (files: Array<any>, option: optionProps, callback: (fs: {[k
     const formData = new FormData();
     formData.append('file', file);
     xhr.open('POST', url);
-    Object.keys(headers).forEach((key: string) => {
-      xhr.setRequestHeader(key, headers[key]);
-    })
+    if (typeof headers === 'object') {
+      Object.keys(headers).forEach((key: string) => {
+        xhr.setRequestHeader(key, headers[key]);
+      })
+    }
     xhr.upload.onprogress = event => {
       if (event.lengthComputable) {
         const percent = Math.round((event.loaded / event.total) * 100);
@@ -334,11 +351,13 @@ const uploadFiless = (files: Array<any>, option: optionProps, callback: (fs: {[k
           } = res;
           const { code, data } = JSON.parse(response) || {};
           if (code === 0) {
-            resolve(data);
-            _files[idx].status = 'success';
-            _files[idx].precent = 100;
-            _files[idx].response = data;
-            callback(_files);
+            setTimeout(() => {
+              resolve(data);
+              _files[idx].status = 'done';
+              _files[idx].precent = 100;
+              _files[idx].response = data;
+              callback(_files);
+            }, 1000)
           } else {
             reject(new Error('error'));
             _files[idx].status = 'error';
@@ -358,11 +377,19 @@ const uploadFiless = (files: Array<any>, option: optionProps, callback: (fs: {[k
     // 图片base64处理完毕触发callback返回更新后的数据
     callback(_files);
     return Promise.all([...files].map((item, idx) => upload(item, idx).catch(() => {}))).then(() => 
-      new Promise((resolve) => {
+      new Promise<Array<fsProps>>((resolve: (fs: Array<fsProps>) => void) => {
         resolve(_files);
       }
     ))
   })
 }
 
-export { compress, offset, isPc, pageLoading, timeout, getBase64 };
+export {
+  compress,
+  offset,
+  isPc,
+  pageLoading,
+  timeout,
+  getBase64,
+  uploadFiles,
+};
