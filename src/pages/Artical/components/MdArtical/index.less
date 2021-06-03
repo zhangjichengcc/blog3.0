@@ -1,0 +1,57 @@
+// 目录导航样式
+// 文章导航缩进
+@anchor-indentation: 10px;
+
+.menu {
+  :global {
+    .ant-anchor-wrapper {
+      .ant-anchor {
+        .ant-anchor-ink::before {
+          background-color: #bfbfbf;
+        }
+        .ant-anchor-link {
+          padding: 7px 5px;
+          transition: all ease .5s;
+          &.ant-anchor-link-active {
+            background-color: #eee;
+          }
+        }
+      }
+    }
+  }
+}
+
+.menuTitle {
+  font-size: 15px;
+  font-weight: bold;
+}
+.anchor {
+  font-weight: 500;
+  width: 100%;
+  &.h1 {
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: calc(0 * @anchor-indentation);
+  }
+  &.h2 {
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: calc(1 * @anchor-indentation);
+  }
+  &.h3 {
+    font-size: 14px;
+    padding-left: calc(2 * @anchor-indentation);
+  }
+  &.h4 {
+    font-size: 13px;
+    padding-left: calc(3 * @anchor-indentation);
+  }
+  &.h5 {
+    font-size: 12px;
+    padding-left: calc(4 * @anchor-indentation);
+  }
+  &.h6 {
+    font-size: 12px;
+    padding-left: calc(5 * @anchor-indentation);
+  }
+}

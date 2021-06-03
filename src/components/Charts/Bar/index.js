@@ -12,11 +12,11 @@ class Bar extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.resize, { passive: true });
+    globalThis.addEventListener('resize', this.resize, { passive: true });
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
+    globalThis.removeEventListener('resize', this.resize);
   }
 
   handleRoot = n => {

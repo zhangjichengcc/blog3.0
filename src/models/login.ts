@@ -1,17 +1,17 @@
 /*
  * @Author: zhangjicheng
  * @Date: 2019-11-28 18:50:31
- * @LastEditTime: 2020-10-03 15:55:14
+ * @LastEditTime: 2020-11-09 11:19:59
  * @LastEditors: zhangjicheng
  * @Description:
- * @FilePath: \blog3.0\src\models\login.js
+ * @FilePath: \blog3.0\src\models\login.ts
  * @可以输入预定的版权声明、个性签名、空行等
  */
 import { parse, stringify } from 'qs';
 import { routerRedux } from 'dva/router';
 
 export function getPageQuery() {
-  return parse(window.location.href.split('?')[1]);
+  return parse(globalThis.location.href.split('?')[1]);
 }
 const Model = {
   namespace: 'login',
@@ -21,12 +21,12 @@ const Model = {
   effects: {
     // *logout(_, { put }) {
     //   const { redirect } = getPageQuery(); // redirect
-    //   if (window.location.pathname !== '/user/login' && !redirect) {
+    //   if (globalThis.location.pathname !== '/user/login' && !redirect) {
     //     yield put(
     //       routerRedux.replace({
     //         pathname: '/user/login',
     //         search: stringify({
-    //           redirect: window.location.href,
+    //           redirect: globalThis.location.href,
     //         }),
     //       }),
     //     );

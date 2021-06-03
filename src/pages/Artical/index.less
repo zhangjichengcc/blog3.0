@@ -1,16 +1,15 @@
-@import '~antd/es/style/themes/default.less';
-@import '~@/utils.less';
-@import '~@/default.less';
-@import '~@/utils/marked.less';
-@import '../../default.less';
+@import "~antd/es/style/themes/default.less";
+@import "~@/utils.less";
+@import "~@/default.less";
+// @import "~@/utils/marked.less";
+@import "../../default.less";
 
-@center-width: 54%;
-@side-width: 35%;
+@center-width: 700px;
 
 .Artical {
-  // max-width: 1320px;
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
+  background-color: @articalPage-bgColor;
   .banner {
     .page-banner-animate;
     width: 100%;
@@ -47,30 +46,34 @@
       }
     }
   }
+
+  // 修改Anchor组件样式
+  :global {
+    .ant-anchor-wrapper {
+      background-color: transparent;
+    }
+  }
+
   .mainBody {
     position: relative;
     padding-top: 42px;
-    .leftContent {
-      .page-nav-animate-left;
-      width: 23%;
-      float: left;
-      padding-left: 15px;
-      :global {
-        .ant-anchor-wrapper {
-          background-color: transparent;
-        }
-      }
-    }
+    padding-bottom: 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
     .centerContent {
       .page-animate-opacity;
+      flex: none;
+      position: relative;
       width: @center-width;
       background-color: #fff;
-      min-height: 100px;
-      float: left;
       margin: 0 10px;
       box-shadow: 0 1px 18px 0 rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
-      overflow: hidden;
+      padding-bottom: 30px;
+      .tools_bar {
+        position: absolute;
+        left: -80px;
+      }
       .articalBody {
         padding: 0 15px;
       }
@@ -90,46 +93,61 @@
         }
       }
     }
-    .rightConent {
-      width: 23%;
-      float: right;
+    .rightContent {
+      flex: none;
+      width: 240px;
       padding-right: 15px;
     }
     // 清除浮动
-    &::after {
-      display: block;
-      content: '';
-      clear: both;
-    }
+    // &::after {
+    //   display: block;
+    //   content: '';
+    //   clear: both;
+    // }
   }
+}
 
-  .anchor {
-    font-weight: 500;
-    &.h1 {
-      font-size: 17px;
-      font-weight: bold;
-      padding-left: calc(0 * @anchor-indentation);
+.tools_bar_content {
+  display: flex;
+  flex-direction: column;
+  > .tools_icon {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: color ease 0.3s;
+    color: #b2bac2;
+    &:hover {
+      color: #8a93a0;
     }
-    &.h2 {
-      font-size: 16px;
-      font-weight: bold;
-      padding-left: calc(1 * @anchor-indentation);
-    }
-    &.h3 {
-      font-size: 15px;
-      padding-left: calc(2 * @anchor-indentation);
-    }
-    &.h4 {
-      font-size: 14px;
-      padding-left: calc(3 * @anchor-indentation);
-    }
-    &.h5 {
-      font-size: 13px;
-      padding-left: calc(4 * @anchor-indentation);
-    }
-    &.h6 {
-      font-size: 12px;
-      padding-left: calc(5 * @anchor-indentation);
+    &.badge {
+      &::before {
+        content: attr(data-badge);
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 0;
+        left: 75%;
+        line-height: 1;
+        white-space: nowrap;
+        color: #fff;
+        background-color: #b2bac2;
+        transform-origin: left top;
+        transform: scale(0.6);
+        font-size: 14px;
+        height: 19px;
+        border-radius: 19px;
+        padding: 0 6px;
+      }
     }
   }
 }
@@ -139,6 +157,7 @@
   text-align: center;
 }
 
+// 以下为自适应样式
 @media screen and (max-width: @screen-lg) {
   .Artical {
     .banner {
