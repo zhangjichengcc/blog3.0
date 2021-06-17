@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Table, Icon, Input, message, Popover, Modal, Button } from 'antd';
-import moment from 'moment';
+import React, { Component } from "react";
+import { Table, Icon, Input, message, Popover, Modal, Button } from "antd";
+import moment from "moment";
 // import router from 'umi/router';
-import classnames from 'classnames';
-import fileDownload from 'js-file-download';
+import classnames from "classnames";
+import fileDownload from "js-file-download";
 import {
   getDirList,
   getDir,
@@ -19,21 +19,21 @@ import {
   // insertXctFile,
   getSharedCode,
   search,
-  downloadFile,
-} from '@/services/cloudDisk';
-import * as Svg from '../../utils/svgImport';
-import { renderSize } from '@/utils/methods';
-import styles from './AllFile.less';
-import OperationModal from './component/operationModal';
+  downloadFile
+} from "@/services/cloudDisk";
+import * as Svg from "../../utils/svgImport";
+import { renderSize } from "@/utils/methods";
+import styles from "./AllFile.less";
+import OperationModal from "./component/operationModal";
 // import Ellipsis from '@/components';
 
 const copyToClipboard = text => {
-  const input = document.createElement('input');
-  input.id = 'copyToClipboard_input';
+  const input = document.createElement("input");
+  input.id = "copyToClipboard_input";
   input.value = text;
   document.body.appendChild(input);
   input.select();
-  const res = document.execCommand('copy');
+  const res = document.execCommand("copy");
   document.body.removeChild(input);
   return res;
 };
@@ -41,7 +41,8 @@ const copyToClipboard = text => {
 const { confirm } = Modal;
 
 const { Column } = Table;
-const fileTypeList = 'xls, xlsx, doc, docx, pdf, ppt, pptx, txt, png, jpg, mp3, mp4, zip, rar';
+const fileTypeList =
+  "xls, xlsx, doc, docx, pdf, ppt, pptx, txt, png, jpg, mp3, mp4, zip, rar";
 const fileLogoObj = {
   xls: Svg.excelSvg,
   xlsx: Svg.excelSvg,
@@ -56,19 +57,19 @@ const fileLogoObj = {
   mp3: Svg.mp3Svg,
   mp4: Svg.videoSvg,
   zip: Svg.zipIconSvg,
-  rar: Svg.zipIconSvg,
+  rar: Svg.zipIconSvg
 };
 
 // 时间格式化
 const timeRender = t => {
-  return moment(t).format('YYYY-MM-DD HH:mm');
+  return moment(t).format("YYYY-MM-DD HH:mm");
 };
 
 const rootItem = {
-  name: '全部文件',
+  name: "全部文件",
   dirId: 0, // 根目录id为0
   sorter: null,
-  prev: null,
+  prev: null
 };
 
 export default class AllFile extends Component {
@@ -77,26 +78,26 @@ export default class AllFile extends Component {
     modalFileList: [], // 弹框文件列表
     editDir: {
       id: null,
-      name: '新建文件夹',
-      fileType: 'folder',
-      size: '-',
+      name: "新建文件夹",
+      fileType: "folder",
+      size: "-",
       time: null,
-      edit: true,
+      edit: true
     },
     loading: false, // 加载状态
     selectedRowKeys: [], // 已选条目
     btnControler: {
-      upload: 'active',
-      newdir: 'active',
-      download: 'hide',
-      deletedir: 'hide',
-      move: 'hide',
-      copy: 'hide',
+      upload: "active",
+      newdir: "active",
+      download: "hide",
+      deletedir: "hide",
+      move: "hide",
+      copy: "hide"
     },
     searchParams: rootItem,
     historyList: [rootItem], // 存储历史记录
     historyIdx: 0,
-    modalTitle: '', // 弹窗标题
+    modalTitle: "" // 弹窗标题
   };
 
   componentDidMount() {
@@ -113,20 +114,25 @@ export default class AllFile extends Component {
     onBtnStateChange();
     this.fetchFileList();
     this.setState({
-      talbeHeight: document.body.clientHeight - 350 || 400,
+      talbeHeight: document.body.clientHeight - 350 || 400
     });
   };
 
   // 获取文件列表
   fetchFileList = () => {
-    this.setState({ loading: true, selectedRowKeys: [], selectedRows: [], prev: 'fetch' });
+    this.setState({
+      loading: true,
+      selectedRowKeys: [],
+      selectedRows: [],
+      prev: "fetch"
+    });
     const { searchParams = {} } = this.state;
     const { dirId = 0, order } = searchParams;
     const { onMenuClick } = this.props;
     onMenuClick(searchParams);
     const params = {
-      ascending: order === 'ascend',
-      dirId,
+      ascending: order === "ascend",
+      dirId
     };
     getDirList(params)
       .then((res = {}) => {
@@ -135,18 +141,20 @@ export default class AllFile extends Component {
           this.setState(
             {
               loading: false,
-              listType: 'default',
+              listType: "default",
               fileList: data.map((item, idx) => {
-                const fileType = item.size ? item.name.replace(/^.*\.(.*)$/, '$1') : 'folder';
+                const fileType = item.size
+                  ? item.name.replace(/^.*\.(.*)$/, "$1")
+                  : "folder";
                 return {
                   ...item,
                   key: `${idx}`,
                   fileType,
                   fileId: item.id,
                   id: fileType + item.id,
-                  lock: parseInt(item.operation, 10),
+                  lock: parseInt(item.operation, 10)
                 };
-              }),
+              })
             },
             () => {
               this.setBtnControl();
@@ -159,7 +167,7 @@ export default class AllFile extends Component {
       })
       .catch(e => {
         this.setState({ loading: true });
-        message.error(e.message || '获取数据失败！');
+        message.error(e.message || "获取数据失败！");
       });
   };
 
@@ -172,17 +180,17 @@ export default class AllFile extends Component {
         if (code === 0) {
           this.setState({
             modalFileList: data,
-            modalLoading: false,
+            modalLoading: false
           });
         } else {
           this.setState({
-            modalLoading: false,
+            modalLoading: false
           });
-          message.warn('获取小抽屉文件列表失败');
+          message.warn("获取小抽屉文件列表失败");
         }
       })
       .catch(() => {
-        message.warn('获取小抽屉文件列表失败');
+        message.warn("获取小抽屉文件列表失败");
       });
   };
 
@@ -194,7 +202,12 @@ export default class AllFile extends Component {
       return;
     }
     const params = { name: searchValue };
-    this.setState({ loading: true, selectedRowKeys: [], selectedRows: [], prev: 'search' });
+    this.setState({
+      loading: true,
+      selectedRowKeys: [],
+      selectedRows: [],
+      prev: "search"
+    });
     search(params)
       .then((res = {}) => {
         const { code, data } = res;
@@ -202,17 +215,19 @@ export default class AllFile extends Component {
           this.setState(
             {
               loading: false,
-              listType: 'search',
+              listType: "search",
               fileList: data.map(item => {
-                const fileType = item.size ? item.name.replace(/^.*\.(.*)$/, '$1') : 'folder';
+                const fileType = item.size
+                  ? item.name.replace(/^.*\.(.*)$/, "$1")
+                  : "folder";
                 return {
                   ...item,
                   fileType,
                   fileId: item.id,
                   id: fileType + item.id,
-                  lock: parseInt(item.operation, 10),
+                  lock: parseInt(item.operation, 10)
                 };
-              }),
+              })
             },
             () => {
               this.setBtnControl();
@@ -220,11 +235,11 @@ export default class AllFile extends Component {
           );
         } else {
           this.setState({ loading: false });
-          message.warn('查询失败，请重试');
+          message.warn("查询失败，请重试");
         }
       })
       .catch(() => {
-        message.warn('查询失败，请重试');
+        message.warn("查询失败，请重试");
       });
   };
 
@@ -264,7 +279,7 @@ export default class AllFile extends Component {
     const { files } = e.target;
     const file = files[0];
     this.upload(file);
-    e.target.value = '';
+    e.target.value = "";
   };
 
   // 分片上传完成，合并分片
@@ -279,14 +294,14 @@ export default class AllFile extends Component {
             uploadSuccess();
           }, 1000);
           if (res1.code === 0) {
-            message.success('文件上传完成');
+            message.success("文件上传完成");
             this.fetchFileList();
           } else {
-            message.error('上传失败');
+            message.error("上传失败");
           }
         });
       } else {
-        message.error('上传失败');
+        message.error("上传失败");
         isUploadOk({ uuid: md5 }).then(() => {
           uploadSuccess();
         });
@@ -297,7 +312,7 @@ export default class AllFile extends Component {
   // 上传文件
   upload = file => {
     const {
-      searchParams: { dirId },
+      searchParams: { dirId }
     } = this.state;
     const { uploadloadAnimate } = this.props;
     uploadloadAnimate();
@@ -317,10 +332,10 @@ export default class AllFile extends Component {
         currentNumber: chunkIndex,
         size: fileSize,
         dirId,
-        fileName: `${file.name}_${chunkIndex}`,
+        fileName: `${file.name}_${chunkIndex}`
       };
       chunkFormData.name = `${file.name}_${chunkIndex}`;
-      formData.append('file', chunkFormData);
+      formData.append("file", chunkFormData);
       if (chunkIndex < chunkTotal) {
         uploadChunk(params, formData).then((res = {}) => {
           const { code } = res;
@@ -333,7 +348,7 @@ export default class AllFile extends Component {
         });
       } else {
         // eslint-disable-next-line no-console
-        console.log('分片上传完毕');
+        console.log("分片上传完毕");
         // 所有分片上传完毕
         this.uploadFinished(md5);
       }
@@ -348,11 +363,11 @@ export default class AllFile extends Component {
       ...editDir,
       time: new Date(),
       size: 0,
-      id: 'newId', // 默认新建过程中的id为newId
+      id: "newId" // 默认新建过程中的id为newId
     };
     this.setState(
       {
-        fileList: [newDir, ...fileList],
+        fileList: [newDir, ...fileList]
       },
       () => {
         this.setBtnControl();
@@ -363,15 +378,15 @@ export default class AllFile extends Component {
   // 写入新建文件名称 || 修改文件名称
   newNameChange = e => {
     const {
-      target: { value },
+      target: { value }
     } = e;
     const { fileList } = this.state;
     const newFileList = fileList.map(item => ({
       ...item,
-      name: item.edit ? value : item.name,
+      name: item.edit ? value : item.name
     }));
     this.setState({
-      fileList: newFileList,
+      fileList: newFileList
     });
   };
 
@@ -390,7 +405,7 @@ export default class AllFile extends Component {
       return false;
     };
     if (sameName()) {
-      message.error('文件或文件夹已存在，请更换命名！');
+      message.error("文件或文件夹已存在，请更换命名！");
       return;
     }
     // 若名称未发生改变，则不做命名操作
@@ -399,86 +414,86 @@ export default class AllFile extends Component {
       return;
     }
     if (!record.name || record.name.match(/^\s*$/)) {
-      message.error('新建文件夹命名不能为空');
+      message.error("新建文件夹命名不能为空");
       return;
     }
     if (record.name.length > 30) {
-      message.warn('文件名过长！请保证文件名长度不超过30个字符');
+      message.warn("文件名过长！请保证文件名长度不超过30个字符");
       return;
     }
-    if (record.id === 'newId') {
+    if (record.id === "newId") {
       // 新建文件
       const params = {
         dirName: record.name,
-        parentId: searchParams.dirId || 0,
+        parentId: searchParams.dirId || 0
       };
       addDir(params)
         .then((res = {}) => {
           const { code, msg } = res;
           if (code === 0) {
-            message.success('文件新增成功！');
+            message.success("文件新增成功！");
             this.setState({}, () => {
               // this.setBtnControl();
               this.fetchFileList();
             });
           } else {
             this.setState({ loading: false });
-            message.warn(msg || '创建失败，请重试！');
+            message.warn(msg || "创建失败，请重试！");
           }
         })
         .catch(e => {
           // eslint-disable-next-line no-console
           console.error(e);
         });
-    } else if (record.type === 'folder') {
+    } else if (record.type === "folder") {
       // 修改文件夹名称
       const params = {
         id: record.fileId,
         dirName: record.name,
-        parentId: searchParams.dirId || 0,
+        parentId: searchParams.dirId || 0
       };
       updateXctDir(params)
         .then((res = {}) => {
           const { code, msg } = res;
           if (code === 0) {
-            message.success('重命名成功！');
+            message.success("重命名成功！");
             // 操作完成后根据重复上次查询操作
-            if (prev === 'search') {
+            if (prev === "search") {
               this.search();
             } else {
               this.fetchFileList();
             }
           } else {
-            message.warn(msg || '重命名失败，请重试！');
+            message.warn(msg || "重命名失败，请重试！");
           }
         })
         .catch(() => {
-          message.warn('重命名失败，请重试！');
+          message.warn("重命名失败，请重试！");
         });
     } else {
       // 修改文件名
       const params = {
         id: record.fileId,
         name: record.name,
-        dirId: searchParams.dirId || 0,
+        dirId: searchParams.dirId || 0
       };
       updateXctFile(params)
         .then((res = {}) => {
           const { code } = res;
           if (code === 0) {
-            message.success('重命名成功！');
+            message.success("重命名成功！");
             // 操作完成后根据重复上次查询操作
-            if (prev === 'search') {
+            if (prev === "search") {
               this.search();
             } else {
               this.fetchFileList();
             }
           } else {
-            message.warn('重命名失败，请重试！');
+            message.warn("重命名失败，请重试！");
           }
         })
         .catch(() => {
-          message.warn('重命名失败，请重试！');
+          message.warn("重命名失败，请重试！");
         });
     }
   };
@@ -486,17 +501,17 @@ export default class AllFile extends Component {
   // 弹窗新建文件夹确认
   modalDirAddFolderNameOk = obj => {
     if (!obj.dirName || obj.dirName.match(/^\s*$/)) {
-      message.error('新建文件夹命名不能为空');
+      message.error("新建文件夹命名不能为空");
       return;
     }
     addDir({ dirName: obj.dirName, parentId: obj.parentId })
       .then((res = {}) => {
         const { code, msg } = res;
         if (code === 0) {
-          message.success('文件新增成功！');
+          message.success("文件新增成功！");
           this.fetchModalFileList();
         } else {
-          message.warn(msg || '创建失败，请重试！');
+          message.warn(msg || "创建失败，请重试！");
         }
       })
       .catch(e => {
@@ -507,13 +522,13 @@ export default class AllFile extends Component {
 
   // 新建文件取消 || 重命名取消
   addDirCancel = () => {
-    const { fileList = [], oldName = '' } = this.state;
+    const { fileList = [], oldName = "" } = this.state;
     const record = fileList.filter(item => item.edit)[0] || {};
-    if (record.id === 'newId') {
+    if (record.id === "newId") {
       // 新建文件
       this.setState(
         {
-          fileList: fileList.filter(v => !v.edit),
+          fileList: fileList.filter(v => !v.edit)
         },
         () => {
           this.setBtnControl();
@@ -526,8 +541,8 @@ export default class AllFile extends Component {
           fileList: fileList.map(item => ({
             ...item,
             name: item.id === record.id ? oldName : item.name,
-            edit: false,
-          })),
+            edit: false
+          }))
         },
         () => {
           this.setBtnControl();
@@ -543,26 +558,26 @@ export default class AllFile extends Component {
       ? [{ id: record.fileId, type: record.type }]
       : selectedRows.map(item => ({
           id: item.fileId,
-          type: item.type,
+          type: item.type
         }));
     deleteDir(params)
       .then((res = {}) => {
         const { code } = res;
         if (code === 0) {
-          message.success('操作成功！');
+          message.success("操作成功！");
           this.cleanSelectedRow();
           this.fetchFileList();
-          if (prev === 'search') {
+          if (prev === "search") {
             this.search();
           } else {
             this.fetchFileList();
           }
         } else {
-          message.warn('操作失败，请重试！');
+          message.warn("操作失败，请重试！");
         }
       })
       .catch(() => {
-        message.warn('操作失败，请重试！');
+        message.warn("操作失败，请重试！");
       });
   };
 
@@ -572,16 +587,16 @@ export default class AllFile extends Component {
     this.addDirCancel();
     const that = this;
     confirm({
-      title: '确定删除这些文件吗？',
-      okText: '确定',
-      cancelText: '取消',
+      title: "确定删除这些文件吗？",
+      okText: "确定",
+      cancelText: "取消",
       onOk() {
         that.deleteDir(record);
       },
       onCancel() {
         // eslint-disable-next-line no-console
-        console.log('Cancel');
-      },
+        console.log("Cancel");
+      }
     });
   };
 
@@ -592,9 +607,9 @@ export default class AllFile extends Component {
       {
         fileList: fileList.map(item => ({
           ...item,
-          edit: item.id === record.id,
+          edit: item.id === record.id
         })),
-        oldName: record.name,
+        oldName: record.name
       },
       () => {
         this.setBtnControl();
@@ -605,19 +620,21 @@ export default class AllFile extends Component {
   // 打开文件
   openDir = record => {
     const { searchParams = {}, historyList = [], historyIdx } = this.state;
-    const { fileId, type, name, operation = '0' } = record;
+    const { fileId, type, name, operation = "0" } = record;
     const newSearchParams = {
       ...searchParams,
       dirId: fileId,
       operation,
-      name,
+      name
     };
-    if (type === 'folder') {
+    if (type === "folder") {
       this.setState(
         {
           searchParams: newSearchParams,
-          historyList: historyList.slice(0, historyIdx + 1).concat(newSearchParams),
-          historyIdx: historyIdx + 1,
+          historyList: historyList
+            .slice(0, historyIdx + 1)
+            .concat(newSearchParams),
+          historyIdx: historyIdx + 1
         },
         () => {
           this.fetchFileList();
@@ -633,7 +650,7 @@ export default class AllFile extends Component {
     const newSearchParams = {
       ...searchParams,
       dirId: id,
-      name,
+      name
     };
     this.setState(
       {
@@ -641,7 +658,7 @@ export default class AllFile extends Component {
         historyList: level
           ? historyList.slice(0, 1).concat(newSearchParams)
           : historyList.slice(0, 1),
-        historyIdx: level ? 1 : 0,
+        historyIdx: level ? 1 : 0
       },
       () => {
         this.fetchFileList();
@@ -657,7 +674,7 @@ export default class AllFile extends Component {
     this.setState(
       {
         searchParams: historyList[newHistoryIdx],
-        historyIdx: newHistoryIdx,
+        historyIdx: newHistoryIdx
       },
       () => {
         // this.setBtnControl();
@@ -674,7 +691,7 @@ export default class AllFile extends Component {
     this.setState(
       {
         searchParams: historyList[newHistoryIdx],
-        historyIdx: newHistoryIdx,
+        historyIdx: newHistoryIdx
       },
       () => {
         // this.setBtnControl();
@@ -690,7 +707,7 @@ export default class AllFile extends Component {
       {
         historyList: historyList.slice(0, idx + 1),
         searchParams: historyList[idx],
-        historyIdx: idx,
+        historyIdx: idx
       },
       () => {
         // this.setBtnControl();
@@ -701,12 +718,12 @@ export default class AllFile extends Component {
 
   // 分享文件
   shareDir = item => {
-    const { fileId, type = 'file', code: sCode } = item;
+    const { fileId, type = "file", code: sCode } = item;
     const todo = value => {
       copyToClipboard(value);
       this.setState({
         shareCodeModalVisiable: true,
-        shareCode: value,
+        shareCode: value
       });
     };
     if (sCode) {
@@ -717,7 +734,7 @@ export default class AllFile extends Component {
         if (code === 0) {
           todo(data);
         } else {
-          message.error('分享码生产失败，请稍后重试！');
+          message.error("分享码生产失败，请稍后重试！");
         }
       });
     }
@@ -727,9 +744,9 @@ export default class AllFile extends Component {
   copyShareCode = code => {
     const res = copyToClipboard(code);
     if (res) {
-      message.success('共享码已复制！');
+      message.success("共享码已复制！");
     } else {
-      message.error('复制失败，请手动复制');
+      message.error("复制失败，请手动复制");
     }
   };
 
@@ -742,13 +759,13 @@ export default class AllFile extends Component {
       const { id, fileId } = record;
       // 防止重复下载
       if (fileList.map(v => v.id).includes(fileId)) {
-        message.warn('该文件已在下载队列中，请勿重复下载');
+        message.warn("该文件已在下载队列中，请勿重复下载");
         return;
       }
       const imgDom = this[`imgDom${id}`];
       const { left: x, top: y } = imgDom.getBoundingClientRect();
       const { clientWidth: bodyWidth } = document.body;
-      const { clientWidth: rootWidth } = document.getElementById('root');
+      const { clientWidth: rootWidth } = document.getElementById("root");
       // 触发下载动画 y 去除导航高度
       downloadAnimate(x - (bodyWidth - rootWidth) / 2, y - 64, imgSrc);
     } else {
@@ -756,7 +773,7 @@ export default class AllFile extends Component {
     }
     // 取消新建或修改文件名操作
     this.addDirCancel();
-    message.info('开始下载...');
+    message.info("开始下载...");
     const { selectedRows = [] } = this.state;
     // // 添加唯一标识，用于终止下载
     // const controller = new AbortController();
@@ -765,9 +782,9 @@ export default class AllFile extends Component {
     this.setState({
       // eslint-disable-next-line react/no-unused-state
       fetchController: {
-        ...fetchController,
+        ...fetchController
         // [uuid]: controller,
-      },
+      }
     });
     const timer = setTimeout(() => {
       clearTimeout(timer);
@@ -783,14 +800,14 @@ export default class AllFile extends Component {
         .then(res => {
           const blob = res.blob();
           const name = res.headers
-            .get('content-disposition')
-            .split(';')[1]
-            .split('filename=')[1];
+            .get("content-disposition")
+            .split(";")[1]
+            .split("filename=")[1];
           const decodeName = decodeURIComponent(name);
           blob.then(blobFile => {
             fileDownload(blobFile, decodeName);
             this.cleanSelectedRow();
-            message.success(`${decodeName || '文件'}下载完成！`);
+            message.success(`${decodeName || "文件"}下载完成！`);
             downloadSuccess(uuid);
           });
         })
@@ -798,7 +815,7 @@ export default class AllFile extends Component {
           // eslint-disable-next-line no-console
           console.warn(e);
           downloadSuccess(uuid);
-          message.error('下载失败！');
+          message.error("下载失败！");
         });
     }, 1500);
   };
@@ -810,10 +827,10 @@ export default class AllFile extends Component {
     this.setState(
       {
         // 将当前操作数据暂存
-        todo: 'copy',
+        todo: "copy",
         opt: record ? [record] : selectedRows,
         modalVisible: true,
-        modalTitle: '复制到',
+        modalTitle: "复制到"
       },
       () => {
         this.fetchModalFileList();
@@ -827,11 +844,11 @@ export default class AllFile extends Component {
     const { selectedRows } = this.state;
     this.setState(
       {
-        todo: 'move',
+        todo: "move",
         // 将当前操作数据暂存
         opt: record ? [record] : selectedRows,
         modalVisible: true,
-        modalTitle: '移动到',
+        modalTitle: "移动到"
       },
       () => {
         this.fetchModalFileList();
@@ -843,66 +860,66 @@ export default class AllFile extends Component {
   handleOk = (e, keys) => {
     const { opt, todo, prev } = this.state;
     this.setState({
-      modalVisible: false,
+      modalVisible: false
     });
-    if (!keys.length || keys[0] === '0-0') return;
+    if (!keys.length || keys[0] === "0-0") return;
     const moveDirFileModels = opt.map(item => ({
       id: item.fileId,
       moveId: Number(keys[0]),
-      type: item.type,
+      type: item.type
     }));
-    if (todo === 'copy') {
+    if (todo === "copy") {
       copyXctDirFile({ moveDirFileModels })
         .then((res = {}) => {
           const { code } = res;
           if (code === 0) {
-            message.success('文件复制成功');
+            message.success("文件复制成功");
             this.cleanSelectedRow();
-            if (prev === 'search') {
+            if (prev === "search") {
               this.search();
             } else {
               this.fetchFileList();
             }
           } else {
-            message.warn('操作失败，请稍后重试!');
+            message.warn("操作失败，请稍后重试!");
           }
         })
         .catch(() => {
-          message.warn('操作失败，请稍后重试!');
+          message.warn("操作失败，请稍后重试!");
         });
-    } else if (todo === 'move') {
+    } else if (todo === "move") {
       moveXctDirFile({ moveDirFileModels })
         .then((res = {}) => {
           const { code } = res;
           if (code === 0) {
-            message.success('文件移动成功');
+            message.success("文件移动成功");
             this.cleanSelectedRow();
-            if (prev === 'search') {
+            if (prev === "search") {
               this.search();
             } else {
               this.fetchFileList();
             }
           } else {
-            message.warn('操作失败，请稍后重试!');
+            message.warn("操作失败，请稍后重试!");
           }
         })
         .catch(() => {
-          message.warn('操作失败，请稍后重试!');
+          message.warn("操作失败，请稍后重试!");
         });
     }
   };
 
   // 排序
   onTableChage = (pagination, filters, sorter, prev) => {
-    if (prev === 'search') return;
+    if (prev === "search") return;
     const { searchParams } = this.state;
     const { order } = sorter;
     this.setState(
       {
         searchParams: {
           ...searchParams,
-          order,
-        },
+          order
+        }
       },
       () => {
         this.fetchFileList();
@@ -919,7 +936,7 @@ export default class AllFile extends Component {
       historyList,
       historyIdx,
       fileList = [],
-      listType,
+      listType
     } = this.state;
     const activeHistoryList = historyList.slice(0, historyIdx + 1);
     const { onBtnStateChange } = this.props;
@@ -930,47 +947,51 @@ export default class AllFile extends Component {
           newdir:
             fileList.filter(item => item.edit).length ||
             selectedRowKeys.length ||
-            listType === 'search'
-              ? 'disabled'
-              : 'active',
+            listType === "search"
+              ? "disabled"
+              : "active",
           // upload: activeHistoryList.map(item => item.name).includes('我的下载') ? 'hide' : 'active',
           upload: (() => {
-            if (!selectedRowKeys.length && listType === 'default') {
+            if (!selectedRowKeys.length && listType === "default") {
               return activeHistoryList
-                .filter(item => item.operation === '1')
+                .filter(item => item.operation === "1")
                 .map(item => item.name)
-                .includes('我的下载')
-                ? 'hide'
-                : 'active';
+                .includes("我的下载")
+                ? "hide"
+                : "active";
             }
-            return 'disabled';
+            return "disabled";
           })(),
-          download: selectedRowKeys.length > 0 ? 'active' : 'hide',
+          download: selectedRowKeys.length > 0 ? "active" : "hide",
           deletedir: (() => {
             if (selectedRowKeys.length > 0) {
-              return selectedRows.filter(v => v.lock).length > 0 ? 'disabled' : 'active';
+              return selectedRows.filter(v => v.lock).length > 0
+                ? "disabled"
+                : "active";
             }
-            return 'hide';
+            return "hide";
           })(),
           move: (() => {
             if (selectedRowKeys.length > 0) {
-              return selectedRows.filter(v => v.lock).length > 0 ? 'disabled' : 'active';
+              return selectedRows.filter(v => v.lock).length > 0
+                ? "disabled"
+                : "active";
             }
-            return 'hide';
+            return "hide";
           })(),
-          copy: selectedRowKeys.length > 0 ? 'active' : 'hide',
+          copy: selectedRowKeys.length > 0 ? "active" : "hide",
           share: (() => {
-            if (!selectedRowKeys.length && listType === 'default') {
+            if (!selectedRowKeys.length && listType === "default") {
               return activeHistoryList
-                .filter(item => item.operation === '1')
+                .filter(item => item.operation === "1")
                 .map(item => item.name)
-                .includes('我的下载')
-                ? 'hide'
-                : 'active';
+                .includes("我的下载")
+                ? "hide"
+                : "active";
             }
-            return 'disabled';
-          })(),
-        },
+            return "disabled";
+          })()
+        }
       },
       () => {
         onBtnStateChange();
@@ -983,7 +1004,7 @@ export default class AllFile extends Component {
     this.setState(
       {
         selectedRowKeys,
-        selectedRows,
+        selectedRows
       },
       this.setBtnControl
     );
@@ -994,7 +1015,7 @@ export default class AllFile extends Component {
     this.setState(
       {
         selectedRowKeys: [],
-        selectedRows: [],
+        selectedRows: []
       },
       this.setBtnControl
     );
@@ -1014,8 +1035,8 @@ export default class AllFile extends Component {
     this.setState({
       fileList: fileList.map(item => ({
         ...item,
-        popVisible: record.id === item.id,
-      })),
+        popVisible: record.id === item.id
+      }))
     });
   };
 
@@ -1025,17 +1046,17 @@ export default class AllFile extends Component {
     this.setState({
       fileList: fileList.map(item => ({
         ...item,
-        popVisible: false,
-      })),
+        popVisible: false
+      }))
     });
   };
 
   // 文件名行渲染
   fileNameRender = (text, record) => {
-    let imgSrc = '';
+    let imgSrc = "";
     if (record.lock) {
       imgSrc = Svg.suodingSvg;
-    } else if (record.fileType === 'folder') {
+    } else if (record.fileType === "folder") {
       imgSrc = Svg.folderSvg;
     } else if (fileTypeList.indexOf(record.fileType) === -1) {
       imgSrc = Svg.fileIconSvg;
@@ -1096,14 +1117,27 @@ export default class AllFile extends Component {
         {record.edit ? (
           <div className={styles.newFileNameBar}>
             <Input value={text} onChange={this.newNameChange} />
-            <Icon type="check-square" style={{ left: 190 }} onClick={this.addDirOk} />
-            <Icon type="close-square" style={{ left: 220 }} onClick={this.addDirCancel} />
+            <Icon
+              type="check-square"
+              style={{ left: 190 }}
+              onClick={this.addDirOk}
+            />
+            <Icon
+              type="close-square"
+              style={{ left: 220 }}
+              onClick={this.addDirCancel}
+            />
           </div>
         ) : (
           <span className={styles.fileTitle}>{text}</span>
         )}
         {!record.edit && (
-          <div className={classnames(styles.operationBtnWrap, record.focus ? styles.active : '')}>
+          <div
+            className={classnames(
+              styles.operationBtnWrap,
+              record.focus ? styles.active : ""
+            )}
+          >
             <Icon
               type="share-alt"
               onClick={() => {
@@ -1116,7 +1150,11 @@ export default class AllFile extends Component {
                 this.downloadDir(record, imgSrc);
               }}
             />
-            <Popover content={popContent} visible={record.popVisible} trigger="hover">
+            <Popover
+              content={popContent}
+              visible={record.popVisible}
+              trigger="hover"
+            >
               <Icon
                 type="ellipsis"
                 onClick={() => {
@@ -1137,8 +1175,8 @@ export default class AllFile extends Component {
     this.setState({
       fileList: fileList.map(item => ({
         ...item,
-        focus: item.id === id,
-      })),
+        focus: item.id === id
+      }))
     });
   };
 
@@ -1150,8 +1188,8 @@ export default class AllFile extends Component {
       {
         fileList: fileList.map(item => ({
           ...item,
-          focus: false,
-        })),
+          focus: false
+        }))
       },
       () => {
         this.hidePopover();
@@ -1162,7 +1200,7 @@ export default class AllFile extends Component {
   // modal 新建文件夹 | 取消新建
   modalAddDir = list => {
     this.setState({
-      modalFileList: list,
+      modalFileList: list
     });
   };
 
@@ -1178,15 +1216,15 @@ export default class AllFile extends Component {
       historyIdx,
       modalTitle,
       talbeHeight = 400,
-      shareCode = '',
-      shareCodeModalVisiable = false,
+      shareCode = "",
+      shareCodeModalVisiable = false
     } = this.state;
     const activeHistoryList = historyList.slice(0, historyIdx + 1);
     // const { name = '全部文件' } = searchParams;
 
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
 
     return (
@@ -1198,7 +1236,10 @@ export default class AllFile extends Component {
       >
         <div className={styles.header}>
           <span
-            className={classnames(styles.historyBtn, historyIdx === 0 ? styles.disable : '')}
+            className={classnames(
+              styles.historyBtn,
+              historyIdx === 0 ? styles.disable : ""
+            )}
             onClick={this.prevHistory}
           >
             <Icon type="left" />
@@ -1206,7 +1247,7 @@ export default class AllFile extends Component {
           <span
             className={classnames(
               styles.historyBtn,
-              historyIdx + 1 === historyList.length ? styles.disable : ''
+              historyIdx + 1 === historyList.length ? styles.disable : ""
             )}
             onClick={this.nextHistory}
           >
@@ -1243,7 +1284,7 @@ export default class AllFile extends Component {
             return {
               onMouseEnter: e => this.tableRowMouseEnter(e, record),
               onMouseLeave: e => this.tableRowMouseLeave(e, record),
-              onDoubleClick: () => this.openDir(record),
+              onDoubleClick: () => this.openDir(record)
             };
           }}
         >
@@ -1258,7 +1299,7 @@ export default class AllFile extends Component {
             dataIndex="size"
             key="size"
             width={110}
-            render={text => (text ? renderSize(text) : '-')}
+            render={text => (text ? renderSize(text) : "-")}
           />
           <Column
             title="修改时间"
@@ -1266,7 +1307,7 @@ export default class AllFile extends Component {
             width={200}
             key="createTime"
             sorter
-            sortDirections={['descend', 'ascend']}
+            sortDirections={["descend", "ascend"]}
             render={text => timeRender(text)}
           />
         </Table>
@@ -1275,7 +1316,7 @@ export default class AllFile extends Component {
           ref={e => {
             this.input = e;
           }}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           onChange={this.uploadSubmit}
         />
         <OperationModal
@@ -1288,7 +1329,12 @@ export default class AllFile extends Component {
           addNewFolder={this.modalAddDir}
           addNewFolderNameOk={this.modalDirAddFolderNameOk}
         />
-        <Modal visible={shareCodeModalVisiable} title={false} closable={false} footer={null}>
+        <Modal
+          visible={shareCodeModalVisiable}
+          title={false}
+          closable={false}
+          footer={null}
+        >
           <div className={styles.shareCodeBody}>
             <span>共享码已生成，去分享吧~</span>
             <div>
@@ -1303,7 +1349,7 @@ export default class AllFile extends Component {
             </div>
             <Button
               type="primary"
-              style={{ float: 'right' }}
+              style={{ float: "right" }}
               onClick={() => {
                 this.setState({ shareCodeModalVisiable: false });
               }}

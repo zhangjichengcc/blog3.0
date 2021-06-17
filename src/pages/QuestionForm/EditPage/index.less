@@ -8,7 +8,7 @@
       .pageLeft {
         width: 180px;
         flex: none;
-        background: #FFF;
+        background: #fff;
         box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.06);
         border-radius: 5px;
         overflow: hidden;
@@ -16,7 +16,7 @@
       .pageRight {
         position: relative;
         flex: auto;
-        margin-left: 18px;  
+        margin-left: 18px;
         box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.06);
         border-radius: 2px;
         overflow: hidden;
@@ -32,11 +32,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      >span {
+      > span {
         cursor: pointer;
-        transition: all ease .3s;
+        transition: all ease 0.3s;
         &.active {
-          color: #4F8DFF;
+          color: #4f8dff;
         }
       }
       .closeBtn {
@@ -48,7 +48,7 @@
         display: inline-block;
         width: 1px;
         height: 20px;
-        background-color: #EAEAEA;
+        background-color: #eaeaea;
         margin: 0 22px;
       }
     }
@@ -80,23 +80,23 @@
   position: relative;
   margin: 90px auto;
   width: 1000px;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 8%);
   border-radius: 2px;
   padding: 20px;
   &::before {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: -20px;
     width: 960px;
     height: 20px;
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 4px -4px 8px 0px rgb(0 0 0 / 8%);
     border-radius: 2px;
     opacity: 0.6;
   }
-  >.title {
+  > .title {
     font-size: 28px;
     color: #000;
     width: 100%;
@@ -106,7 +106,7 @@
     margin-bottom: 30px;
     border-bottom: #e8e8e8 solid 2px;
   }
-  >.description {
+  > .description {
     width: 680px;
     font-size: 14px;
     line-height: 24px;
@@ -121,46 +121,46 @@
   height: 790px;
   background-color: #fff;
   margin: 50px auto;
-  box-shadow: 5px 2px 20px 0px rgba(0, 0, 0, .5);
+  box-shadow: 5px 2px 20px 0px rgba(0, 0, 0, 0.5);
   border-radius: 53px;
   padding: 70px 20px 20px;
   &::before {
-    content: '';
+    content: "";
     display: block;
     width: 56px;
     height: 5px;
-    background: #E4E4DF;
+    background: #e4e4df;
     border-radius: 3px;
     position: absolute;
     top: 23px;
     left: 168px;
   }
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background: #E4E4DF;
+    background: #e4e4df;
     position: absolute;
     top: 20px;
     left: 231px;
   }
-  >.phoneScreen {
+  > .phoneScreen {
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;
     width: 100%;
-    border: #CCCDC9 solid 3px;
+    border: #cccdc9 solid 3px;
     border-radius: 0 0 39px 39px;
-    background: #F8F8F8;
+    background: #f8f8f8;
     padding: 15px;
     &::-webkit-scrollbar {
       width: 4px;
     }
     /* 滚动条滑块 */
     &::-webkit-scrollbar-thumb {
-      background:rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 4px;
     }
     .formHeader {
@@ -168,14 +168,14 @@
       box-shadow: 0px 2px 3px 0px rgb(202 202 202 / 26%);
       border-radius: 5px;
       padding: 0 15px 30px;
-      >.title {
+      > .title {
         font-size: 16px;
         color: #000;
         width: 100%;
         font-weight: bold;
         padding: 30px 0 10px;
       }
-      >.description {
+      > .description {
         font-size: 14px;
         line-height: 24px;
         color: #333;
@@ -185,7 +185,6 @@
       margin-top: 10px;
     }
   }
-
 }
 
 .spin {
@@ -193,8 +192,6 @@
   z-index: 10;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, .75);
+  background-color: rgba(255, 255, 255, 0.75);
   padding-top: 30vh;
 }
-
-

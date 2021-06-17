@@ -4,11 +4,10 @@
  * @Date: 2021-03-10 19:46:25
  * @LastEditTime: 2021-05-18 10:58:05
  * @LastEditors: zhangjicheng
- * @Description: 
+ * @Description:
  * @FilePath: \wechat-revenue-g\src\components\QuestionForm\QuestionForm.d.ts
  * 可以输入预定的版权声明、个性签名、空行等
  */
-
 
 interface propertiesItemProps {
   key?: string; // 主键
@@ -19,7 +18,7 @@ interface propertiesItemProps {
   enumNames?: Array<string>;
   degree?: Array<string>;
   format?: string;
-  items?: {[key: string]: any};
+  items?: { [key: string]: any };
   edit?: boolean; // 是否在编辑状态
   [key: string]: any;
 }
@@ -35,7 +34,7 @@ interface SchemaProps {
   key?: string;
   title?: string;
   required?: boolean;
-  type: 'object'; // object
-  properties?: {[key: string]: propertiesItemProps};
-  formData?: {[key: string]: any};
+  type: "object"; // object
+  properties?: { [key: string]: propertiesItemProps };
+  formData?: { [key: string]: any };
 }

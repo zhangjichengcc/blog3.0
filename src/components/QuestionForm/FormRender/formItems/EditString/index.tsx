@@ -10,19 +10,19 @@
  * 可以输入预定的版权声明、个性签名、空行等
  */
 // eslint-disable-next-line no-unused-vars
-import React, { FC, useEffect } from 'react';
-import { Input, Radio, Button, Modal, Form, Icon } from 'antd';
-import classnames from 'classnames';
+import React, { FC, useEffect } from "react";
+import { Input, Radio, Button, Modal, Form, Icon } from "antd";
+import classnames from "classnames";
 
-import styles from './index.less';
+import styles from "./index.less";
 
 const { confirm } = Modal;
 
 interface editStringProps {
   value?: any;
   name?: string;
-  status: 'edit' | 'write' | 'preview';
-  device: 'phone' | 'pc';
+  status: "edit" | "write" | "preview";
+  device: "phone" | "pc";
   onChange?: (value: any) => void;
   disabled: boolean;
   schema: propertiesItemProps;
@@ -35,66 +35,65 @@ const EditString: FC<editStringProps> = ({
   value,
   name,
   status,
-  device = 'pc',
+  device = "pc",
   onChange,
   disabled = false,
   schema,
   onSave,
   onDelete,
-  form,
+  form
 }): React.ReactElement => {
-
   const { getFieldDecorator, validateFields } = form;
-  const { edit, title, required = 1, description = '' } = schema;
+  const { edit, title, required = 1, description = "" } = schema;
 
   // 确定编辑
   function onHandleOk(): void {
     validateFields(err => {
-      if(!err) {
+      if (!err) {
         const formValue = form.getFieldsValue();
         onSave({
           ...schema,
           ...formValue,
-          edit: false, // 取消编辑状态
-        })
+          edit: false // 取消编辑状态
+        });
       }
-    })
+    });
   }
 
   // 取消编辑
   function onHandleCancel() {
     onSave({
       ...schema,
-      edit: false, // 取消编辑状态
-    })
+      edit: false // 取消编辑状态
+    });
   }
 
   // 开始编辑
   function onEdit() {
     onSave({
       ...schema,
-      edit: true, // 开启编辑状态
-    })
+      edit: true // 开启编辑状态
+    });
   }
 
   // 删除当前项
   function onRemove(): void {
     confirm({
-      title: '系统提示?',
-      content: '确定删除本项？',
-      okText: '确定',
-      cancelText: '取消',
+      title: "系统提示?",
+      content: "确定删除本项？",
+      okText: "确定",
+      cancelText: "取消",
       onOk() {
         // 删除时将schema返回
         onDelete(schema);
-      },
+      }
     });
   }
 
   // 填写表单触发
   function onHandleChange(params: any) {
     if (disabled) return;
-    if (typeof onChange === 'function') {
+    if (typeof onChange === "function") {
       onChange(params);
     }
   }
@@ -104,31 +103,36 @@ const EditString: FC<editStringProps> = ({
    */
   useEffect(() => {
     // 当切换到editTab且状态为编辑时才写入值，否则无对应dom写入
-    if(status === 'edit' && edit) {
+    if (status === "edit" && edit) {
       form.setFieldsValue({
         title,
         // required: {false: 0, true: 1}[`${required}`],
         required,
-        description,
-      })
+        description
+      });
     }
-  }, [edit])
+  }, [edit]);
 
   return (
     // eslint-disable-next-line react/jsx-filename-extension
     <div className={classnames(styles.view, styles[device])}>
-      <Form labelCol={{xs: {span: 24}, sm: {span: 4}}} wrapperCol={{xs: {span: 24}, sm: {span: 20}}}>
-        { status === 'edit' && 
+      <Form
+        labelCol={{ xs: { span: 24 }, sm: { span: 4 } }}
+        wrapperCol={{ xs: { span: 24 }, sm: { span: 20 } }}
+      >
+        {status === "edit" && (
           <div className={styles.editView}>
-            { edit ?
-              // 题目编辑器 
+            {edit ? (
+              // 题目编辑器
               <div className={styles.editForm}>
                 <Form.Item label="题目">
-                  {getFieldDecorator('title', {
-                    rules: [ {
-                      required: true,
-                      message: '请输入题目',
-                    },],
+                  {getFieldDecorator("title", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "请输入题目"
+                      }
+                    ]
                   })(<Input placeholder="请输入题目" />)}
                 </Form.Item>
                 <Form.Item label="题型">
@@ -150,11 +154,13 @@ const EditString: FC<editStringProps> = ({
                   )}
                 </Form.Item> */}
                 <Form.Item label="是否必填">
-                  {getFieldDecorator('required', {
-                    rules: [ {
-                      required: true,
-                      message: '请选择是否必填',
-                    },],
+                  {getFieldDecorator("required", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "请选择是否必填"
+                      }
+                    ]
                   })(
                     <Radio.Group>
                       <Radio value>是</Radio>
@@ -165,11 +171,16 @@ const EditString: FC<editStringProps> = ({
                 <div className={styles.formItem}>
                   <span />
                   <div>
-                    <Button type="primary" onClick={onHandleOk}>确定</Button>
-                    <Button style={{marginLeft: 10}} onClick={onHandleCancel}>取消</Button>
+                    <Button type="primary" onClick={onHandleOk}>
+                      确定
+                    </Button>
+                    <Button style={{ marginLeft: 10 }} onClick={onHandleCancel}>
+                      取消
+                    </Button>
                   </div>
                 </div>
-              </div> :
+              </div>
+            ) : (
               // 输入框
               <div className={styles.showForm}>
                 <div className={styles.questionArea}>
@@ -177,7 +188,15 @@ const EditString: FC<editStringProps> = ({
                     {required && <i className={styles.requiredIcon}>*</i>}
                     <span>{title}:</span>
                   </span>
-                  {(description && description.length) && <span className={styles.description}><Icon type="info-circle" style={{paddingRight: 5, fontSize: 14}} />{description}</span>}
+                  {description && description.length && (
+                    <span className={styles.description}>
+                      <Icon
+                        type="info-circle"
+                        style={{ paddingRight: 5, fontSize: 14 }}
+                      />
+                      {description}
+                    </span>
+                  )}
                   <div className={styles.questionBody}>
                     <Input />
                   </div>
@@ -187,10 +206,10 @@ const EditString: FC<editStringProps> = ({
                   <span onClick={onRemove}>删除</span>
                 </div>
               </div>
-            }
+            )}
           </div>
-        }
-        { status === 'preview' &&
+        )}
+        {status === "preview" && (
           <div className={styles.preview}>
             <div className={styles.showForm}>
               <div className={styles.questionArea}>
@@ -198,18 +217,30 @@ const EditString: FC<editStringProps> = ({
                   {required && <i className={styles.requiredIcon}>*</i>}
                   <span>{title}:</span>
                 </span>
-                {(description && description.length) && <span className={styles.description}><Icon type="info-circle" style={{paddingRight: 5, fontSize: 14}} />{description}</span>}
+                {description && description.length && (
+                  <span className={styles.description}>
+                    <Icon
+                      type="info-circle"
+                      style={{ paddingRight: 5, fontSize: 14 }}
+                    />
+                    {description}
+                  </span>
+                )}
                 <div className={styles.questionBody}>
-                  <Input value={value} onChange={onHandleChange} disabled={disabled} />
+                  <Input
+                    value={value}
+                    onChange={onHandleChange}
+                    disabled={disabled}
+                  />
                 </div>
               </div>
             </div>
           </div>
-        }
+        )}
       </Form>
     </div>
-  )
-}
+  );
+};
 
 const Components = Form.create()(EditString);
 

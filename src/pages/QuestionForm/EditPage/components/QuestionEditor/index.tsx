@@ -9,36 +9,28 @@
  * 可以输入预定的版权声明、个性签名、空行等
  */
 // eslint-disable-next-line no-unused-vars
-import React, { FC, forwardRef } from 'react';
-import FormRender from '@/components/QuestionForm';
+import React, { FC, forwardRef } from "react";
+import FormRender from "@/components/QuestionForm";
 
-import styles from './index.less';
+import styles from "./index.less";
 
 interface SchemaFormProps {
   ref?: any;
   schema?: any;
   onChange?: () => void;
-  disabled?: boolean
+  disabled?: boolean;
   style?: object;
 }
 
 const SchemaForm: FC<any> = ({
   style,
   schema,
-  onChange,
+  onChange
 }): React.ReactElement => {
-
   return (
-    <div
-      className={styles.questionEditorView}
-      style={style}
-    >
-      <FormRender
-        schema={schema}
-        onChange={onChange}
-        status="edit"
-      />
+    <div className={styles.questionEditorView} style={style}>
+      <FormRender schema={schema} onChange={onChange} status="edit" />
     </div>
   );
-}
+};
 export default forwardRef(SchemaForm);

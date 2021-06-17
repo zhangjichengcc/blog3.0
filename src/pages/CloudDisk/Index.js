@@ -1,13 +1,13 @@
 /* stylelint-disable */
-import React, { Component } from 'react';
-import { Button, Input, Menu, Icon, Modal, Badge, Tabs, message } from 'antd';
-import styled, { keyframes } from 'styled-components';
-import AllFile from './AllFile';
-import LoadingPage from './LoadingPage';
-import UploadPage from './UploadPage';
-import ShareFiles from './ShareFiles';
-import styles from './Index.less';
-import { emptyUploadAndDownloadList } from '@/services/cloudDisk';
+import React, { Component } from "react";
+import { Button, Input, Menu, Icon, Modal, Badge, Tabs, message } from "antd";
+import styled, { keyframes } from "styled-components";
+import AllFile from "./AllFile";
+import LoadingPage from "./LoadingPage";
+import UploadPage from "./UploadPage";
+import ShareFiles from "./ShareFiles";
+import styles from "./Index.less";
+import { emptyUploadAndDownloadList } from "@/services/cloudDisk";
 // import classnames from 'classnames';
 
 const { Search } = Input;
@@ -19,17 +19,17 @@ export default class CloudDisk extends Component {
   state = {
     AllFileCom: {}, // 子组件实例
     LoadingPageCom: {}, // 子组件实例
-    pageTab: 'allFile',
+    pageTab: "allFile",
     uploadCount: 0,
     loadingCount: 0,
     btnControler: {
-      upload: 'active',
-      newdir: 'active',
-      download: 'hide',
-      deletedir: 'hide',
-      move: 'hide',
-      copy: 'hide',
-    },
+      upload: "active",
+      newdir: "active",
+      download: "hide",
+      deletedir: "hide",
+      move: "hide",
+      copy: "hide"
+    }
   };
 
   componentDidMount() {
@@ -61,7 +61,7 @@ export default class CloudDisk extends Component {
       const { uploadCount, loadingCount } = this.state;
       if (uploadCount || loadingCount) {
         const ev = window.event || e;
-        ev.returnValue = '存在正在上传或下载的文件，是否继续退出？';
+        ev.returnValue = "存在正在上传或下载的文件，是否继续退出？";
       }
     };
   };
@@ -83,7 +83,7 @@ export default class CloudDisk extends Component {
 
   // 打开文件
   openDir = record => {
-    this.onTabChange('allFile');
+    this.onTabChange("allFile");
     this.setNavTab(record.id);
     const { AllFileCom } = this.state;
     // id = 0 则为根目录，单独处理面包屑及历史记录逻辑
@@ -100,12 +100,12 @@ export default class CloudDisk extends Component {
   inputShareCode = () => {
     const { shareCode } = this.state;
     if (!shareCode) {
-      message.warn('请输入共享码！');
+      message.warn("请输入共享码！");
       return;
     }
     this.setState({
       shareCodeModalVisiable: false,
-      shareDirVisiable: true,
+      shareDirVisiable: true
     });
   };
 
@@ -140,15 +140,15 @@ export default class CloudDisk extends Component {
     // 取消新建或修改文件名操作
     AllFileCom.addDirCancel();
     confirm({
-      title: '确定删除这些文件吗？',
-      okText: '确定',
-      cancelText: '取消',
+      title: "确定删除这些文件吗？",
+      okText: "确定",
+      cancelText: "取消",
       onOk() {
         AllFileCom.deleteDir();
       },
       onCancel() {
-        console.log('Cancel');
-      },
+        console.log("Cancel");
+      }
     });
   };
 
@@ -186,7 +186,7 @@ export default class CloudDisk extends Component {
     const { downLoadingNav } = this;
     const { left, top: y } = downLoadingNav.getBoundingClientRect();
     const { clientWidth: bodyWidth } = document.body;
-    const { clientWidth: rootWidth } = document.getElementById('root');
+    const { clientWidth: rootWidth } = document.getElementById("root");
     const targetX = left - (bodyWidth - rootWidth) / 2;
     const targetY = y - 80;
     // const animateTime = 700;
@@ -220,13 +220,13 @@ export default class CloudDisk extends Component {
 
     this.setState({
       LoadTag,
-      showLoadTag: true,
+      showLoadTag: true
     });
     const timer1 = setTimeout(() => {
       this.setState(
         {
           showLoadTag: false,
-          loadingCount: loadingCount + 1,
+          loadingCount: loadingCount + 1
         },
         () => {
           clearTimeout(timer1);
@@ -254,7 +254,7 @@ export default class CloudDisk extends Component {
       this.setState(
         {
           showLoadTag: false,
-          uploadCount: uploadCount + 1,
+          uploadCount: uploadCount + 1
         },
         () => {
           const timer2 = setTimeout(() => {
@@ -277,15 +277,15 @@ export default class CloudDisk extends Component {
   deleteLoading = () => {
     const { LoadingPageCom } = this.state;
     confirm({
-      title: '确定删除这些下载文件？',
-      okText: '确定',
-      cancelText: '取消',
+      title: "确定删除这些下载文件？",
+      okText: "确定",
+      cancelText: "取消",
       onOk() {
         LoadingPageCom.deleteList();
       },
       onCancel() {
-        console.log('Cancel');
-      },
+        console.log("Cancel");
+      }
     });
   };
 
@@ -294,7 +294,7 @@ export default class CloudDisk extends Component {
     const { LoadingPageCom } = this.state;
     const { fileList = [] } = LoadingPageCom.state;
     this.setState({
-      loadingCount: fileList.length,
+      loadingCount: fileList.length
     });
   };
 
@@ -303,7 +303,7 @@ export default class CloudDisk extends Component {
     const { UploadPageCom } = this.state;
     const { fileList = [] } = UploadPageCom.state;
     this.setState({
-      uploadCount: fileList.length,
+      uploadCount: fileList.length
     });
   };
 
@@ -317,13 +317,13 @@ export default class CloudDisk extends Component {
     if (tab.toString() === navTab) return;
     this.setState(
       {
-        navTab: tab.toString(),
+        navTab: tab.toString()
       },
       () => {
-        if (tab === 'download') {
+        if (tab === "download") {
           LoadingPageCom.startFetch();
           UploadPageCom.stopFetch();
-        } else if (tab === 'upload') {
+        } else if (tab === "upload") {
           UploadPageCom.startFetch();
           LoadingPageCom.stopFetch();
         } else {
@@ -338,7 +338,7 @@ export default class CloudDisk extends Component {
   closeShareFiles = () => {
     const { AllFileCom } = this.state;
     AllFileCom.fetchFileList();
-    this.setState({ shareDirVisiable: false, shareCode: '' });
+    this.setState({ shareDirVisiable: false, shareCode: "" });
   };
 
   render() {
@@ -349,40 +349,52 @@ export default class CloudDisk extends Component {
       showLoadTag = false,
       LoadTag = {},
       pageTab = {},
-      navTab = '0',
-      searchValue = '',
+      navTab = "0",
+      searchValue = "",
       // LoadingPageCom = {},
-      shareCode = '',
+      shareCode = "",
       shareCodeModalVisiable = false,
-      shareDirVisiable = false,
+      shareDirVisiable = false
     } = this.state;
 
     // 获取操作控制队列
-    const { upload, newdir, download, deletedir, move, copy, share } = btnControler;
+    const {
+      upload,
+      newdir,
+      download,
+      deletedir,
+      move,
+      copy,
+      share
+    } = btnControler;
 
     return (
       <div className={styles.cloudDiskPage}>
         <div className={styles.headerWrap}>
           <span className={styles.title}>小抽屉</span>
-          {pageTab === 'allFile' && (
+          {pageTab === "allFile" && (
             <div className={styles.btnWrap}>
-              {upload !== 'hide' && (
+              {upload !== "hide" && (
                 <Button
                   className={styles.btn}
-                  disabled={upload === 'disabled'}
+                  disabled={upload === "disabled"}
                   onClick={this.uploadDir}
                   type="primary"
                 >
                   上传
                 </Button>
               )}
-              <Button className={styles.btn} onClick={this.addDir} disabled={newdir === 'disabled'}>
+              <Button
+                className={styles.btn}
+                onClick={this.addDir}
+                disabled={newdir === "disabled"}
+              >
                 新建文件夹
               </Button>
-              {share !== 'hide' && (
+              {share !== "hide" && (
                 <Button
                   className={styles.btn}
-                  disabled={shareCodeModalVisiable || share === 'disabled'}
+                  disabled={shareCodeModalVisiable || share === "disabled"}
                   onClick={() => {
                     this.setState({ shareCodeModalVisiable: true });
                   }}
@@ -391,45 +403,45 @@ export default class CloudDisk extends Component {
                   输入文件共享码
                 </Button>
               )}
-              {download !== 'hide' && (
+              {download !== "hide" && (
                 <Button
                   className={styles.btn}
                   onClick={this.downloadDir}
-                  disabled={download === 'disabled'}
+                  disabled={download === "disabled"}
                 >
                   下载
                 </Button>
               )}
-              {deletedir !== 'hide' && (
+              {deletedir !== "hide" && (
                 <Button
                   className={styles.btn}
                   onClick={this.deleteDir}
-                  disabled={deletedir === 'disabled'}
+                  disabled={deletedir === "disabled"}
                 >
                   删除
                 </Button>
               )}
-              {move !== 'hide' && (
+              {move !== "hide" && (
                 <Button
                   className={styles.btn}
                   onClick={this.moveDir}
-                  disabled={move === 'disabled'}
+                  disabled={move === "disabled"}
                 >
                   移动到
                 </Button>
               )}
-              {copy !== 'hide' && (
+              {copy !== "hide" && (
                 <Button
                   className={styles.btn}
                   onClick={this.copyDir}
-                  disabled={copy === 'disabled'}
+                  disabled={copy === "disabled"}
                 >
                   复制到
                 </Button>
               )}
             </div>
           )}
-          {pageTab === 'allFile' && (
+          {pageTab === "allFile" && (
             <div className={styles.searchWrap}>
               <Search
                 placeholder="输入文件名搜索"
@@ -448,15 +460,24 @@ export default class CloudDisk extends Component {
         <div className={styles.container}>
           <div className={styles.menuWrap}>
             <Menu selectedKeys={[navTab]} mode="inline">
-              <Item key={0} onClick={() => this.openDir({ name: '全部文件', id: 0 })}>
+              <Item
+                key={0}
+                onClick={() => this.openDir({ name: "全部文件", id: 0 })}
+              >
                 <Icon type="folder" />
                 <span>全部文件</span>
               </Item>
-              <Item key={1} onClick={() => this.openDir({ name: '我的资源', id: 1 })}>
+              <Item
+                key={1}
+                onClick={() => this.openDir({ name: "我的资源", id: 1 })}
+              >
                 <Icon type="profile" />
                 <span>我的资源</span>
               </Item>
-              <Item key={2} onClick={() => this.openDir({ name: '我的下载', id: 2 })}>
+              <Item
+                key={2}
+                onClick={() => this.openDir({ name: "我的下载", id: 2 })}
+              >
                 <Icon type="cloud-download" />
                 <span>我的下载</span>
               </Item>
@@ -464,11 +485,15 @@ export default class CloudDisk extends Component {
                 <Item
                   key="upload"
                   onClick={() => {
-                    this.setNavTab('upload');
-                    this.onTabChange('uploadPage');
+                    this.setNavTab("upload");
+                    this.onTabChange("uploadPage");
                   }}
                 >
-                  <Badge count={uploadCount} offset={[13, 0]} overflowCount={99}>
+                  <Badge
+                    count={uploadCount}
+                    offset={[13, 0]}
+                    overflowCount={99}
+                  >
                     <Icon type="upload" />
                     <span>正在上传</span>
                   </Badge>
@@ -476,11 +501,15 @@ export default class CloudDisk extends Component {
                 <Item
                   key="download"
                   onClick={() => {
-                    this.setNavTab('download');
-                    this.onTabChange('loadingPage');
+                    this.setNavTab("download");
+                    this.onTabChange("loadingPage");
                   }}
                 >
-                  <Badge count={loadingCount} offset={[13, 0]} overflowCount={99}>
+                  <Badge
+                    count={loadingCount}
+                    offset={[13, 0]}
+                    overflowCount={99}
+                  >
                     <div
                       ref={e => {
                         this.downLoadingNav = e;
@@ -539,7 +568,9 @@ export default class CloudDisk extends Component {
           closable={false}
           okText="确定"
           cancelText="取消"
-          onCancel={() => this.setState({ shareCodeModalVisiable: false, shareCode: '' })}
+          onCancel={() =>
+            this.setState({ shareCodeModalVisiable: false, shareCode: "" })
+          }
           onOk={this.inputShareCode}
         >
           <div className={styles.shareCodeBody}>
@@ -547,7 +578,9 @@ export default class CloudDisk extends Component {
               placeholder="请输入6为大写字母组成的共享码"
               value={shareCode}
               onChange={v =>
-                this.setState({ shareCode: v.target.value.replace(/[^A-Z]/g, '').slice(0, 6) })
+                this.setState({
+                  shareCode: v.target.value.replace(/[^A-Z]/g, "").slice(0, 6)
+                })
               }
             />
           </div>

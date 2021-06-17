@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Table, Icon, message, Button } from 'antd';
-import moment from 'moment';
+import React, { Component } from "react";
+import { Table, Icon, message, Button } from "antd";
+import moment from "moment";
 // import router from 'umi/router';
-import classnames from 'classnames';
-import fileDownload from 'js-file-download';
+import classnames from "classnames";
+import fileDownload from "js-file-download";
 import {
   getDirList,
   getDir,
@@ -11,15 +11,16 @@ import {
   copyXctDirFile,
   // insertXctFile,
   downloadFile,
-  getSharedFile,
-} from '@/services/cloudDisk';
-import * as Svg from '../../utils/svgImport';
-import { renderSize } from '@/utils/methods';
-import styles from './ShareFiles.less';
-import OperationModal from './component/operationModal';
+  getSharedFile
+} from "@/services/cloudDisk";
+import * as Svg from "../../utils/svgImport";
+import { renderSize } from "@/utils/methods";
+import styles from "./ShareFiles.less";
+import OperationModal from "./component/operationModal";
 
 const { Column } = Table;
-const fileTypeList = 'xls, xlsx, doc, docx, pdf, ppt, pptx, txt, png, jpg, mp3, mp4, zip, rar';
+const fileTypeList =
+  "xls, xlsx, doc, docx, pdf, ppt, pptx, txt, png, jpg, mp3, mp4, zip, rar";
 const fileLogoObj = {
   xls: Svg.excelSvg,
   xlsx: Svg.excelSvg,
@@ -34,19 +35,19 @@ const fileLogoObj = {
   mp3: Svg.mp3Svg,
   mp4: Svg.videoSvg,
   zip: Svg.zipIconSvg,
-  rar: Svg.zipIconSvg,
+  rar: Svg.zipIconSvg
 };
 
 // 时间格式化
 const timeRender = t => {
-  return moment(t).format('YYYY-MM-DD HH:mm');
+  return moment(t).format("YYYY-MM-DD HH:mm");
 };
 
 const rootItem = {
-  name: '全部文件',
+  name: "全部文件",
   dirId: 0, // 根目录id为0
   sorter: null,
-  prev: null,
+  prev: null
 };
 
 export default class ShareFiles extends Component {
@@ -57,7 +58,7 @@ export default class ShareFiles extends Component {
     selectedRowKeys: [], // 已选条目
     searchParams: rootItem,
     historyList: [rootItem], // 存储历史记录
-    historyIdx: 0,
+    historyIdx: 0
   };
 
   componentDidMount() {
@@ -76,7 +77,7 @@ export default class ShareFiles extends Component {
   initPage = () => {
     this.initShareDir();
     this.setState({
-      talbeHeight: document.body.clientHeight - 400 || 350,
+      talbeHeight: document.body.clientHeight - 400 || 350
     });
   };
 
@@ -84,7 +85,12 @@ export default class ShareFiles extends Component {
   initShareDir = newCode => {
     const { shareCode, onClose } = this.props;
     const sharedCode = newCode || shareCode;
-    this.setState({ loading: true, fileList: [], selectedRowKeys: [], selectedRows: [] });
+    this.setState({
+      loading: true,
+      fileList: [],
+      selectedRowKeys: [],
+      selectedRows: []
+    });
     getSharedFile({ sharedCode })
       .then(res => {
         const { code, data } = res;
@@ -96,22 +102,22 @@ export default class ShareFiles extends Component {
             fileList: [
               {
                 ...data,
-                key: '0',
+                key: "0",
                 fileType: data.type,
                 fileId: data.id,
-                id: `${data.type}${data.id}`,
-              },
-            ],
+                id: `${data.type}${data.id}`
+              }
+            ]
           });
         } else {
-          message.error('无效分享码！');
+          message.error("无效分享码！");
           onClose();
         }
       })
       .catch(e => {
         // eslint-disable-next-line no-console
         console.warn(e);
-        message.error('无效分享码！');
+        message.error("无效分享码！");
         onClose();
       });
   };
@@ -122,9 +128,9 @@ export default class ShareFiles extends Component {
     const { searchParams = {}, userId } = this.state;
     const { dirId = 0, order } = searchParams;
     const params = {
-      ascending: order === 'ascend',
+      ascending: order === "ascend",
       dirId,
-      userId,
+      userId
     };
     getDirList(params)
       .then((res = {}) => {
@@ -133,16 +139,18 @@ export default class ShareFiles extends Component {
           this.setState({
             loading: false,
             fileList: data.map((item, idx) => {
-              const fileType = item.size ? item.name.replace(/^.*\.(.*)$/, '$1') : 'folder';
+              const fileType = item.size
+                ? item.name.replace(/^.*\.(.*)$/, "$1")
+                : "folder";
               return {
                 ...item,
                 key: `${idx}`,
                 fileType,
                 fileId: item.id,
                 id: fileType + item.id,
-                lock: parseInt(item.operation, 10),
+                lock: parseInt(item.operation, 10)
               };
-            }),
+            })
           });
         } else {
           this.setState({ loading: false });
@@ -151,7 +159,7 @@ export default class ShareFiles extends Component {
       })
       .catch(e => {
         this.setState({ loading: true });
-        message.error(e.message || '获取数据失败！');
+        message.error(e.message || "获取数据失败！");
       });
   };
 
@@ -164,17 +172,17 @@ export default class ShareFiles extends Component {
         if (code === 0) {
           this.setState({
             modalFileList: data,
-            modalLoading: false,
+            modalLoading: false
           });
         } else {
           this.setState({
-            modalLoading: false,
+            modalLoading: false
           });
-          message.warn('获取小抽屉文件列表失败');
+          message.warn("获取小抽屉文件列表失败");
         }
       })
       .catch(() => {
-        message.warn('获取小抽屉文件列表失败');
+        message.warn("获取小抽屉文件列表失败");
       });
   };
 
@@ -185,14 +193,16 @@ export default class ShareFiles extends Component {
     const newSearchParams = {
       ...searchParams,
       dirId: fileId,
-      name,
+      name
     };
-    if (type === 'folder') {
+    if (type === "folder") {
       this.setState(
         {
           searchParams: newSearchParams,
-          historyList: historyList.slice(0, historyIdx + 1).concat(newSearchParams),
-          historyIdx: historyIdx + 1,
+          historyList: historyList
+            .slice(0, historyIdx + 1)
+            .concat(newSearchParams),
+          historyIdx: historyIdx + 1
         },
         () => {
           this.fetchFileList();
@@ -209,7 +219,7 @@ export default class ShareFiles extends Component {
     this.setState(
       {
         searchParams: historyList[newHistoryIdx],
-        historyIdx: newHistoryIdx,
+        historyIdx: newHistoryIdx
       },
       () => {
         if (newHistoryIdx === 0) {
@@ -229,7 +239,7 @@ export default class ShareFiles extends Component {
     this.setState(
       {
         searchParams: historyList[newHistoryIdx],
-        historyIdx: newHistoryIdx,
+        historyIdx: newHistoryIdx
       },
       () => {
         this.fetchFileList();
@@ -244,7 +254,7 @@ export default class ShareFiles extends Component {
       {
         historyList: historyList.slice(0, idx + 1),
         searchParams: historyList[idx],
-        historyIdx: idx,
+        historyIdx: idx
       },
       () => {
         if (idx === 0) {
@@ -261,32 +271,36 @@ export default class ShareFiles extends Component {
     const { downloadSuccess, downloadAnimate } = this.props;
     const { selectedRows = [] } = this.state;
     if (!selectedRows.length) {
-      message.warn('请选择要下载的文件!');
+      message.warn("请选择要下载的文件!");
       return;
     }
-    message.info('开始下载...');
+    message.info("开始下载...");
     downloadAnimate(200, 150, Svg.zipIconSvg);
     const uuid = new Date().getTime();
-    const params = selectedRows.map(item => ({ id: item.fileId, type: item.type, moveId: uuid }));
+    const params = selectedRows.map(item => ({
+      id: item.fileId,
+      type: item.type,
+      moveId: uuid
+    }));
     downloadFile({ params, uuid })
       .then(res => {
         const blob = res.blob();
         const name = res.headers
-          .get('content-disposition')
-          .split(';')[1]
-          .split('filename=')[1];
+          .get("content-disposition")
+          .split(";")[1]
+          .split("filename=")[1];
         const decodeName = decodeURIComponent(name);
         blob.then(blobFile => {
           fileDownload(blobFile, decodeName);
           this.cleanSelectedRow();
         });
-        message.success(`${decodeName || '文件'}下载完成！`);
+        message.success(`${decodeName || "文件"}下载完成！`);
         downloadSuccess();
       })
       .catch(e => {
         console.warn(e);
         downloadSuccess();
-        message.error('下载失败！');
+        message.error("下载失败！");
       });
   };
 
@@ -294,13 +308,13 @@ export default class ShareFiles extends Component {
   copyDir = () => {
     const { selectedRows } = this.state;
     if (!selectedRows.length) {
-      message.warn('请选择要下载的文件!');
+      message.warn("请选择要下载的文件!");
       return;
     }
     this.setState(
       {
         opt: selectedRows,
-        modalVisible: true,
+        modalVisible: true
       },
       () => {
         this.fetchModalFileList();
@@ -312,44 +326,44 @@ export default class ShareFiles extends Component {
   handleOk = (e, keys) => {
     const { opt, userId } = this.state;
     this.setState({
-      modalVisible: false,
+      modalVisible: false
     });
-    if (!keys.length || keys[0] === '0-0') return;
+    if (!keys.length || keys[0] === "0-0") return;
 
     const moveDirFileModels = opt.map(item => ({
       id: item.fileId,
       moveId: Number(keys[0]),
-      type: item.type,
+      type: item.type
     }));
-    copyXctDirFile({userId, moveDirFileModels})
+    copyXctDirFile({ userId, moveDirFileModels })
       .then((res = {}) => {
         const { code } = res;
         if (code === 0) {
-          message.success('文件保存成功');
+          message.success("文件保存成功");
           this.cleanSelectedRow();
         } else {
-          message.warn('操作失败，请稍后重试!');
+          message.warn("操作失败，请稍后重试!");
         }
       })
       .catch(() => {
-        message.warn('操作失败，请稍后重试!');
+        message.warn("操作失败，请稍后重试!");
       });
   };
 
   // 弹窗新建文件夹确认
   modalDirAddFolderNameOk = obj => {
     if (!obj.dirName || obj.dirName.match(/^\s*$/)) {
-      message.error('新建文件夹命名不能为空');
+      message.error("新建文件夹命名不能为空");
       return;
     }
     addDir({ dirName: obj.dirName, parentId: obj.parentId })
       .then((res = {}) => {
         const { code, msg } = res;
         if (code === 0) {
-          message.success('文件新增成功！');
+          message.success("文件新增成功！");
           this.fetchModalFileList();
         } else {
-          message.warn(msg || '创建失败，请重试！');
+          message.warn(msg || "创建失败，请重试！");
         }
       })
       .catch(e => {
@@ -359,15 +373,15 @@ export default class ShareFiles extends Component {
 
   // 排序
   onTableChage = (pagination, filters, sorter, prev) => {
-    if (prev === 'search') return;
+    if (prev === "search") return;
     const { searchParams } = this.state;
     const { order } = sorter;
     this.setState(
       {
         searchParams: {
           ...searchParams,
-          order,
-        },
+          order
+        }
       },
       () => {
         this.fetchFileList();
@@ -379,7 +393,7 @@ export default class ShareFiles extends Component {
   onSelectChange = (selectedRowKeys, selectedRows) => {
     this.setState({
       selectedRowKeys,
-      selectedRows,
+      selectedRows
     });
   };
 
@@ -387,7 +401,7 @@ export default class ShareFiles extends Component {
   cleanSelectedRow = () => {
     this.setState({
       selectedRowKeys: [],
-      selectedRows: [],
+      selectedRows: []
     });
   };
 
@@ -401,10 +415,10 @@ export default class ShareFiles extends Component {
 
   // 文件名行渲染
   fileNameRender = (text, record) => {
-    let imgSrc = '';
+    let imgSrc = "";
     if (record.lock) {
       imgSrc = Svg.suodingSvg;
-    } else if (record.fileType === 'folder') {
+    } else if (record.fileType === "folder") {
       imgSrc = Svg.folderSvg;
     } else if (fileTypeList.indexOf(record.fileType) === -1) {
       imgSrc = Svg.fileIconSvg;
@@ -428,7 +442,7 @@ export default class ShareFiles extends Component {
   // modal 新建文件夹 | 取消新建
   modalAddDir = list => {
     this.setState({
-      modalFileList: list,
+      modalFileList: list
     });
   };
 
@@ -443,18 +457,21 @@ export default class ShareFiles extends Component {
       historyList = [],
       historyIdx,
       talbeHeight = 350,
-      userName = '',
+      userName = ""
     } = this.state;
     const { onClose } = this.props;
     const activeHistoryList = historyList.slice(0, historyIdx + 1);
 
     const rowSelection = {
       onChange: this.onSelectChange,
-      selectedRowKeys,
+      selectedRowKeys
     };
 
     return (
-      <div className={styles.shareFilesPage} style={{ height: talbeHeight + 200 }}>
+      <div
+        className={styles.shareFilesPage}
+        style={{ height: talbeHeight + 200 }}
+      >
         <div className={styles.pageTitle}>
           <span>
             <Icon className={styles.pageTitleIcon} type="user" />
@@ -464,7 +481,10 @@ export default class ShareFiles extends Component {
         </div>
         <div className={styles.header}>
           <span
-            className={classnames(styles.historyBtn, historyIdx === 0 ? styles.disable : '')}
+            className={classnames(
+              styles.historyBtn,
+              historyIdx === 0 ? styles.disable : ""
+            )}
             onClick={this.prevHistory}
           >
             <Icon type="left" />
@@ -472,7 +492,7 @@ export default class ShareFiles extends Component {
           <span
             className={classnames(
               styles.historyBtn,
-              historyIdx + 1 === historyList.length ? styles.disable : ''
+              historyIdx + 1 === historyList.length ? styles.disable : ""
             )}
             onClick={this.nextHistory}
           >
@@ -507,7 +527,7 @@ export default class ShareFiles extends Component {
           scroll={{ y: talbeHeight }}
           onRow={record => {
             return {
-              onDoubleClick: () => this.openDir(record),
+              onDoubleClick: () => this.openDir(record)
             };
           }}
         >
@@ -522,7 +542,7 @@ export default class ShareFiles extends Component {
             dataIndex="size"
             key="size"
             // width={110}
-            render={text => (text ? renderSize(text) : '-')}
+            render={text => (text ? renderSize(text) : "-")}
           />
           <Column
             title="修改时间"
@@ -530,7 +550,7 @@ export default class ShareFiles extends Component {
             // width={200}
             key="createTime"
             sorter
-            sortDirections={['descend', 'ascend']}
+            sortDirections={["descend", "ascend"]}
             render={text => timeRender(text)}
           />
         </Table>
@@ -545,7 +565,11 @@ export default class ShareFiles extends Component {
           addNewFolderNameOk={this.modalDirAddFolderNameOk}
         />
         <div className={styles.btnBar}>
-          <Button type="primary" style={{ marginRight: 10 }} onClick={this.copyDir}>
+          <Button
+            type="primary"
+            style={{ marginRight: 10 }}
+            onClick={this.copyDir}
+          >
             保存到小抽屉
           </Button>
           <Button onClick={this.downloadDir}>下载到本地</Button>

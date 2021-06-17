@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   Table,
   // Icon,
   Modal,
-  Progress,
+  Progress
   // Tooltip
-} from 'antd';
-import moment from 'moment';
-import { renderSize } from '@/utils/methods';
+} from "antd";
+import moment from "moment";
+import { renderSize } from "@/utils/methods";
 // import router from 'umi/router';
 // import classnames from 'classnames';
-import { getDownloadingList, addTransmissionOk } from '@/services/cloudDisk';
-import * as Svg from '../../utils/svgImport';
-import styles from './LoadingPage.less';
+import { getDownloadingList, addTransmissionOk } from "@/services/cloudDisk";
+import * as Svg from "../../utils/svgImport";
+import styles from "./LoadingPage.less";
 // import Ellipsis from '@/components';
 
 // const list  =[{"id":1,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"我的资源","size":"","createTime":"2019-09-06 16:00:05","operation":"1","url":"","type":"folder","catelist":null},{"id":2,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"我的下载","size":"","createTime":"2019-09-06 16:01:08","operation":"1","url":"","type":"folder","catelist":null},{"id":131,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"我的资源_1568894937","size":"","createTime":"2019-09-19 20:08:57","operation":"0","url":"","type":"folder","catelist":null},{"id":132,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"我的下载_1568894937","size":100000, loadSize: 40000, progress: 40, "createTime":"2019-09-19 20:08:57","operation":"0","url":"","type":"folder","catelist":null},{"id":130,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"我的下载_","size":"","createTime":"2019-09-19 20:00:45","operation":"0","url":"","type":"folder","catelist":null},{"id":113,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"技术人员绩效流程调整.pdf","size":"465613.0","createTime":"2019-09-20 19:08:04","operation":"0","url":"http://172.16.119.192:8020/2,ba5b60e9e0","type":"file","catelist":null},{"id":112,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"查询结果转换说明.docx","size":"12438.0","createTime":"2019-09-20 19:07:54","operation":"0","url":"http://172.16.119.192:8020/5,b902775eba","type":"file","catelist":null},{"id":111,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"dist.zip","size":"1319906.0","createTime":"2019-09-20 19:07:46","operation":"0","url":"http://172.16.119.192:8020/2,b89cbd4f3f","type":"file","catelist":null},{"id":110,"dirid":0,"fileid":0,"parentid":null,"userIds":null,"name":"行政区划","size":"818649.0","createTime":"2019-09-20 16:42:45","operation":"0","url":"http://172.16.119.192:8020/6,b774562f6e","type":"file","catelist":null}];
@@ -36,7 +36,7 @@ const fileLogoObj = {
   zip: Svg.zipIconSvg,
   rar: Svg.zipIconSvg,
   folder: Svg.folderSvg,
-  other: Svg.fileIconSvg,
+  other: Svg.fileIconSvg
 };
 
 // let loadingTimer = 0;
@@ -46,7 +46,7 @@ export default class com extends Component {
     fileList: [], // 文件列表
     // selectedRowKeys: [],
     selectedRows: [],
-    loadingTimer: 0,
+    loadingTimer: 0
   };
 
   componentDidMount() {
@@ -61,7 +61,7 @@ export default class com extends Component {
   initPage = () => {
     this.setState(
       {
-        talbeHeight: document.body.clientHeight - 350 || 400,
+        talbeHeight: document.body.clientHeight - 350 || 400
       },
       () => {
         this.fetchFileList();
@@ -99,19 +99,22 @@ export default class com extends Component {
         this.setState(
           {
             fileList: data.map((item = {}, idx) => {
-              const oldItem = oldFileList.filter(v => item.id === v.id)[0] || {};
+              const oldItem =
+                oldFileList.filter(v => item.id === v.id)[0] || {};
               // 计算下载速度
               const speed =
                 (item.endBuyt - oldItem.loadSize || 0) / 0.5 > 0
                   ? (item.endBuyt - oldItem.loadSize || 0) / 0.5
                   : 0;
               const speedStr = `${renderSize(speed || 0)} / s`;
-              const remainingTime = speed ? (item.transmitted - item.endBuyt) / speed : null;
-              const timeObj = moment.duration(remainingTime, 's');
+              const remainingTime = speed
+                ? (item.transmitted - item.endBuyt) / speed
+                : null;
+              const timeObj = moment.duration(remainingTime, "s");
               const remainingTimeObj = {
                 hours: timeObj.hours(),
                 minutes: timeObj.minutes(),
-                seconds: timeObj.seconds(),
+                seconds: timeObj.seconds()
               };
               const size = item.transmitted;
               const loadSize = item.endBuyt;
@@ -125,10 +128,10 @@ export default class com extends Component {
                 speed,
                 speedStr,
                 remainingTime,
-                remainingTimeObj,
+                remainingTimeObj
               };
             }),
-            oldFileList: fileList,
+            oldFileList: fileList
           },
           () => {
             this.loadedList();
@@ -204,9 +207,9 @@ export default class com extends Component {
   deleteDir = record => {
     const that = this;
     confirm({
-      title: '确定取消下载？',
-      okText: '确定',
-      cancelText: '取消',
+      title: "确定取消下载？",
+      okText: "确定",
+      cancelText: "取消",
       onOk() {
         // that.deleteList(record);
         const { id } = record;
@@ -215,8 +218,8 @@ export default class com extends Component {
         });
       },
       onCancel() {
-        console.log('Cancel');
-      },
+        console.log("Cancel");
+      }
     });
   };
 
@@ -230,14 +233,14 @@ export default class com extends Component {
   render() {
     const {
       talbeHeight = 400,
-      fileList = [],
+      fileList = []
       // selectedRowKeys = [],
     } = this.state;
 
     // 文件名渲染
     const fileNameRender = name => {
-      const reg = new RegExp('.*\\.(.*)$');
-      const fileType = reg.test(name) ? name.replace(reg, '$1') : 'folder';
+      const reg = new RegExp(".*\\.(.*)$");
+      const fileType = reg.test(name) ? name.replace(reg, "$1") : "folder";
       const imgSrc = fileLogoObj[fileType] || fileLogoObj.other;
       return (
         <div className={styles.fileNameWrap}>
@@ -251,15 +254,19 @@ export default class com extends Component {
     const progressDom = (value, record) => {
       const { speedStr = 0, remainingTimeObj = {}, progress } = record;
       // const values = Number((100 * (loadSize / size)).toFixed(2));
-      const num2 = val => val.toString().replace(/^(\d{1})$/, '0$1');
+      const num2 = val => val.toString().replace(/^(\d{1})$/, "0$1");
       return (
         <div>
-          <Progress percent={progress} style={{ paddingRight: 20 }} status="active" />
-          <span style={{ fontSize: 12, color: '#4583FD' }}>{speedStr}</span>
-          <span style={{ fontSize: 12, color: '#999999', paddingLeft: 10 }}>
-            {`剩余${num2(remainingTimeObj.hours)}:${num2(remainingTimeObj.minutes)}:${num2(
-              remainingTimeObj.seconds + 1
-            )}`}
+          <Progress
+            percent={progress}
+            style={{ paddingRight: 20 }}
+            status="active"
+          />
+          <span style={{ fontSize: 12, color: "#4583FD" }}>{speedStr}</span>
+          <span style={{ fontSize: 12, color: "#999999", paddingLeft: 10 }}>
+            {`剩余${num2(remainingTimeObj.hours)}:${num2(
+              remainingTimeObj.minutes
+            )}:${num2(remainingTimeObj.seconds + 1)}`}
           </span>
         </div>
       );
@@ -283,7 +290,9 @@ export default class com extends Component {
     const sizeDom = (value, record) => {
       const { size = 0, loadSize = 0 } = record;
       return (
-        <span style={{ fontSize: 13 }}>{`${renderSize(loadSize)} / ${renderSize(size)}`}</span>
+        <span style={{ fontSize: 13 }}>{`${renderSize(loadSize)} / ${renderSize(
+          size
+        )}`}</span>
       );
     };
 
@@ -302,11 +311,17 @@ export default class com extends Component {
           onRow={record => {
             return {
               onMouseEnter: e => this.tableRowMouseEnter(e, record),
-              onMouseLeave: e => this.tableRowMouseLeave(e, record),
+              onMouseLeave: e => this.tableRowMouseLeave(e, record)
             };
           }}
         >
-          <Column title="文件名" dataIndex="name" key="name" width={300} render={fileNameRender} />
+          <Column
+            title="文件名"
+            dataIndex="name"
+            key="name"
+            width={300}
+            render={fileNameRender}
+          />
           <Column
             title="文件大小"
             dataIndex="size"
@@ -315,7 +330,12 @@ export default class com extends Component {
             align="right"
             render={sizeDom}
           />
-          <Column title="" key="progress" dataIndex="progress" render={progressDom} />
+          <Column
+            title=""
+            key="progress"
+            dataIndex="progress"
+            render={progressDom}
+          />
           {/* <Column
             title="操作"
             key="todo"
