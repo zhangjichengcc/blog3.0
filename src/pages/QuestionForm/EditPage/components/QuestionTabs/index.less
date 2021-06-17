@@ -1,0 +1,50 @@
+.view {
+  display: block;
+  position: relative;
+}
+
+.tabs {
+  display: flex;
+  height: 45px;
+  >span {
+    width: 50%;
+    font-size: 14px;
+    display: flex;
+    color: #666;
+    align-items: center;
+    justify-content: center;
+    background-color: #F7F7F7;
+    transition: all ease .3s;
+    cursor: pointer;
+    &.active {
+      color: #468AFD;
+      background-color: #fff;
+    }
+  }
+}
+
+.wjdg {
+  min-height: 58vh;
+  max-height: 61vh;
+  overflow-y: auto;
+  >ul {
+    padding: 10px 0 10px;
+    margin: 0;
+    >li {
+      display: flex;
+      align-items: center;
+      padding: 0 24px 10px;
+      cursor: pointer;
+      transition: ease all .3s;
+      &:hover {
+        color: #1890FF;
+      }
+      >span {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        // font-weight: bold;
+      }
+    }
+  }
+}

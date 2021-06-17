@@ -1,0 +1,78 @@
+.cloudDiskPage {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100vh - 164px);
+  background-color: #fff;
+  padding-top: 20px;
+  .headerWrap {
+    position: relative;
+    height: 50px;
+    padding-right: 20px;
+    padding-left: 200px;
+    line-height: 50px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
+    .title {
+      position: absolute;
+      top: 0;
+      left: 30px;
+      color: #333;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .btnWrap {
+      display: inline-block;
+      .btn {
+        margin-right: 10px;
+      }
+    }
+    .searchWrap {
+      float: right;
+    }
+  }
+  .container {
+    position: relative;
+    min-height: calc(100% - 50px);
+    .menuWrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+      width: 180px;
+      height: 100%;
+      padding-top: 10px;
+      background: #fbfbfb;
+    }
+    .contentWrap {
+      box-sizing: border-box;
+      margin-left: 180px;
+      padding: 10px 20px;
+    }
+  }
+  .loadIcon {
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-color: #f0e;
+    opacity: 1;
+    transition: all ease 0.3s;
+  }
+
+  :global(.ant-badge-count) {
+    transform: translate(50%, -50%) scale(0.7);
+    transform-origin: 50% 50%;
+    transition: all ease 0.3s;
+  }
+
+  :global(.ant-menu-inline) {
+    height: 100%;
+    background: #fbfbfb;
+    border: 0;
+  }
+
+  :global(.ant-tabs-bar) {
+    display: none;
+  }
+}

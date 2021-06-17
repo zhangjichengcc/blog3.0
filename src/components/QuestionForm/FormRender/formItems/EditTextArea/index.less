@@ -1,0 +1,88 @@
+.view {
+  .editView {
+    width: 100%;
+    background-color:#e7f1fa;
+    // margin-bottom: 20px;
+    .editForm {
+      padding: 30px;
+      background-color: #e7f1fa;
+      .formItem {
+        display: flex;
+        margin-top: 30px;
+        align-items: center;
+        &:first-child {
+          margin-top: 0;
+        }
+        >span {
+          width: 90px;
+          text-align: right;
+          flex: none;
+          font-size: 14px;
+          color: #000;
+        }
+      }
+    }
+  }
+  .showForm {
+    transition: all ease .3s;
+    padding: 10px;
+    .questionArea {
+      display: flex;
+      flex-direction: column;
+      padding: 0 150px;
+      .label {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        .requiredIcon {
+          display: inline-block;
+          margin-right: 4px;
+          color: #f5222d;
+          font-size: 14px;
+          font-family: SimSun, sans-serif;
+          font-style: normal;
+        }
+      }
+    }
+    .toolsBar {
+      padding-top: 10px;
+      text-align: right;
+      >span {
+        font-size: 12px;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+    }
+  }
+  
+  .preview {
+    padding-bottom: 20px;
+    .showForm {
+      padding: 0;
+      .questionArea {
+        padding: 0;
+        .questionBody {
+          padding-bottom: 15px;
+        }
+      }
+    }
+  }
+  
+  // 移动设备样式
+  &.phone {
+    .preview {
+      .showForm {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 0 15px 5px;
+        .questionArea {
+          padding: 0;
+          .questionBody {
+            padding-left: 15px;
+            padding-bottom: 15px;
+          }
+        }
+      }
+    }
+  }
+}

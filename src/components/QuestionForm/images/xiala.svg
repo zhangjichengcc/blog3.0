@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>分组 12</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M5.994702,0.313032709 C5.994702,0.381765224 5.969702,0.451213703 5.919702,0.509206762 L3.2564208,3.54346092 C3.19157705,3.61720518 3.0939208,3.660163 2.99001455,3.660163 C2.88688955,3.660163 2.78845205,3.61720518 2.72438955,3.54346092 L0.0751708488,0.522094109 C-0.0427978992,0.387492934 -0.0193603996,0.190602917 0.127514598,0.0824923981 C0.274389595,-0.0256181204 0.489233342,-0.00413920945 0.60720209,0.130461966 L2.9907958,2.84826017 L5.38767076,0.116858656 C5.50563951,-0.0177425197 5.72048325,-0.0392214307 5.86735825,0.0688890878 C5.950952,0.13117793 5.994702,0.221389356 5.994702,0.313032709 Z" id="path-1"></path>
+    </defs>
+    <g id="问卷调查" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编辑问卷" transform="translate(-545.000000, -316.000000)">
+            <g id="分组" transform="translate(503.000000, 148.000000)">
+                <g id="分组-12" transform="translate(40.000000, 166.000000)">
+                    <rect id="矩形-copy-13" stroke="#000000" x="2.5" y="2.5" width="11" height="11" rx="2"></rect>
+                    <rect id="Rectangle-48-Copy-6" x="0" y="0" width="16" height="16"></rect>
+                    <g id="Group" transform="translate(5.000000, 6.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

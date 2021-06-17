@@ -13,20 +13,14 @@ import {
 
 import { Popover, Alert, BackTop, Button } from "antd";
 import { history } from "umi";
-import moment from "js-moment";
-// import Advert from '@/components/Advert';
-// import Charts from '@/components/Charts';
 import classnames from "classnames";
 import ArticalCard from "@/components/ArticalCard";
-// import advertImg1 from '@/assets/image/home/advert.jpg';
 import weChatImg from "@/assets/image/my-wechat.jpg";
 import config from "@/config";
 import styles from "./index.less";
 import Ellipsis from "@/components/Ellipsis";
 import { queryArticalList } from "@/services/artical";
 import { isPc, offset } from "@/utils/utils";
-
-// const { TagCloud } = Charts;
 
 interface homeProps {}
 

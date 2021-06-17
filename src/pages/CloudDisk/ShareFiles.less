@@ -1,0 +1,226 @@
+.shareFilesPage {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  .pageTitle {
+    height: 50px;
+    margin-top: -25px;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 0 25px;
+    line-height: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.22);
+    > i {
+      display: block;
+      float: right;
+      height: 50px;
+      font-size: 18px;
+      line-height: 56px;
+      cursor: pointer;
+    }
+    .pageTitleIcon {
+      padding: 3px;
+      color: #4a93f2;
+      font-weight: bold;
+      font-size: 14px;
+      border: #4a93f2 solid 2px;
+      border-radius: 50%;
+    }
+    .shareUserName {
+      display: inline-block;
+      padding: 0 8px;
+      color: #666;
+      font-size: 16px;
+    }
+  }
+  .header {
+    position: relative;
+    margin-bottom: 14px;
+    padding-top: 14px;
+    p {
+      display: inline-block;
+      font-size: 14px;
+      > .title {
+        display: inline-block;
+        color: #333;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all ease 0.3s;
+        &:hover {
+          color: #3e82fe;
+        }
+      }
+      > .nextIcon {
+        display: inline-block;
+        padding: 0 5px;
+      }
+    }
+    div {
+      float: right;
+      span {
+        color: #3e82fe;
+      }
+    }
+    .line {
+      display: inline-block;
+      width: 1px;
+      height: 15px;
+      margin-right: 12px;
+      background-color: #888;
+      border-radius: 2px;
+      transform: translateY(2px);
+    }
+    .historyBtn {
+      margin-right: 10px;
+      cursor: pointer;
+      transition: all ease 0.3s;
+      &:hover {
+        color: #3e82fe;
+      }
+      &.disable {
+        color: #aaa;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .fileNameWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    img {
+      width: 28px;
+      height: 22px;
+      margin-right: 10px;
+    }
+    .operationBtnWrap {
+      display: inline-block;
+      padding-left: 10px;
+      opacity: 0;
+      transition: all ease 0.3s;
+      svg {
+        margin-right: 10px;
+        color: #666;
+        font-size: 18px;
+      }
+      &.active {
+        opacity: 1;
+      }
+    }
+    .fileTitle {
+      width: 400px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .newFileNameBar {
+      position: relative;
+      display: inline-block;
+      padding-right: 70px;
+      > i {
+        position: absolute;
+        top: 4px;
+        color: #4583fd;
+        font-size: 25px;
+        cursor: pointer;
+      }
+    }
+  }
+  .btnBar {
+    text-align: right;
+    border-top: #e3f1ff solid 1px;
+    padding-top: 15px;
+  }
+
+  .rowBgColor {
+    background: #ecf5ff;
+    cursor: pointer;
+  }
+  .rowStyle {
+    cursor: pointer;
+  }
+
+  :global(.ant-table-thead > tr > th) {
+    background: #ecf5ff;
+  }
+  :global(.ant-table) {
+    color: #000;
+  }
+  :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
+    overflow-y: hidden !important;
+  }
+  :global(.ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body) {
+    &::-webkit-scrollbar {
+      //先改变body的滚动条宽度
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      //再改变html的滚动条轨道颜色
+      background: #eee;
+      border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      //最后改变html的滚动条滑轨相关的样式
+      background-color: #40a9ff;
+      // background-color: #9e9e9e;
+      border-radius: 5px;
+    }
+  }
+}
+:global(.ant-popover) {
+  .popContent {
+    margin: -12px -16px;
+    padding: 10px 0;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.08);
+    > span {
+      display: block;
+      padding: 2px 20px;
+      color: #333;
+      font-size: 13px;
+      cursor: pointer;
+      &:hover {
+        color: #4583fd;
+        background-color: #f3f8fd;
+      }
+    }
+  }
+}
+
+:global(.ant-modal-body) {
+  overflow-y: auto;
+  max-height: initial;
+}
+
+.shareCodeBody {
+  margin: -10px;
+  > span {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    padding-bottom: 14px;
+  }
+  > div {
+    border: #ddd solid 1px;
+    border-radius: 5px;
+    padding: 8px 14px;
+    margin-bottom: 15px;
+    > span:nth-child(1) {
+      font-size: 16px;
+      color: #666;
+    }
+    > span:nth-child(2) {
+      float: right;
+      color: #4584fd;
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

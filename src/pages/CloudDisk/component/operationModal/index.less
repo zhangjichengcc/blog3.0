@@ -1,0 +1,44 @@
+.addBtn {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+}
+.newFolderBtn {
+  margin-left: 10px;
+  border-radius: 2px;
+  border: 1px solid #B1D7FE;
+  color: #4583FD;
+}
+.newFolderInput {
+  width: 160px;
+  border: 1px solid #B1D7FE;
+}
+
+:global(.ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper > span) {
+  margin-right: 10px;
+}
+:global(.ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper.ant-tree-node-selected) {
+  color: rgba(0, 0, 0, 0.65);
+  &::before {
+    background: #e6f7ff;
+  }
+}
+:global(.ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-switcher) {
+  color: rgba(0, 0, 0, 0.65);
+}
+:global(.ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper.ant-tree-node-selected) {
+  color: rgba(0, 0, 0, 0.65);
+  &::before {
+    background: #e6f7ff;
+  }
+}
+:global(.ant-tree.ant-tree-directory .ant-tree-child-tree > li span.ant-tree-node-content-wrapper.ant-tree-node-selected) {
+  color: rgba(0, 0, 0, 0.65);
+  &::before {
+    background: #e6f7ff;
+  }
+}
+// :global(.ant-modal-body) {
+//   max-height: 450px;
+//   overflow-y: scroll;
+// }
