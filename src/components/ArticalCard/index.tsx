@@ -20,7 +20,25 @@ import Img from "@/components/Img";
 import classnames from "classnames";
 import { offset } from "@/utils/utils";
 
-class InputForm extends Component {
+interface Props {
+  title: string; // 文章标题
+  img: any;
+  look: number;
+  like: number;
+  tag: Array<string> | null;
+  msgCount: number;
+  message: string;
+  createTime: Date | string;
+  onLike(): void;
+  onClick?: (item: any) => void;
+}
+
+interface S {
+  likeKey: boolean;
+  likeCount: number;
+}
+
+class InputForm extends Component<Props, S> {
   static defaultProps = {
     title: "",
     img: null,
@@ -33,16 +51,16 @@ class InputForm extends Component {
     onClick: null
   };
 
-  constructor(props: any | Readonly<any>) {
+  public readonly state: Readonly<S>;
+
+  constructor(props: Props | Readonly<Props>) {
     super(props);
     this.state = {
-      likeCount: 0,
       loading: false
     };
   }
 
   componentDidMount(): void {
-    global.offset = offset;
     this.initCard();
     globalThis.addEventListener("scroll", this.scrollFun);
   }
@@ -51,6 +69,7 @@ class InputForm extends Component {
     globalThis.removeEventListener("scroll", this.scrollFun);
   }
 
+  // 初始化card
   initCard = () => {
     const { like } = this.props;
     // 初始化组件直接判断当前位置决定是否加载
@@ -58,6 +77,7 @@ class InputForm extends Component {
     this.setState({ likeCount: like });
   };
 
+  // 点击卡片触发
   click = () => {
     const { onClick } = this.props;
     if (onClick) {
